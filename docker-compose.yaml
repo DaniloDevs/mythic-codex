@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  mythic-codex-pg:
+    image: bitnami/postgresql:latest
+    container_name: mythic-codex
+    restart: unless-stopped
+    ports:
+      - "2511:5432"
+    environment:
+      - POSTGRESQL_USERNAME=docker
+      - POSTGRESQL_PASSWORD=docker
+      - POSTGRESQL_DATABASE=mythic-codex
+    volumes:
+      - pg_data:/bitnami/postgresql
+
+volumes:
+  pg_data:
