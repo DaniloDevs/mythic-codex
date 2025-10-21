@@ -14,10 +14,11 @@ describe("Create User Service", () => {
 	});
 
 	it("Deve ser possivel criar um usuario com dados validos", async () => {
-		const user = await service.execute({
+		const { user } = await service.execute({
 			name: "Jhon Doe",
 			email: "ex@email.com",
 			password: "123456879",
+			avatar: null,
 		});
 
 		expect(user.id).toEqual(expect.any(String));
@@ -28,6 +29,7 @@ describe("Create User Service", () => {
 			name: "Jhon Doe",
 			email: "ex@email.com",
 			password: "123456879",
+			avatar: null,
 		});
 
 		await expect(
@@ -35,15 +37,17 @@ describe("Create User Service", () => {
 				name: "Jhon Doe",
 				email: "ex@email.com",
 				password: "123456879",
+				avatar: null,
 			}),
 		).rejects.toBeInstanceOf(UserAlreadyExistsError);
 	});
 
 	it("Deve ser possivel criar uma senha criptografada", async () => {
-		const user = await service.execute({
+		const { user } = await service.execute({
 			name: "Jhon Doe",
 			email: "ex@email.com",
 			password: "123456",
+			avatar: null,
 		});
 
 		const isPassawordCorrectly = await compare("123456", user.passwordHash);

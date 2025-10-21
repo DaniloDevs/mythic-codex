@@ -17,6 +17,7 @@ describe("Authenticated with password Service", () => {
 		await repository.create({
 			name: "Jhon Doe",
 			email: "ex@email.com",
+			avatar: null,
 			password: await hash("123456", 6),
 		});
 
@@ -32,6 +33,7 @@ describe("Authenticated with password Service", () => {
 		await repository.create({
 			name: "Jhon Doe",
 			email: "ex@email.com",
+			avatar: null,
 			password: await hash("123456", 6),
 		});
 
@@ -48,6 +50,7 @@ describe("Authenticated with password Service", () => {
 			name: "Jhon Doe",
 			email: "ex@email.com",
 			password: "123456879",
+			avatar: null,
 		});
 
 		await expect(

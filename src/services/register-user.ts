@@ -2,13 +2,18 @@ import bcrypt from "bcryptjs";
 import { UserAlreadyExistsError } from "@/_errors/user-already-exists";
 import type {
 	IUserRepository,
+	User,
 	UserCreateInput,
 } from "@/repository/user-repository";
+
+interface RegisterUserResponse {
+	user: User;
+}
 
 export class RegisterUserService {
 	constructor(private userRepository: IUserRepository) {}
 
-	async execute(data: UserCreateInput) {
+	async execute(data: UserCreateInput): Promise<RegisterUserResponse> {
 		const userAlreadyExists = await this.userRepository.getByEmail(data.email);
 
 		if (userAlreadyExists) {
@@ -22,6 +27,6 @@ export class RegisterUserService {
 			password: passwordHash,
 		});
 
-		return user;
+		return { user };
 	}
 }

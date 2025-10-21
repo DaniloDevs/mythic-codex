@@ -1,17 +1,22 @@
-export type UserCreateInput = {
-	name: string;
-	email: string;
-	password: string;
-	avatar?: string;
-};
+import z from "zod";
 
-export type User = {
-	id: string;
-	name: string;
-	email: string;
-	passwordHash: string;
-	avatar?: string;
-};
+const UserCreateInputSchema = z.object({
+	name: z.string(),
+	email: z.string(),
+	password: z.string(),
+	avatar: z.string().nullable(),
+});
+
+const UserSchema = z.object({
+	id: z.string(),
+	name: z.string(),
+	email: z.string(),
+	passwordHash: z.string(),
+	avatar: z.string().nullable(),
+});
+
+export type UserCreateInput = z.infer<typeof UserCreateInputSchema>;
+export type User = z.infer<typeof UserSchema>;
 
 export interface IUserRepository {
 	create(data: UserCreateInput): Promise<User>;
