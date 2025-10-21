@@ -1,9 +1,5 @@
-# Configurações Iniciais
+### Requesitos  Funcionais
 
-- [x] Env
-- [x] Lint
-- [x] Prisma
-- [x] Test
-- [x] jwt
-- [x] cookie
-- [ ] husky
+- [ ] Login com senha
+- [ ] Resete de sennha
+- [ ] Pegar perfil

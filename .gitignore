@@ -4,4 +4,4 @@ node_modules
 build
 /generated/prisma
 coverage
-to-do
+to-do.md

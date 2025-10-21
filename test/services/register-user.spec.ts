@@ -39,7 +39,7 @@ describe("Create User Service", () => {
 		).rejects.toBeInstanceOf(UserAlreadyExistsError);
 	});
 
-	it("Não deve ser possivel criar um usuario com email já utilizado", async () => {
+	it("Deve ser possivel criar uma senha criptografada", async () => {
 		const user = await service.execute({
 			name: "Jhon Doe",
 			email: "ex@email.com",
