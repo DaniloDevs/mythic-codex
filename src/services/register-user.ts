@@ -5,7 +5,7 @@ import type {
 	UserCreateInput,
 } from "@/repository/user-repository";
 
-export class CreateUserService {
+export class RegisterUserService {
 	constructor(private userRepository: IUserRepository) {}
 
 	async execute(data: UserCreateInput) {
