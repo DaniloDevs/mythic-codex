@@ -1,6 +1,7 @@
 import z from "zod";
 
 const UserCreateInputSchema = z.object({
+	id: z.string().optional(),
 	name: z.string(),
 	email: z.string(),
 	password: z.string(),
@@ -21,4 +22,5 @@ export type User = z.infer<typeof UserSchema>;
 export interface IUserRepository {
 	create(data: UserCreateInput): Promise<User>;
 	getByEmail(email: string): Promise<User | null>;
+	getById(id: string): Promise<User | null>;
 }

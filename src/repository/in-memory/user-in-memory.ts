@@ -10,7 +10,7 @@ export class UserImMemoryRepository implements IUserRepository {
 
 	async create(data: UserCreateInput) {
 		const user: User = {
-			id: randomUUID(),
+			id: data.id ?? randomUUID(),
 			name: data.name,
 			email: data.email,
 			passwordHash: data.password,
@@ -24,6 +24,11 @@ export class UserImMemoryRepository implements IUserRepository {
 
 	async getByEmail(email: string) {
 		const user = this.items.find((user) => user.email === email);
+
+		return user ?? null;
+	}
+	async getById(id: string) {
+		const user = this.items.find((user) => user.id === id);
 
 		return user ?? null;
 	}
