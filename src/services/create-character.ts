@@ -1,31 +1,18 @@
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
-import type {
-	Character,
-	CharacterCreateInput,
-	ICharacterRepository,
-} from "@/repository/character-repository";
+import type { Character, CharacterCreateInput, ICharacterRepository } from "@/repository/character-repository";
 import type { IUserRepository } from "@/repository/user-repository";
 
-interface CreateCharacterRequest<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
+interface CreateCharacterRequest<TSheet extends Record<string, any>, TInventory extends Record<string, any>> {
 	characterData: CharacterCreateInput;
 	sheet: TSheet;
 	inventory: TInventory;
 }
 
-interface CreateCharacterResponse<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
+interface CreateCharacterResponse<TSheet extends Record<string, any>, TInventory extends Record<string, any>> {
 	character: Character<TSheet, TInventory>;
 }
 
-export class CreateCharacterService<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
+export class CreateCharacterService<TSheet extends Record<string, any>, TInventory extends Record<string, any>> {
 	constructor(
 		private characterRepository: ICharacterRepository<TSheet, TInventory>,
 		private userRepository: IUserRepository,
@@ -35,9 +22,7 @@ export class CreateCharacterService<
 		characterData,
 		sheet,
 		inventory,
-	}: CreateCharacterRequest<TSheet, TInventory>): Promise<
-		CreateCharacterResponse<TSheet, TInventory>
-	> {
+	}: CreateCharacterRequest<TSheet, TInventory>): Promise<CreateCharacterResponse<TSheet, TInventory>> {
 		const existUser = await this.userRepository.getById(characterData.userId);
 
 		if (!existUser) {

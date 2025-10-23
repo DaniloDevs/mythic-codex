@@ -14,9 +14,7 @@ interface AuthenticatedWithPasswordResponse {
 export class AuthenticatedWithPasswordService {
 	constructor(private userRepository: IUserRepository) {}
 
-	async execute(
-		data: AuthenticatedWithPasswordRequest,
-	): Promise<AuthenticatedWithPasswordResponse> {
+	async execute(data: AuthenticatedWithPasswordRequest): Promise<AuthenticatedWithPasswordResponse> {
 		const userExist = await this.userRepository.getByEmail(data.email);
 
 		if (!userExist) {

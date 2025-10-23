@@ -16,10 +16,7 @@ describe("Create Character Service", () => {
 	beforeEach(() => {
 		characterRepository = new CharacterImMemoryRepository<GenericSheet, GenericInventory>();
 		userRepository = new UserImMemoryRepository();
-		service = new CreateCharacterService<GenericSheet, GenericInventory>(
-			characterRepository,
-			userRepository,
-		);
+		service = new CreateCharacterService<GenericSheet, GenericInventory>(characterRepository, userRepository);
 	});
 
 	it("Deve ser possivel criar uma personagem com dados validos", async () => {

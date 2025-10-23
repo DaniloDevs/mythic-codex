@@ -31,13 +31,6 @@ export type Character<
 	inventory: TInventory;
 };
 
-export interface ICharacterRepository<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
-	create(
-		character: CharacterCreateInput,
-		sheet: TSheet,
-		inventory: TInventory,
-	): Promise<Character<TSheet, TInventory>>;
+export interface ICharacterRepository<TSheet extends Record<string, any>, TInventory extends Record<string, any>> {
+	create(character: CharacterCreateInput, sheet: TSheet, inventory: TInventory): Promise<Character<TSheet, TInventory>>;
 }
