@@ -7,27 +7,35 @@ import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { CreateCharacterService } from "@/services/create-character";
 
 const GenericSheetSchema = z.object({
-  força: z.number().min(0),
-  vida: z.number().min(0),
+	força: z.number().min(0),
+	vida: z.number().min(0),
 });
 
 const GenericInventorySchema = z.object({
-  item: z.array(z.string()),
+	item: z.array(z.string()),
 });
 
 type GenericSheet = z.infer<typeof GenericSheetSchema>;
 type GenericInventory = z.infer<typeof GenericInventorySchema>;
 
-
 describe("Create Character Service", () => {
-	let characterRepository: CharacterImMemoryRepository<GenericSheet, GenericInventory>;
+	let characterRepository: CharacterImMemoryRepository<
+		GenericSheet,
+		GenericInventory
+	>;
 	let userRepository: UserImMemoryRepository;
 	let service: CreateCharacterService<GenericSheet, GenericInventory>;
 
 	beforeEach(() => {
-		characterRepository = new CharacterImMemoryRepository<GenericSheet, GenericInventory>();
+		characterRepository = new CharacterImMemoryRepository<
+			GenericSheet,
+			GenericInventory
+		>();
 		userRepository = new UserImMemoryRepository();
-		service = new CreateCharacterService<GenericSheet, GenericInventory>(characterRepository, userRepository);
+		service = new CreateCharacterService<GenericSheet, GenericInventory>(
+			characterRepository,
+			userRepository,
+		);
 	});
 
 	it("Deve ser possivel criar uma personagem com dados validos", async () => {
@@ -48,14 +56,18 @@ describe("Create Character Service", () => {
 			item: ["Espada Longa", "Poção de Cura"],
 		};
 
-		const { character } = await service.execute({
-			userId: "user-01",
-			name: "Elara Stormwind",
-			age: 27,
-			rpgSystem: "Dungeon And Dragons",
-			description: "A half-elf ranger who roams the forests of the North.",
-			avatar: null,
-		}, sheet, inventory);
+		const { character } = await service.execute(
+			{
+				userId: "user-01",
+				name: "Elara Stormwind",
+				age: 27,
+				rpgSystem: "Dungeon And Dragons",
+				description: "A half-elf ranger who roams the forests of the North.",
+				avatar: null,
+			},
+			sheet,
+			inventory,
+		);
 
 		expect(character.id).toEqual(expect.any(String));
 	});
@@ -71,14 +83,18 @@ describe("Create Character Service", () => {
 		};
 
 		await expect(
-			service.execute({
-				userId: "u12345",
-				name: "Elara Stormwind",
-				age: 27,
-				rpgSystem: "Dungeon And Dragons",
-				description: "A half-elf ranger who roams the forests of the North.",
-				avatar: null,
-			}, sheet, inventory),
+			service.execute(
+				{
+					userId: "u12345",
+					name: "Elara Stormwind",
+					age: 27,
+					rpgSystem: "Dungeon And Dragons",
+					description: "A half-elf ranger who roams the forests of the North.",
+					avatar: null,
+				},
+				sheet,
+				inventory,
+			),
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 });

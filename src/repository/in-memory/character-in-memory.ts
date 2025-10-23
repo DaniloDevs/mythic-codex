@@ -7,15 +7,16 @@ import type {
 } from "../character-repository";
 
 export class CharacterImMemoryRepository<
-  TSheet extends Record<string, any>,
-  TInventory extends Record<string, any>
-> implements ICharacterRepository<TSheet, TInventory> {
+	TSheet extends Record<string, any>,
+	TInventory extends Record<string, any>,
+> implements ICharacterRepository<TSheet, TInventory>
+{
 	public items: Character<TSheet, TInventory>[] = [];
 
 	async create(
 		data: CharacterCreateInput,
 		sheet: TSheet,
-		inventory: TInventory
+		inventory: TInventory,
 	): Promise<Character<TSheet, TInventory>> {
 		const character: Character<TSheet, TInventory> = {
 			id: randomUUID(),
