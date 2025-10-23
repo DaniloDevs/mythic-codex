@@ -6,11 +6,18 @@ import type {
 	ICharacterRepository,
 } from "../character-repository";
 
-export class CharacterImMemoryRepository implements ICharacterRepository {
-	public items: Character[] = [];
+export class CharacterImMemoryRepository<
+  TSheet extends Record<string, any>,
+  TInventory extends Record<string, any>
+> implements ICharacterRepository<TSheet, TInventory> {
+	public items: Character<TSheet, TInventory>[] = [];
 
-	async create(data: CharacterCreateInput) {
-		const character: Character = {
+	async create(
+		data: CharacterCreateInput,
+		sheet: TSheet,
+		inventory: TInventory
+	): Promise<Character<TSheet, TInventory>> {
+		const character: Character<TSheet, TInventory> = {
 			id: randomUUID(),
 			userId: data.userId,
 			name: data.name,
@@ -19,6 +26,8 @@ export class CharacterImMemoryRepository implements ICharacterRepository {
 			age: data.age,
 			avatar: data.avatar,
 			description: data.description,
+			sheet,
+			inventory,
 		};
 
 		this.items.push(character);
