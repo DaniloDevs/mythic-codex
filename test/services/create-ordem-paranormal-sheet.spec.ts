@@ -3,7 +3,7 @@ import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { CreateCharacterService } from "@/services/create-character";
 import type { OrdemParanormalInventory, OrdemParanormalSheet } from "@/services/types/ordem-paranormal";
-import { characterDataMocks, inventoryMocks, sheetMocks } from "./mocks/create-ordem-paranormal";
+import { characterDataMocks, inventoryMocks, sheetMocks } from "./mocks/create-ordem-paranormal-sheet";
 
 describe("Create Ordem Paranormal Sheet Service", () => {
 	let characterRepository: CharacterImMemoryRepository<OrdemParanormalSheet, OrdemParanormalInventory>;
@@ -36,4 +36,12 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 
 		expect(character.id).toEqual(expect.any(String));
 	});
+
+	it("deve ser possivel ter o total de PV apenas informnado vigor e classe", async () => {});
+
+	it("deve ser possivel ter o total de PE apenas informnado presença e classe", async () => {});
+
+	it("deve ser possivel ter o total de Sanidade apenas informnado a classe", async () => {});
+
+	it("deve ser possivel quando subir de nivel PV, PE e sanidade aumentarem", async () => {});
 });

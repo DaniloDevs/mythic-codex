@@ -1,5 +1,47 @@
 import z from "zod";
 
+const OrdemParanormalSheetCreateInputSchema = z.object({
+	attributes: z.object({
+		strength: z.number().min(1),
+		agility: z.number().min(1),
+		presence: z.number().min(1),
+		vigor: z.number().min(1),
+		intelligence: z.number().min(1),
+	}),
+	conditions: z.object({
+		lifePoints:z.number().min(0),
+		endeavorPoints:z.number().min(0),
+		sanity:z.number().min(0),
+		defense: z.number(),
+		next: z.number().min(0).max(100),
+		move: z.string(),
+	}),
+	identity: z.object({
+		class: z.string(),
+		origin: z.string(),
+		patent: z.enum(["Recruta", "Agente especial", "Oficial de operações", "Agente de elite"]),
+	}),
+	caracteristicas: z.object({
+		protections: z.string(),
+		resistances: z.string(),
+		proefficiencies: z.array(z.string()),
+	}),
+	expertises: z.object({
+		acrobacia: z.object({
+			bonus: z.number().min(0),
+			level: z.enum(["Destreinado", "trained", "Veterano", "Expert"]),
+		}),
+	}),
+	skills: z.array(
+		z.object({
+			name: z.string(),
+			cost: z.number().min(0),
+			description: z.string(),
+			page: z.number().min(1),
+		}),
+	),
+});
+
 const OrdemParanormalSheetSchema = z.object({
 	attributes: z.object({
 		strength: z.number().min(1),
@@ -71,4 +113,5 @@ const OrdemParanormalInventorySchema = z.object({
 });
 
 export type OrdemParanormalSheet = z.infer<typeof OrdemParanormalSheetSchema>;
+export type OrdemParanormalSheetCreateInput = z.infer<typeof OrdemParanormalSheetCreateInputSchema>;
 export type OrdemParanormalInventory = z.infer<typeof OrdemParanormalInventorySchema>;

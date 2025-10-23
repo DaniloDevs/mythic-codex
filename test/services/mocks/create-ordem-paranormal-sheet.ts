@@ -1,5 +1,5 @@
 import type { CharacterCreateInput } from "@/repository/character-repository";
-import type { OrdemParanormalSheet, OrdemParanormalInventory } from "@/services/types/ordem-paranormal";
+import type { OrdemParanormalInventory, OrdemParanormalSheet } from "@/services/types/ordem-paranormal";
 
 export const characterDataMocks: CharacterCreateInput = {
 	userId: "user-01",
