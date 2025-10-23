@@ -15,8 +15,6 @@ const CharacterSchema = z.object({
 	age: z.number(),
 	description: z.string(),
 	avatar: z.string().nullable(),
-	sheet: z.json(),
-	inventory: z.json().nullable(),
 });
 
 const CharacterCreateInputSchema = z.object({
@@ -26,8 +24,6 @@ const CharacterCreateInputSchema = z.object({
 	age: z.number(),
 	description: z.string(),
 	avatar: z.string().nullable(),
-	sheet: z.json(),
-	inventory: z.json().nullable(),
 });
 
 export type Character = z.infer<typeof CharacterSchema>;

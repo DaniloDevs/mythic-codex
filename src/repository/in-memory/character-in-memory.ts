@@ -19,8 +19,6 @@ export class CharacterImMemoryRepository implements ICharacterRepository {
 			age: data.age,
 			avatar: data.avatar,
 			description: data.description,
-			inventory: data.inventory,
-			sheet: data.sheet,
 		};
 
 		this.items.push(character);
