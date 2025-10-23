@@ -6,8 +6,20 @@ import type {
 } from "@/repository/character-repository";
 import type { IUserRepository } from "@/repository/user-repository";
 
-interface RegisterCharacterResponse {
-	character: Character<any, any>;
+interface CreateCharacterRequest<
+	TSheet extends Record<string, any>,
+	TInventory extends Record<string, any>,
+> {
+	characterData: CharacterCreateInput;
+	sheet: TSheet;
+	inventory: TInventory;
+}
+
+interface CreateCharacterResponse<
+	TSheet extends Record<string, any>,
+	TInventory extends Record<string, any>,
+> {
+	character: Character<TSheet, TInventory>;
 }
 
 export class CreateCharacterService<
@@ -19,22 +31,20 @@ export class CreateCharacterService<
 		private userRepository: IUserRepository,
 	) {}
 
-	async execute(
-		characterData: CharacterCreateInput,
-		sheet: TSheet,
-		inventory: TInventory,
-	): Promise<RegisterCharacterResponse> {
+	async execute({
+		characterData,
+		sheet,
+		inventory,
+	}: CreateCharacterRequest<TSheet, TInventory>): Promise<
+		CreateCharacterResponse<TSheet, TInventory>
+	> {
 		const existUser = await this.userRepository.getById(characterData.userId);
 
 		if (!existUser) {
 			throw new ResourceNotFoundError();
 		}
 
-		const character = await this.characterRepository.create(
-			characterData,
-			sheet,
-			inventory,
-		);
+		const character = await this.characterRepository.create(characterData, sheet, inventory);
 
 		return { character };
 	}

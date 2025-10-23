@@ -1,9 +1,5 @@
 import { randomUUID } from "node:crypto";
-import type {
-	IUserRepository,
-	User,
-	UserCreateInput,
-} from "../user-repository";
+import type { IUserRepository, User, UserCreateInput } from "../user-repository";
 
 export class UserImMemoryRepository implements IUserRepository {
 	public items: User[] = [];

@@ -23,10 +23,7 @@ export class AuthenticatedWithPasswordService {
 			throw new InvalidCredentialsError();
 		}
 
-		const passwordIsCorrect = await bcrypt.compare(
-			data.password,
-			userExist.passwordHash,
-		);
+		const passwordIsCorrect = await bcrypt.compare(data.password, userExist.passwordHash);
 		if (!passwordIsCorrect) {
 			throw new InvalidCredentialsError();
 		}

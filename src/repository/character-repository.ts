@@ -1,10 +1,6 @@
 import z from "zod";
 
-const RpgSystemSchema = [
-	"Dungeon And Dragons",
-	"Ordem Paranormal",
-	"Tormenta",
-] as const;
+const RpgSystemSchema = ["Dungeon And Dragons", "Ordem Paranormal", "Tormenta"] as const;
 
 const CharacterSchema = z.object({
 	id: z.string(),

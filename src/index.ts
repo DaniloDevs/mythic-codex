@@ -3,10 +3,7 @@ import FastifyJWT from "@fastify/jwt";
 import Swagger from "@fastify/swagger";
 import ScalarSwagger from "@scalar/fastify-api-reference";
 import fastify from "fastify";
-import {
-	serializerCompiler,
-	validatorCompiler,
-} from "fastify-type-provider-zod";
+import { serializerCompiler, validatorCompiler } from "fastify-type-provider-zod";
 import { env } from "./env";
 
 const app = fastify();

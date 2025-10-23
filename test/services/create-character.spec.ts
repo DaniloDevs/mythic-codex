@@ -1,36 +1,20 @@
 import { hash } from "bcryptjs";
 import { beforeEach, describe, expect, it } from "vitest";
-import { z } from "zod";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { CreateCharacterService } from "@/services/create-character";
 
-const GenericSheetSchema = z.object({
-	força: z.number().min(0),
-	vida: z.number().min(0),
-});
-
-const GenericInventorySchema = z.object({
-	item: z.array(z.string()),
-});
-
-type GenericSheet = z.infer<typeof GenericSheetSchema>;
-type GenericInventory = z.infer<typeof GenericInventorySchema>;
-
 describe("Create Character Service", () => {
-	let characterRepository: CharacterImMemoryRepository<
-		GenericSheet,
-		GenericInventory
-	>;
+	type GenericSheet = { força: number; vida: number };
+	type GenericInventory = { item: string[] };
+
+	let characterRepository: CharacterImMemoryRepository<GenericSheet, GenericInventory>;
 	let userRepository: UserImMemoryRepository;
 	let service: CreateCharacterService<GenericSheet, GenericInventory>;
 
 	beforeEach(() => {
-		characterRepository = new CharacterImMemoryRepository<
-			GenericSheet,
-			GenericInventory
-		>();
+		characterRepository = new CharacterImMemoryRepository<GenericSheet, GenericInventory>();
 		userRepository = new UserImMemoryRepository();
 		service = new CreateCharacterService<GenericSheet, GenericInventory>(
 			characterRepository,
@@ -47,17 +31,8 @@ describe("Create Character Service", () => {
 			password: await hash("123456", 6),
 		});
 
-		const sheet: GenericSheet = {
-			força: 15,
-			vida: 100,
-		};
-
-		const inventory: GenericInventory = {
-			item: ["Espada Longa", "Poção de Cura"],
-		};
-
-		const { character } = await service.execute(
-			{
+		const { character } = await service.execute({
+			characterData: {
 				userId: "user-01",
 				name: "Elara Stormwind",
 				age: 27,
@@ -65,36 +40,37 @@ describe("Create Character Service", () => {
 				description: "A half-elf ranger who roams the forests of the North.",
 				avatar: null,
 			},
-			sheet,
-			inventory,
-		);
+			sheet: {
+				força: 15,
+				vida: 100,
+			},
+			inventory: {
+				item: ["Espada Longa", "Arco e Flecha"],
+			},
+		});
 
 		expect(character.id).toEqual(expect.any(String));
 	});
 
 	it("Não deve ser possivel criar uma personagem para um usuario que não existe ", async () => {
-		const sheet: GenericSheet = {
-			força: 15,
-			vida: 100,
-		};
-
-		const inventory: GenericInventory = {
-			item: ["Espada Longa", "Poção de Cura"],
-		};
-
 		await expect(
-			service.execute(
-				{
-					userId: "u12345",
+			service.execute({
+				characterData: {
+					userId: "not-exist-user",
 					name: "Elara Stormwind",
 					age: 27,
-					rpgSystem: "Dungeon And Dragons",
+					rpgSystem: "Tormenta",
 					description: "A half-elf ranger who roams the forests of the North.",
 					avatar: null,
 				},
-				sheet,
-				inventory,
-			),
+				sheet: {
+					força: 15,
+					vida: 100,
+				},
+				inventory: {
+					item: ["Espada Longa", "Arco e Flecha"],
+				},
+			}),
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 });

@@ -1,10 +1,6 @@
 import bcrypt from "bcryptjs";
 import { UserAlreadyExistsError } from "@/_errors/user-already-exists";
-import type {
-	IUserRepository,
-	User,
-	UserCreateInput,
-} from "@/repository/user-repository";
+import type { IUserRepository, User, UserCreateInput } from "@/repository/user-repository";
 
 interface RegisterUserResponse {
 	user: User;
