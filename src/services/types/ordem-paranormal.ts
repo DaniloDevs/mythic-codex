@@ -8,44 +8,44 @@ const OrdemParanormalSheetSchema = z.object({
 		vigor: z.number().min(1),
 		intelligence: z.number().min(1),
 	}),
-	fisicState: z.object({
-		vida: z.object({
+	conditions: z.object({
+		lifePoints: z.object({
 			total: z.number().min(0),
 			current: z.number().min(0),
 		}),
-		esforço: z.object({
+		endeavorPoints: z.object({
 			total: z.number().min(0),
 			current: z.number().min(0),
 		}),
-		sanidade: z.object({
+		sanity: z.object({
 			total: z.number().min(0),
 			current: z.number().min(0),
 		}),
-		defesa: z.number(),
+		defense: z.number(),
 		next: z.number().min(0).max(100),
-		deslocamento: z.string(),
+		move: z.string(),
 	}),
-	identidade: z.object({
-		classe: z.string(),
-		origem: z.string(),
-		patente: z.string(),
+	identity: z.object({
+		class: z.string(),
+		origin: z.string(),
+		patent: z.enum(["Recruta", "Agente especial", "Oficial de operações", "Agente de elite"]),
 	}),
 	caracteristicas: z.object({
-		proteções: z.string(),
-		resistências: z.string(),
-		proeficiências: z.array(z.string()),
+		protections: z.string(),
+		resistances: z.string(),
+		proefficiencies: z.array(z.string()),
 	}),
 	expertises: z.object({
 		acrobacia: z.object({
-			atributo: z.enum(["agility", "strength", "presence", "vigor", "intelligence"]),
+			attribute: z.enum(["agility", "strength", "presence", "vigor", "intelligence"]),
 			bonus: z.number().min(0),
-			nivel: z.enum(["Destreinado", "trained", "Veterano", "Expert"]),
+			level: z.enum(["Destreinado", "trained", "Veterano", "Expert"]),
 		}),
 	}),
 	skills: z.array(
 		z.object({
 			name: z.string(),
-			custo: z.number().min(0),
+			cost: z.number().min(0),
 			description: z.string(),
 			page: z.number().min(1),
 		}),
@@ -53,8 +53,21 @@ const OrdemParanormalSheetSchema = z.object({
 });
 
 const OrdemParanormalInventorySchema = z.object({
-	items: z.array(z.string()),
-	money: z.number().min(0),
+	limitItems: {
+		one: z.number().min(0),
+		two: z.number().min(0),
+		three: z.number().min(0),
+		four: z.number().min(0),
+	},
+	creditLimit: z.number().min(0),
+	limitCharge: z.number().min(0),
+	item: z.array(
+		z.object({
+			name: z.string(),
+			category: z.number().min(0),
+			space: z.string(),
+		}),
+	),
 });
 
 export type OrdemParanormalSheet = z.infer<typeof OrdemParanormalSheetSchema>;
