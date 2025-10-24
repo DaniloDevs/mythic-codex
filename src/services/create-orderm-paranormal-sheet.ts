@@ -12,10 +12,13 @@ interface CreateOrdemParanormalSheetResquest {
 	inventory: OrdemParanormalInventory;
 }
 
-export class CreateOrdemParanormalSheet extends CreateCharacterService<OrdemParanormalSheet, OrdemParanormalInventory> {
-	async execute({characterData, inventory, sheet}: CreateOrdemParanormalSheetResquest) {
-
-		const sheetOP: OrdemParanormalSheet = {
+export class CreateOrdemParanormalSheet extends CreateCharacterService<
+	OrdemParanormalSheet,
+	OrdemParanormalInventory,
+	OrdemParanormalSheetCreateInput
+> {
+	protected transformSheet(sheet: OrdemParanormalSheetCreateInput): OrdemParanormalSheet {
+		return {
 			attributes: {
 				agility: sheet.attributes.agility,
 				intelligence: sheet.attributes.intelligence,
@@ -52,7 +55,7 @@ export class CreateOrdemParanormalSheet extends CreateCharacterService<OrdemPara
 			},
 			expertises: {
 				acrobacia: {
-					attribute: 'agility',
+					attribute: "agility",
 					bonus: sheet.expertises.acrobacia.bonus,
 					level: sheet.expertises.acrobacia.level,
 				},
@@ -66,13 +69,15 @@ export class CreateOrdemParanormalSheet extends CreateCharacterService<OrdemPara
 				},
 			],
 		};
+	}
 
+	async execute({ characterData, inventory, sheet }: CreateOrdemParanormalSheetResquest) {
 		const character = await super.execute({
-			characterData, inventory, sheet: sheetOP,
+			characterData,
+			inventory,
+			sheet,
 		});
 
 		return character;
 	}
 }
-
-

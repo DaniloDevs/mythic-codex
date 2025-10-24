@@ -2,16 +2,29 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { CreateCharacterService } from "@/services/create-character";
-import type { OrdemParanormalInventory, OrdemParanormalSheet } from "@/services/types/ordem-paranormal";
-import { characterDataMocks, inventoryMocks, sheetMocks } from "./mocks/create-ordem-paranormal-sheet";
+import type {
+	OrdemParanormalInventory,
+	OrdemParanormalSheet,
+} from "@/services/types/ordem-paranormal";
+import {
+	characterDataMocks,
+	inventoryMocks,
+	sheetMocks,
+} from "./mocks/create-ordem-paranormal-sheet";
 
 describe("Create Ordem Paranormal Sheet Service", () => {
-	let characterRepository: CharacterImMemoryRepository<OrdemParanormalSheet, OrdemParanormalInventory>;
+	let characterRepository: CharacterImMemoryRepository<
+		OrdemParanormalSheet,
+		OrdemParanormalInventory
+	>;
 	let userRepository: UserImMemoryRepository;
 	let service: CreateCharacterService<OrdemParanormalSheet, OrdemParanormalInventory>;
 
 	beforeEach(() => {
-		characterRepository = new CharacterImMemoryRepository<OrdemParanormalSheet, OrdemParanormalInventory>();
+		characterRepository = new CharacterImMemoryRepository<
+			OrdemParanormalSheet,
+			OrdemParanormalInventory
+		>();
 		userRepository = new UserImMemoryRepository();
 		service = new CreateCharacterService<OrdemParanormalSheet, OrdemParanormalInventory>(
 			characterRepository,

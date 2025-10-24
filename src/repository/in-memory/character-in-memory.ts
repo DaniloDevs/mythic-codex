@@ -1,9 +1,15 @@
 import { randomUUID } from "node:crypto";
 import { createSlug } from "@/utils/create-slug";
-import type { Character, CharacterCreateInput, ICharacterRepository } from "../character-repository";
+import type {
+	Character,
+	CharacterCreateInput,
+	ICharacterRepository,
+} from "../character-repository";
 
-export class CharacterImMemoryRepository<TSheet extends Record<string, any>, TInventory extends Record<string, any>>
-	implements ICharacterRepository<TSheet, TInventory>
+export class CharacterImMemoryRepository<
+	TSheet extends Record<string, any>,
+	TInventory extends Record<string, any>,
+> implements ICharacterRepository<TSheet, TInventory>
 {
 	public items: Character<TSheet, TInventory>[] = [];
 
