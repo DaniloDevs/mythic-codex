@@ -9,15 +9,12 @@ const OrdemParanormalSheetCreateInputSchema = z.object({
 		intelligence: z.number().min(1),
 	}),
 	conditions: z.object({
-		lifePoints: z.number().min(0),
-		endeavorPoints: z.number().min(0),
-		sanity: z.number().min(0),
 		defense: z.number(),
 		next: z.number().min(0).max(100),
 		move: z.string(),
 	}),
 	identity: z.object({
-		class: z.string(),
+		class: z.enum(["Combatente", "Especialista", "Ocultista"]),
 		origin: z.string(),
 		patent: z.enum([
 			"Recruta",
@@ -73,7 +70,7 @@ const OrdemParanormalSheetSchema = z.object({
 		move: z.string(),
 	}),
 	identity: z.object({
-		class: z.string(),
+		class: z.enum(["Combatente", "Especialista", "Ocultista"]),
 		origin: z.string(),
 		patent: z.enum([
 			"Recruta",

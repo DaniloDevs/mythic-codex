@@ -18,7 +18,46 @@ export class CreateOrdemParanormalSheet extends CreateCharacterService<
 	OrdemParanormalSheetCreateInput
 > {
 	protected transformSheet(sheet: OrdemParanormalSheetCreateInput): OrdemParanormalSheet {
-		return {
+		const level = sheet.conditions.next / 5;
+
+		let endeavorPoints: number;
+		let lifePoints: number;
+		let sanity: number;
+
+		switch (sheet.identity.class) {
+			case "Combatente":
+				lifePoints =
+					20 + sheet.attributes.vigor + level * 4 + level * sheet.attributes.vigor;
+
+				endeavorPoints =
+					2 + sheet.attributes.presence + level * 2 + level * sheet.attributes.presence;
+
+				sanity = 12 + level * 3;
+
+				break;
+			case "Especialista":
+				lifePoints =
+					16 + sheet.attributes.vigor + level * 3 + level * sheet.attributes.vigor;
+
+				endeavorPoints =
+					3 + sheet.attributes.presence + level * 3 + level * sheet.attributes.presence;
+
+				sanity = 16 + level * 4;
+
+				break;
+			case "Ocultista":
+				lifePoints =
+					12 + sheet.attributes.vigor + level * 2 + level * sheet.attributes.vigor;
+
+				endeavorPoints =
+					4 + sheet.attributes.presence + level * 4 + level * sheet.attributes.presence;
+
+				sanity = 20 + level * 5;
+
+				break;
+		}
+
+		const sheetOp: OrdemParanormalSheet = {
 			attributes: {
 				agility: sheet.attributes.agility,
 				intelligence: sheet.attributes.intelligence,
@@ -28,16 +67,16 @@ export class CreateOrdemParanormalSheet extends CreateCharacterService<
 			},
 			conditions: {
 				endeavorPoints: {
-					current: sheet.conditions.endeavorPoints,
-					total: sheet.conditions.endeavorPoints,
+					current: endeavorPoints,
+					total: endeavorPoints,
 				},
 				lifePoints: {
-					current: sheet.conditions.lifePoints,
-					total: sheet.conditions.lifePoints,
+					current: lifePoints,
+					total: lifePoints,
 				},
 				sanity: {
-					current: sheet.conditions.sanity,
-					total: sheet.conditions.sanity,
+					current: sanity,
+					total: sanity,
 				},
 				defense: sheet.conditions.defense,
 				move: sheet.conditions.move,
@@ -69,6 +108,8 @@ export class CreateOrdemParanormalSheet extends CreateCharacterService<
 				},
 			],
 		};
+
+		return sheetOp;
 	}
 
 	async execute({ characterData, inventory, sheet }: CreateOrdemParanormalSheetResquest) {

@@ -1,7 +1,7 @@
 import type { CharacterCreateInput } from "@/repository/character-repository";
 import type {
 	OrdemParanormalInventory,
-	OrdemParanormalSheet,
+	OrdemParanormalSheetCreateInput,
 } from "@/services/types/ordem-paranormal";
 
 export const characterDataMocks: CharacterCreateInput = {
@@ -13,33 +13,21 @@ export const characterDataMocks: CharacterCreateInput = {
 	avatar: null,
 };
 
-export const sheetMocks: OrdemParanormalSheet = {
+export const sheetMocks: OrdemParanormalSheetCreateInput = {
 	attributes: {
-		strength: 5,
-		agility: 7,
-		presence: 6,
-		vigor: 8,
-		intelligence: 9,
+		strength: 1,
+		agility: 2,
+		presence: 2,
+		vigor: 2,
+		intelligence: 2,
 	},
 	conditions: {
-		lifePoints: {
-			total: 30,
-			current: 25,
-		},
-		endeavorPoints: {
-			total: 10,
-			current: 7,
-		},
-		sanity: {
-			total: 20,
-			current: 18,
-		},
 		defense: 15,
-		next: 5,
+		next: 15,
 		move: "6m",
 	},
 	identity: {
-		class: "Caçador",
+		class: "Combatente",
 		origin: "Cidade Antiga",
 		patent: "Recruta",
 	},
@@ -50,7 +38,6 @@ export const sheetMocks: OrdemParanormalSheet = {
 	},
 	expertises: {
 		acrobacia: {
-			attribute: "agility",
 			bonus: 2,
 			level: "trained",
 		},

@@ -1,10 +1,11 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { CreateCharacterService } from "@/services/create-character";
+import { CreateOrdemParanormalSheet } from "@/services/create-orderm-paranormal-sheet";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
+	OrdemParanormalSheetCreateInput,
 } from "@/services/types/ordem-paranormal";
 import {
 	characterDataMocks,
@@ -18,18 +19,16 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		OrdemParanormalInventory
 	>;
 	let userRepository: UserImMemoryRepository;
-	let service: CreateCharacterService<OrdemParanormalSheet, OrdemParanormalInventory>;
+	let service: CreateOrdemParanormalSheet;
 
 	beforeEach(() => {
 		characterRepository = new CharacterImMemoryRepository<
 			OrdemParanormalSheet,
 			OrdemParanormalInventory
 		>();
+
 		userRepository = new UserImMemoryRepository();
-		service = new CreateCharacterService<OrdemParanormalSheet, OrdemParanormalInventory>(
-			characterRepository,
-			userRepository,
-		);
+		service = new CreateOrdemParanormalSheet(characterRepository, userRepository);
 	});
 
 	it("deve ser possivel criar uma ficha de ordem paranormal", async () => {
@@ -50,11 +49,23 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		expect(character.id).toEqual(expect.any(String));
 	});
 
-	it("deve ser possivel ter o total de PV apenas informnado vigor e classe", async () => {});
+	it("deve ser possivel o calculo automatico do total de PV, PE e sanidade", async () => {
+		await userRepository.create({
+			id: "user-01",
+			name: "Jhon Doe",
+			email: "ex@email.com",
+			avatar: null,
+			password: "123456",
+		});
 
-	it("deve ser possivel ter o total de PE apenas informnado presença e classe", async () => {});
+		const { character } = await service.execute({
+			characterData: characterDataMocks,
+			sheet: sheetMocks,
+			inventory: inventoryMocks,
+		});
 
-	it("deve ser possivel ter o total de Sanidade apenas informnado a classe", async () => {});
-
-	it("deve ser possivel quando subir de nivel PV, PE e sanidade aumentarem", async () => {});
+		expect(character.sheet.conditions.lifePoints.total).toBe(40);
+		expect(character.sheet.conditions.sanity.total).toBe(21);
+		expect(character.sheet.conditions.endeavorPoints.total).toBe(16);
+	});
 });
