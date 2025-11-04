@@ -1,8 +1,8 @@
 import type { CharacterCreateInput } from "@/repository/character-repository";
+import type { OrdemParanormalSheetCreateInput } from "@/services/types/ordem-paranomal-create-input";
 import type {
 	OrdemParanormalInventory,
-	OrdemParanormalSheetCreateInput,
-} from "@/services/types/ordem-paranormal";
+} from "@/services/types/ordem-paranormal-sheet";
 
 export const characterDataMocks: CharacterCreateInput = {
 	userId: "user-01",
@@ -37,9 +37,117 @@ export const sheetMocks: OrdemParanormalSheetCreateInput = {
 		proefficiencies: ["Espadas", "Arcos"],
 	},
 	expertises: {
-		acrobacia: {
-			bonus: 2,
-			level: "trained",
+		acrobatics: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		animalHandling: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		arts: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		athletics: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		currentAffairs: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		science: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		crime: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		diplomacy: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		deception: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		fortitude: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		stealth: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		initiative: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		intimidation: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		intuition: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		investigation: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		fighting: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		medicine: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		occultism: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		perception: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		piloting: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		marksmanship: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		profession: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		reflexes: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		religion: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		survival: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		tactics: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		technology: {
+			extraBonus: 0,
+			level: "Untrained",
+		},
+		will: {
+			extraBonus: 0,
+			level: "Untrained",
 		},
 	},
 	skills: [

@@ -6,7 +6,7 @@ import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
 	OrdemParanormalSheetCreateInput,
-} from "@/services/types/ordem-paranormal";
+} from "@/services/types/ordem-paranormal-sheet";
 import {
 	characterDataMocks,
 	inventoryMocks,

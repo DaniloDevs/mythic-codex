@@ -1,4 +1,4 @@
-export function calculatePoints({
+export function calculateConditionsPoints({
 	base,
 	level,
 	multiplier,

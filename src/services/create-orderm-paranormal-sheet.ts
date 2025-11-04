@@ -1,11 +1,12 @@
 import type { CharacterCreateInput } from "@/repository/character-repository";
-import { calculatePoints } from "@/utils/calculate-points";
+import { CalculateConditionsClass } from "@/utils/calculate-conditions-class-oap";
+import { CalculateExpertisesBonusOap } from "@/utils/calculate-expertises-bonus-oap";
 import { CreateCharacterService } from "./create-character";
+import type { OrdemParanormalSheetCreateInput } from "./types/ordem-paranomal-create-input";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
-	OrdemParanormalSheetCreateInput,
-} from "./types/ordem-paranormal";
+} from "./types/ordem-paranormal-sheet";
 
 interface CreateOrdemParanormalSheetResquest {
 	characterData: CharacterCreateInput;
@@ -19,62 +20,15 @@ export class CreateOrdemParanormalSheet extends CreateCharacterService<
 	OrdemParanormalSheetCreateInput
 > {
 	protected transformSheet(sheet: OrdemParanormalSheetCreateInput): OrdemParanormalSheet {
-		const level = sheet.conditions.next / 5;
+		const { endeavorPoints, lifePoints, sanity } = CalculateConditionsClass({
+			next: sheet.conditions.next,
+			characterClass: sheet.identity.class,
+			presence: sheet.attributes.presence,
+			vigor: sheet.attributes.vigor,
+		});
 
-		let endeavorPoints: number, lifePoints: number, sanity: number;
+		const skills = CalculateExpertisesBonusOap(sheet).skills
 
-		switch (sheet.identity.class) {
-			case "Combatente":
-				lifePoints = calculatePoints({
-					base: 20,
-					level,
-					multiplier: 4,
-					attribute: sheet.attributes.vigor,
-				});
-				endeavorPoints = calculatePoints({
-					base: 2,
-					level,
-					multiplier: 2,
-					attribute: sheet.attributes.presence,
-				});
-				sanity = calculatePoints({ base: 12, level, multiplier: 3 });
-
-				break;
-			case "Especialista":
-				lifePoints = calculatePoints({
-					base: 16,
-					level,
-					multiplier: 3,
-					attribute: sheet.attributes.vigor,
-				});
-				endeavorPoints = calculatePoints({
-					base: 3,
-					level,
-					multiplier: 3,
-					attribute: sheet.attributes.presence,
-				});
-				sanity = calculatePoints({ base: 16, level, multiplier: 4 });
-
-				break;
-			case "Ocultista":
-				lifePoints = calculatePoints({
-					base: 12,
-					level,
-					multiplier: 2,
-					attribute: sheet.attributes.vigor,
-				});
-				endeavorPoints = calculatePoints({
-					base: 4,
-					level,
-					multiplier: 4,
-					attribute: sheet.attributes.presence,
-				});
-				sanity = calculatePoints({ base: 20, level, multiplier: 5 });
-
-				break;
-		}
-
-		
 		const sheetOp: OrdemParanormalSheet = {
 			attributes: {
 				agility: sheet.attributes.agility,
@@ -110,13 +64,7 @@ export class CreateOrdemParanormalSheet extends CreateCharacterService<
 				protections: sheet.caracteristicas.protections,
 				resistances: sheet.caracteristicas.resistances,
 			},
-			expertises: {
-				acrobacia: {
-					attribute: "agility",
-					bonus: sheet.expertises.acrobacia.bonus,
-					level: sheet.expertises.acrobacia.level,
-				}
-			},
+			expertises: skills,
 			skills: sheet.skills.map((exp) => {
 				return {
 					name: exp.name,
