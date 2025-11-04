@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { CreateOrdemParanormalSheet } from "@/services/create-orderm-paranormal-sheet";
+import { CreateOrdemParanormalSheet } from "@/services/create-sheet-orderm-paranormal";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
