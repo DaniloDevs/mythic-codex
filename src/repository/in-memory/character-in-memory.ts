@@ -35,4 +35,10 @@ export class CharacterImMemoryRepository<
 
 		return character;
 	}
+
+	async getById(id: string): Promise<Character<TSheet, TInventory> | null> {
+		const character = this.items.find((char) => char.id === id);
+
+		return character ?? null;
+	}
 }

@@ -27,7 +27,7 @@ export class CreateOrdemParanormalSheet extends CreateCharacterService<
 			vigor: sheet.attributes.vigor,
 		});
 
-		const skills = CalculateExpertisesBonusOap(sheet).skills
+		const skills = CalculateExpertisesBonusOap(sheet).skills;
 
 		const sheetOp: OrdemParanormalSheet = {
 			attributes: {

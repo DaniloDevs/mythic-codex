@@ -6,9 +6,7 @@ import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
 } from "@/services/types/ordem-paranormal-sheet";
-import {
-	createSheetOrdemParanormalMock,
-} from "./mocks/create-ordem-paranormal-sheet";
+import { createSheetOrdemParanormalMock } from "./mocks/create-ordem-paranormal-sheet";
 
 describe("Create Ordem Paranormal Sheet Service", () => {
 	let characterRepository: CharacterImMemoryRepository<
@@ -37,7 +35,8 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 			password: "123456",
 		});
 
-		const { characterDataMocks, inventoryMocks, sheetMocks } = createSheetOrdemParanormalMock({ characterClass: "Combatente" })
+		const { characterDataMocks, inventoryMocks, sheetMocks } =
+			createSheetOrdemParanormalMock({ characterClass: "Combatente" });
 
 		const { character } = await service.execute({
 			characterData: characterDataMocks,
@@ -57,7 +56,8 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 			password: "123456",
 		});
 
-		const { characterDataMocks, inventoryMocks, sheetMocks } = createSheetOrdemParanormalMock({ characterClass: "Combatente" })
+		const { characterDataMocks, inventoryMocks, sheetMocks } =
+			createSheetOrdemParanormalMock({ characterClass: "Combatente" });
 
 		const { character } = await service.execute({
 			characterData: characterDataMocks,
@@ -78,7 +78,8 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 			password: "123456",
 		});
 
-		const { characterDataMocks, inventoryMocks, sheetMocks } = createSheetOrdemParanormalMock({ characterClass: "Especialista" })
+		const { characterDataMocks, inventoryMocks, sheetMocks } =
+			createSheetOrdemParanormalMock({ characterClass: "Especialista" });
 
 		const { character } = await service.execute({
 			characterData: characterDataMocks,
@@ -99,7 +100,8 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 			password: "123456",
 		});
 
-		const { characterDataMocks, inventoryMocks, sheetMocks } = createSheetOrdemParanormalMock({ characterClass: "Ocultista" })
+		const { characterDataMocks, inventoryMocks, sheetMocks } =
+			createSheetOrdemParanormalMock({ characterClass: "Ocultista" });
 
 		const { character } = await service.execute({
 			characterData: characterDataMocks,
@@ -121,7 +123,8 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 			password: "123456",
 		});
 
-		const { characterDataMocks, inventoryMocks, sheetMocks } = createSheetOrdemParanormalMock({ characterClass: "Ocultista" })
+		const { characterDataMocks, inventoryMocks, sheetMocks } =
+			createSheetOrdemParanormalMock({ characterClass: "Ocultista" });
 
 		const { character } = await service.execute({
 			characterData: characterDataMocks,

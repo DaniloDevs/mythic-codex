@@ -1,14 +1,12 @@
 import type { CharacterCreateInput } from "@/repository/character-repository";
 import type { OrdemParanormalSheetCreateInput } from "@/services/types/ordem-paranomal-create-input";
-import type {
-	OrdemParanormalInventory,
-} from "@/services/types/ordem-paranormal-sheet";
+import type { OrdemParanormalInventory } from "@/services/types/ordem-paranormal-sheet";
 
-
-
-
-
-export function createSheetOrdemParanormalMock({ characterClass }: { characterClass: "Combatente" | "Especialista" | "Ocultista" }) {
+export function createSheetOrdemParanormalMock({
+	characterClass,
+}: {
+	characterClass: "Combatente" | "Especialista" | "Ocultista";
+}) {
 	const sheetMocks: OrdemParanormalSheetCreateInput = {
 		attributes: {
 			strength: 1,
@@ -193,11 +191,9 @@ export function createSheetOrdemParanormalMock({ characterClass }: { characterCl
 		],
 	};
 
-
 	return {
 		characterDataMocks,
 		sheetMocks,
 		inventoryMocks,
-	}
+	};
 }
-

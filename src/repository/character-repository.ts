@@ -40,4 +40,6 @@ export interface ICharacterRepository<
 		sheet: TSheet,
 		inventory: TInventory,
 	): Promise<Character<TSheet, TInventory>>;
+
+	getById(id: string): Promise<Character<TSheet, TInventory> | null>;
 }
