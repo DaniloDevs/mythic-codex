@@ -14,7 +14,7 @@ interface CreateOrdemParanormalSheetResquest {
 	inventory: OrdemParanormalInventory;
 }
 
-export class CreateOrdemParanormalSheet extends CreateCharacterService<
+export class CreateOrdemParanormalSheetService extends CreateCharacterService<
 	OrdemParanormalSheet,
 	OrdemParanormalInventory,
 	OrdemParanormalSheetCreateInput

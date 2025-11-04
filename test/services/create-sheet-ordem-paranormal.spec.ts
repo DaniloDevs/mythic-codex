@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { CreateOrdemParanormalSheet } from "@/services/create-sheet-orderm-paranormal";
+import { CreateOrdemParanormalSheetService } from "@/services/create-sheet-orderm-paranormal";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
@@ -14,7 +14,7 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		OrdemParanormalInventory
 	>;
 	let userRepository: UserImMemoryRepository;
-	let service: CreateOrdemParanormalSheet;
+	let service: CreateOrdemParanormalSheetService;
 
 	beforeEach(() => {
 		characterRepository = new CharacterImMemoryRepository<
@@ -23,7 +23,7 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		>();
 
 		userRepository = new UserImMemoryRepository();
-		service = new CreateOrdemParanormalSheet(characterRepository, userRepository);
+		service = new CreateOrdemParanormalSheetService(characterRepository, userRepository);
 	});
 
 	it("should be possible to create a paranormal order character sheet.", async () => {

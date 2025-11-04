@@ -2,8 +2,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { CreateOrdemParanormalSheet } from "@/services/create-sheet-orderm-paranormal";
-import { GetSheetOrdemParanormalById } from "@/services/get-sheet-ordem-paranormal-by-id";
+import { CreateOrdemParanormalSheetService } from "@/services/create-sheet-orderm-paranormal";
+import { GetSheetOrdemParanormalByIdService } from "@/services/get-sheet-ordem-paranormal-by-id";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
@@ -16,8 +16,8 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		OrdemParanormalInventory
 	>;
 	let userRepository: UserImMemoryRepository;
-	let service: CreateOrdemParanormalSheet;
-	let sut: GetSheetOrdemParanormalById;
+	let service: CreateOrdemParanormalSheetService;
+	let sut: GetSheetOrdemParanormalByIdService;
 
 	beforeEach(() => {
 		characterRepository = new CharacterImMemoryRepository<
@@ -26,8 +26,8 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		>();
 
 		userRepository = new UserImMemoryRepository();
-		service = new CreateOrdemParanormalSheet(characterRepository, userRepository);
-		sut = new GetSheetOrdemParanormalById(characterRepository);
+		service = new CreateOrdemParanormalSheetService(characterRepository, userRepository);
+		sut = new GetSheetOrdemParanormalByIdService(characterRepository);
 	});
 
 	it("should be possible to search for a paranormal order file.", async () => {

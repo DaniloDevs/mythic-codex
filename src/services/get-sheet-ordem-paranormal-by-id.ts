@@ -9,7 +9,7 @@ interface GetSheetOrdemParanormalByIdResquest {
 	id: string;
 }
 
-export class GetSheetOrdemParanormalById extends GetCharacterService<
+export class GetSheetOrdemParanormalByIdService extends GetCharacterService<
 	OrdemParanormalSheet,
 	OrdemParanormalInventory,
 	OrdemParanormalSheetCreateInput
