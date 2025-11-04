@@ -24,7 +24,7 @@ describe("Get Character by Id Service", () => {
 		);
 	});
 
-	it("Deve ser possivel buscar um character pelo seu id", async () => {
+	it("should be possible to search for a character by its ID.", async () => {
 		await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
@@ -57,7 +57,7 @@ describe("Get Character by Id Service", () => {
 		expect(character.name).toBe(findCharacter.name);
 	});
 
-	it("Não deve ser possivel buscar um character por um id que não existe", async () => {
+	it("should not be possible to search for a character using an ID that does not exist.", async () => {
 		await expect(service.execute({ id: "character-1" })).rejects.toBeInstanceOf(
 			ResourceNotFoundError,
 		);

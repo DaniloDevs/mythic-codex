@@ -25,7 +25,7 @@ describe("Create Character Service", () => {
 		);
 	});
 
-	it("Deve ser possivel criar uma personagem com dados validos", async () => {
+	it("should be possible to create a character with valid data.", async () => {
 		await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
@@ -55,7 +55,7 @@ describe("Create Character Service", () => {
 		expect(character.id).toEqual(expect.any(String));
 	});
 
-	it("Não deve ser possivel criar uma personagem para um usuario que não existe ", async () => {
+	it("should not be possible to create a character for a user that does not exist.", async () => {
 		await expect(
 			service.execute({
 				characterData: {

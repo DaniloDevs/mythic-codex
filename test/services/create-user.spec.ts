@@ -4,7 +4,7 @@ import { UserAlreadyExistsError } from "@/_errors/user-already-exists";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { RegisterUserService } from "@/services/create-user";
 
-describe("Create User Service", () => {
+describe("Create user Service", () => {
 	let repository: UserImMemoryRepository;
 	let service: RegisterUserService;
 
@@ -13,7 +13,7 @@ describe("Create User Service", () => {
 		service = new RegisterUserService(repository);
 	});
 
-	it("Deve ser possivel criar um usuario com dados validos", async () => {
+	it("should be possible to create a user with valid data.", async () => {
 		const { user } = await service.execute({
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -24,7 +24,7 @@ describe("Create User Service", () => {
 		expect(user.id).toEqual(expect.any(String));
 	});
 
-	it("Não deve ser possivel criar um usuario com email já utilizado", async () => {
+	it("should not be possible to create a user with an email address that has already been used.", async () => {
 		await service.execute({
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -42,7 +42,7 @@ describe("Create User Service", () => {
 		).rejects.toBeInstanceOf(UserAlreadyExistsError);
 	});
 
-	it("Deve ser possivel criar uma senha criptografada", async () => {
+	it("should be possible to create an encrypted password.", async () => {
 		const { user } = await service.execute({
 			name: "Jhon Doe",
 			email: "ex@email.com",

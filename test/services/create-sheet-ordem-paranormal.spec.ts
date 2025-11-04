@@ -8,7 +8,7 @@ import type {
 } from "@/services/types/ordem-paranormal-sheet";
 import { createSheetOrdemParanormalMock } from "./mocks/create-ordem-paranormal-sheet";
 
-describe("Create Ordem Paranormal Sheet Service", () => {
+describe("Create Sheet Ordem Paranormal Service", () => {
 	let characterRepository: CharacterImMemoryRepository<
 		OrdemParanormalSheet,
 		OrdemParanormalInventory
@@ -26,7 +26,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		service = new CreateOrdemParanormalSheet(characterRepository, userRepository);
 	});
 
-	it("deve ser possivel criar uma ficha de ordem paranormal", async () => {
+	it("should be possible to create a paranormal order character sheet.", async () => {
 		await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
@@ -47,7 +47,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		expect(character.id).toEqual(expect.any(String));
 	});
 
-	it("deve ser possivel o calculo automatico do total de PV, PE e sanidade baseado na classe de Combatente", async () => {
+	it("should be possible to automatically calculate HP, PE, and sanity based on the Combatant class.", async () => {
 		await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
@@ -69,7 +69,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		expect(character.sheet.conditions.endeavorPoints.total).toBe(16);
 		expect(character.sheet.conditions.sanity.total).toBe(21);
 	});
-	it("deve ser possivel o calculo automatico do total de PV, PE e sanidade baseado na classe de Especialista", async () => {
+	it("should be possible to automatically calculate PV, PE, and health based on the specialist class.", async () => {
 		await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
@@ -91,7 +91,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		expect(character.sheet.conditions.endeavorPoints.total).toBe(20);
 		expect(character.sheet.conditions.sanity.total).toBe(28);
 	});
-	it("deve ser possivel o calculo automatico do total de PV, PE e sanidade baseado na classe de Ocultista", async () => {
+	it("should be possible to automatically calculate HP, PE, and sanity based on the occultist class.", async () => {
 		await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
@@ -114,7 +114,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		expect(character.sheet.conditions.sanity.total).toBe(35);
 	});
 
-	it("deve ser possivel o calculo automatica dos bonus da pericia com base no level", async () => {
+	it("should be possible to automatically calculate the bonus for each skill based on its level.", async () => {
 		await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",

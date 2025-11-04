@@ -13,7 +13,7 @@ describe("Authenticated with password Service", () => {
 		service = new AuthenticatedWithPasswordService(repository);
 	});
 
-	it("Deve ser possivel logar com e-mail e senha validas", async () => {
+	it("should be possible to log in with a valid email and password.", async () => {
 		await repository.create({
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -29,7 +29,7 @@ describe("Authenticated with password Service", () => {
 		expect(user.id).toEqual(expect.any(String));
 	});
 
-	it("Não deve ser possivel logar com e-email que não existe", async () => {
+	it("should not be possible to log in with a non-existent email address.", async () => {
 		await repository.create({
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -45,7 +45,7 @@ describe("Authenticated with password Service", () => {
 		).rejects.toBeInstanceOf(InvalidCredentialsError);
 	});
 
-	it("Não deve ser possivel logar com uma senha errada", async () => {
+	it("should not be possible to log in with the wrong password.", async () => {
 		await repository.create({
 			name: "Jhon Doe",
 			email: "ex@email.com",

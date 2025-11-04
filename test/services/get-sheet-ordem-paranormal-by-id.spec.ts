@@ -30,7 +30,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		sut = new GetSheetOrdemParanormalById(characterRepository);
 	});
 
-	it("deve ser possivel buscar uma ficha de ordem paranormal", async () => {
+	it("should be possible to search for a paranormal order file.", async () => {
 		await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
@@ -53,7 +53,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		expect(character.id).toEqual(newCharacter.id);
 	});
 
-	it("não deve ser possivel buscar uma ficha de ordem paranormal", async () => {
+	it("should not be possible to search for a paranormal order record.", async () => {
 		await expect(sut.execute({ id: "not-exist-character" })).rejects.toBeInstanceOf(
 			ResourceNotFoundError,
 		);
