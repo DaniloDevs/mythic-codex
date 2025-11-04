@@ -5,12 +5,9 @@ import { CreateOrdemParanormalSheet } from "@/services/create-orderm-paranormal-
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
-	OrdemParanormalSheetCreateInput,
 } from "@/services/types/ordem-paranormal-sheet";
 import {
-	characterDataMocks,
-	inventoryMocks,
-	sheetMocks,
+	createSheetOrdemParanormalMock,
 } from "./mocks/create-ordem-paranormal-sheet";
 
 describe("Create Ordem Paranormal Sheet Service", () => {
@@ -40,6 +37,8 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 			password: "123456",
 		});
 
+		const { characterDataMocks, inventoryMocks, sheetMocks } = createSheetOrdemParanormalMock({ characterClass: "Combatente" })
+
 		const { character } = await service.execute({
 			characterData: characterDataMocks,
 			sheet: sheetMocks,
@@ -49,7 +48,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		expect(character.id).toEqual(expect.any(String));
 	});
 
-	it("deve ser possivel o calculo automatico do total de PV, PE e sanidade", async () => {
+	it("deve ser possivel o calculo automatico do total de PV, PE e sanidade baseado na classe de Combatente", async () => {
 		await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
@@ -58,6 +57,8 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 			password: "123456",
 		});
 
+		const { characterDataMocks, inventoryMocks, sheetMocks } = createSheetOrdemParanormalMock({ characterClass: "Combatente" })
+
 		const { character } = await service.execute({
 			characterData: characterDataMocks,
 			sheet: sheetMocks,
@@ -65,7 +66,72 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		});
 
 		expect(character.sheet.conditions.lifePoints.total).toBe(40);
-		expect(character.sheet.conditions.sanity.total).toBe(21);
 		expect(character.sheet.conditions.endeavorPoints.total).toBe(16);
+		expect(character.sheet.conditions.sanity.total).toBe(21);
+	});
+	it("deve ser possivel o calculo automatico do total de PV, PE e sanidade baseado na classe de Especialista", async () => {
+		await userRepository.create({
+			id: "user-01",
+			name: "Jhon Doe",
+			email: "ex@email.com",
+			avatar: null,
+			password: "123456",
+		});
+
+		const { characterDataMocks, inventoryMocks, sheetMocks } = createSheetOrdemParanormalMock({ characterClass: "Especialista" })
+
+		const { character } = await service.execute({
+			characterData: characterDataMocks,
+			sheet: sheetMocks,
+			inventory: inventoryMocks,
+		});
+
+		expect(character.sheet.conditions.lifePoints.total).toBe(33);
+		expect(character.sheet.conditions.endeavorPoints.total).toBe(20);
+		expect(character.sheet.conditions.sanity.total).toBe(28);
+	});
+	it("deve ser possivel o calculo automatico do total de PV, PE e sanidade baseado na classe de Ocultista", async () => {
+		await userRepository.create({
+			id: "user-01",
+			name: "Jhon Doe",
+			email: "ex@email.com",
+			avatar: null,
+			password: "123456",
+		});
+
+		const { characterDataMocks, inventoryMocks, sheetMocks } = createSheetOrdemParanormalMock({ characterClass: "Ocultista" })
+
+		const { character } = await service.execute({
+			characterData: characterDataMocks,
+			sheet: sheetMocks,
+			inventory: inventoryMocks,
+		});
+
+		expect(character.sheet.conditions.lifePoints.total).toBe(26);
+		expect(character.sheet.conditions.endeavorPoints.total).toBe(24);
+		expect(character.sheet.conditions.sanity.total).toBe(35);
+	});
+
+	it("deve ser possivel o calculo automatica dos bonus da pericia com base no level", async () => {
+		await userRepository.create({
+			id: "user-01",
+			name: "Jhon Doe",
+			email: "ex@email.com",
+			avatar: null,
+			password: "123456",
+		});
+
+		const { characterDataMocks, inventoryMocks, sheetMocks } = createSheetOrdemParanormalMock({ characterClass: "Ocultista" })
+
+		const { character } = await service.execute({
+			characterData: characterDataMocks,
+			sheet: sheetMocks,
+			inventory: inventoryMocks,
+		});
+
+		expect(character.sheet.expertises.acrobatics.bonus).toBe(0);
+		expect(character.sheet.expertises.animalHandling.bonus).toBe(5);
+		expect(character.sheet.expertises.arts.bonus).toBe(10);
+		expect(character.sheet.expertises.athletics.bonus).toBe(15);
 	});
 });

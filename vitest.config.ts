@@ -3,4 +3,9 @@ import { defineConfig } from "vitest/config";
 
 export default defineConfig({
 	plugins: [tsConfigPaths()],
+	test: {
+		coverage: {
+		  provider: 'v8' // or 'istanbul'
+		},
+	 },  
 });
