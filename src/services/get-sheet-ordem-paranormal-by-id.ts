@@ -19,7 +19,9 @@ export class GetSheetOrdemParanormalByIdService extends GetCharacterService<
 	OrdemParanormalInventory,
 	OrdemParanormalSheetCreateInput
 > {
-	async execute({ id }: ResquestGetSheetOrdemParanormalById): Promise<ResponseGetSheetOrdemParanormalById> {
+	async execute({
+		id,
+	}: ResquestGetSheetOrdemParanormalById): Promise<ResponseGetSheetOrdemParanormalById> {
 		const character = await super.execute({
 			id,
 		});

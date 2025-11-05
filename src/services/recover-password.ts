@@ -28,7 +28,7 @@ export class RecoverPasswordService {
 			throw new ResourceNotFoundError();
 		}
 
-		const tokensUser = await this.tokensRepository.getTokensByUserId(userId);
+		const tokensUser = await this.tokensRepository.fetchTokensByUserId(userId);
 		const lastToken = tokensUser[0];
 
 		if (lastToken) {

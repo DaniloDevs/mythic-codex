@@ -9,7 +9,7 @@ interface RequestGetUserById {
 }
 
 export class GetUserByIdService {
-	constructor(private userRepository: IUserRepository) { }
+	constructor(private userRepository: IUserRepository) {}
 
 	async execute({ id }: ResponseGetUserById): Promise<RequestGetUserById> {
 		const user = await this.userRepository.getById(id);
