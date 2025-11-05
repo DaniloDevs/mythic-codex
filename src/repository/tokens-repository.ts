@@ -17,6 +17,6 @@ export type Tokens = z.infer<typeof TokensSchema>;
 
 export interface ITokensRepository {
 	createToken(data: TokensCreateInput): Promise<Tokens>;
-	getTokensByUserId(userId: string): Promise<Tokens[]>;
-	validateToken(code: string): Promise<boolean>;
+	fetchTokensByUserId(userId: string): Promise<Tokens[]>;
+	getTokenByCode(code: string): Promise<Tokens | null>;
 }

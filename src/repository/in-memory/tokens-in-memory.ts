@@ -17,7 +17,7 @@ export class TokensImMemoryRepository implements ITokensRepository {
 		return tokens;
 	}
 
-	async getTokensByUserId(userId: string): Promise<Tokens[]> {
+	async fetchTokensByUserId(userId: string): Promise<Tokens[]> {
 		const userTokens = this.items
 			.filter((tokens) => tokens.userId === userId)
 			.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
@@ -25,7 +25,9 @@ export class TokensImMemoryRepository implements ITokensRepository {
 		return userTokens;
 	}
 
-	validateToken(code: string): Promise<boolean> {
-		throw new Error("Method not implemented.");
+	async getTokenByCode(code: string): Promise<Tokens | null> {
+		const token = this.items.find((token) => token.code === code);
+
+		return token ?? null;
 	}
 }
