@@ -1,5 +1,5 @@
 ### Requesitos  Funcionais
 
-- [ ] Login com senha
-- [ ] Resete de sennha
-- [ ] Pegar perfil
+- [x] Login com senha
+- [ ] Reset de sennha
+- [x] Recover de sennha
