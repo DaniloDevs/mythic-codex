@@ -1,3 +1,4 @@
+import type { Character } from "@/repository/character-repository";
 import { GetCharacterService } from "./get-character-by-id";
 import type { OrdemParanormalSheetCreateInput } from "./types/ordem-paranomal-create-input";
 import type {
@@ -5,8 +6,12 @@ import type {
 	OrdemParanormalSheet,
 } from "./types/ordem-paranormal-sheet";
 
-interface GetSheetOrdemParanormalByIdResquest {
+interface ResquestGetSheetOrdemParanormalById {
 	id: string;
+}
+
+interface ResponseGetSheetOrdemParanormalById {
+	character: Character<OrdemParanormalSheet, OrdemParanormalInventory>;
 }
 
 export class GetSheetOrdemParanormalByIdService extends GetCharacterService<
@@ -14,7 +19,7 @@ export class GetSheetOrdemParanormalByIdService extends GetCharacterService<
 	OrdemParanormalInventory,
 	OrdemParanormalSheetCreateInput
 > {
-	async execute({ id }: GetSheetOrdemParanormalByIdResquest) {
+	async execute({ id }: ResquestGetSheetOrdemParanormalById): Promise<ResponseGetSheetOrdemParanormalById> {
 		const character = await super.execute({
 			id,
 		});

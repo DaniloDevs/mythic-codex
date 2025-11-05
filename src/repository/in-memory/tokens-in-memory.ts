@@ -18,9 +18,11 @@ export class TokensImMemoryRepository implements ITokensRepository {
 	}
 
 	async getTokensByUserId(userId: string): Promise<Tokens[]> {
-		const userTokens = this.items.filter(tokens => tokens.userId === userId).sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+		const userTokens = this.items
+			.filter((tokens) => tokens.userId === userId)
+			.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
 
-		return userTokens
+		return userTokens;
 	}
 
 	validateToken(code: string): Promise<boolean> {

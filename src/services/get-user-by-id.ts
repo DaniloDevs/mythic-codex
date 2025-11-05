@@ -1,14 +1,17 @@
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
-import type { IUserRepository } from "./../repository/user-repository";
+import type { IUserRepository, User } from "./../repository/user-repository";
 
-interface GetUserByIdResponse {
+interface ResponseGetUserById {
 	id: string;
+}
+interface RequestGetUserById {
+	user: User;
 }
 
 export class GetUserByIdService {
-	constructor(private userRepository: IUserRepository) {}
+	constructor(private userRepository: IUserRepository) { }
 
-	async execute({ id }: GetUserByIdResponse) {
+	async execute({ id }: ResponseGetUserById): Promise<RequestGetUserById> {
 		const user = await this.userRepository.getById(id);
 
 		if (!user) {

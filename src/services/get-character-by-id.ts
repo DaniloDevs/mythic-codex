@@ -1,11 +1,11 @@
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import type { Character, ICharacterRepository } from "@/repository/character-repository";
 
-interface GetCharacterRequest {
+interface RequestGetCharacter {
 	id: string;
 }
 
-interface GetCharacterResponse<
+interface ResponseGetCharacter<
 	TSheet extends Record<string, any>,
 	TInventory extends Record<string, any>,
 > {
@@ -25,7 +25,7 @@ export class GetCharacterService<
 
 	async execute({
 		id,
-	}: GetCharacterRequest): Promise<GetCharacterResponse<TSheet, TInventory>> {
+	}: RequestGetCharacter): Promise<ResponseGetCharacter<TSheet, TInventory>> {
 		const character = await this.characterRepository.getById(id);
 
 		if (!character) {

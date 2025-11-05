@@ -2,32 +2,36 @@ import bcrypt from "bcryptjs";
 import { InvalidCredentialsError } from "@/_errors/invalid-credentials";
 import type { IUserRepository, User } from "@/repository/user-repository";
 
-interface AuthenticatedWithPasswordRequest {
+interface RequestAuthenticatedWithPassword {
 	email: string;
 	password: string;
 }
 
-interface AuthenticatedWithPasswordResponse {
+interface ResponseAuthenticatedWithPassword {
 	user: User;
 }
 
 export class AuthenticatedWithPasswordService {
 	constructor(private userRepository: IUserRepository) {}
 
-	async execute(
-		data: AuthenticatedWithPasswordRequest,
-	): Promise<AuthenticatedWithPasswordResponse> {
-		const userExist = await this.userRepository.getByEmail(data.email);
+	async execute({
+		email,
+		password,
+	}: RequestAuthenticatedWithPassword): Promise<ResponseAuthenticatedWithPassword> {
+		const alreadyExistUser = await this.userRepository.getByEmail(email);
 
-		if (!userExist) {
+		if (!alreadyExistUser) {
 			throw new InvalidCredentialsError();
 		}
 
-		const passwordIsCorrect = await bcrypt.compare(data.password, userExist.passwordHash);
+		const passwordIsCorrect = await bcrypt.compare(
+			password,
+			alreadyExistUser.passwordHash,
+		);
 		if (!passwordIsCorrect) {
 			throw new InvalidCredentialsError();
 		}
 
-		return { user: userExist };
+		return { user: alreadyExistUser };
 	}
 }

@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { CreateOrdemParanormalSheetService } from "@/services/create-sheet-orderm-paranormal";
+import { CreateSheetOrdemParanormalService } from "@/services/create-sheet-orderm-paranormal";
 import { GetSheetOrdemParanormalByIdService } from "@/services/get-sheet-ordem-paranormal-by-id";
 import type {
 	OrdemParanormalInventory,
@@ -16,7 +16,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		OrdemParanormalInventory
 	>;
 	let userRepository: UserImMemoryRepository;
-	let service: CreateOrdemParanormalSheetService;
+	let service: CreateSheetOrdemParanormalService;
 	let sut: GetSheetOrdemParanormalByIdService;
 
 	beforeEach(() => {
@@ -26,7 +26,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		>();
 
 		userRepository = new UserImMemoryRepository();
-		service = new CreateOrdemParanormalSheetService(characterRepository, userRepository);
+		service = new CreateSheetOrdemParanormalService(characterRepository, userRepository);
 		sut = new GetSheetOrdemParanormalByIdService(characterRepository);
 	});
 

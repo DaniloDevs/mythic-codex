@@ -13,13 +13,13 @@ describe("Recover Password  Service", () => {
 		repository = new TokensImMemoryRepository();
 		userRepository = new UserImMemoryRepository();
 		sut = new RecoverPasswordService(repository, userRepository);
-	
-      vi.useFakeTimers()
-   })
- 
-   afterEach(() => {
-     vi.useRealTimers()
-   })
+
+		vi.useFakeTimers();
+	});
+
+	afterEach(() => {
+		vi.useRealTimers();
+	});
 
 	it("should be possible to get a token to recover the password.", async () => {
 		const user = await userRepository.create({
@@ -41,10 +41,10 @@ describe("Recover Password  Service", () => {
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 
-   it('should not be possible to create a token for 30 minutes after the last one was created.',async () => {
-      vi.setSystemTime(new Date(2023, 0, 1, 13, 0))
-		
-      const user = await userRepository.create({
+	it("should not be possible to create a token for 30 minutes after the last one was created.", async () => {
+		vi.setSystemTime(new Date(2023, 0, 1, 13, 0));
+
+		const user = await userRepository.create({
 			id: "user-id",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -53,11 +53,11 @@ describe("Recover Password  Service", () => {
 		});
 
 		await sut.execute({ type: "RECOVER_PASSWORD", userId: user.id });
-		
-		vi.setSystemTime(new Date(2023, 0, 1, 13, 5))
-      
+
+		vi.setSystemTime(new Date(2023, 0, 1, 13, 5));
+
 		await expect(
 			sut.execute({ type: "RECOVER_PASSWORD", userId: user.id }),
 		).rejects.toBeInstanceOf(Error);
-   })
+	});
 });

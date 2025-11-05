@@ -1,4 +1,4 @@
-import type { CharacterCreateInput } from "@/repository/character-repository";
+import type { Character, CharacterCreateInput } from "@/repository/character-repository";
 import { CalculateConditionsClass } from "@/utils/calculate-conditions-class-oap";
 import { CalculateExpertisesBonusOap } from "@/utils/calculate-expertises-bonus-oap";
 import { CreateCharacterService } from "./create-character";
@@ -8,13 +8,17 @@ import type {
 	OrdemParanormalSheet,
 } from "./types/ordem-paranormal-sheet";
 
-interface CreateOrdemParanormalSheetResquest {
+interface RequestCreateSheetOrdemParanormal {
 	characterData: CharacterCreateInput;
 	sheet: OrdemParanormalSheetCreateInput;
 	inventory: OrdemParanormalInventory;
 }
 
-export class CreateOrdemParanormalSheetService extends CreateCharacterService<
+interface ResponseCreateSheetOrdemParanormal {
+	character: Character<OrdemParanormalSheet, OrdemParanormalInventory>;
+}
+
+export class CreateSheetOrdemParanormalService extends CreateCharacterService<
 	OrdemParanormalSheet,
 	OrdemParanormalInventory,
 	OrdemParanormalSheetCreateInput
@@ -65,12 +69,12 @@ export class CreateOrdemParanormalSheetService extends CreateCharacterService<
 				resistances: sheet.caracteristicas.resistances,
 			},
 			expertises: skills,
-			skills: sheet.skills.map((exp) => {
+			skills: sheet.skills.map((skill) => {
 				return {
-					name: exp.name,
-					cost: exp.cost,
-					description: exp.description,
-					page: exp.page,
+					name: skill.name,
+					cost: skill.cost,
+					description: skill.description,
+					page: skill.page,
 				};
 			}),
 		};
@@ -78,7 +82,11 @@ export class CreateOrdemParanormalSheetService extends CreateCharacterService<
 		return sheetOp;
 	}
 
-	async execute({ characterData, inventory, sheet }: CreateOrdemParanormalSheetResquest) {
+	async execute({
+		characterData,
+		inventory,
+		sheet,
+	}: RequestCreateSheetOrdemParanormal): Promise<ResponseCreateSheetOrdemParanormal> {
 		const character = await super.execute({
 			characterData,
 			inventory,
