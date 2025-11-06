@@ -6,11 +6,11 @@ import type {
 	OrdemParanormalSheet,
 } from "./types/ordem-paranormal-sheet";
 
-interface ResquestGetSheetOrdemParanormalById {
+interface RequestData {
 	id: string;
 }
 
-interface ResponseGetSheetOrdemParanormalById {
+interface ResponseData {
 	character: Character<OrdemParanormalSheet, OrdemParanormalInventory>;
 }
 
@@ -19,9 +19,7 @@ export class GetSheetOrdemParanormalByIdService extends GetCharacterService<
 	OrdemParanormalInventory,
 	OrdemParanormalSheetCreateInput
 > {
-	async execute({
-		id,
-	}: ResquestGetSheetOrdemParanormalById): Promise<ResponseGetSheetOrdemParanormalById> {
+	async execute({ id }: RequestData): Promise<ResponseData> {
 		const character = await super.execute({
 			id,
 		});

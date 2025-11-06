@@ -8,13 +8,13 @@ import type {
 	OrdemParanormalSheet,
 } from "./types/ordem-paranormal-sheet";
 
-interface RequestCreateSheetOrdemParanormal {
+interface RequestData {
 	characterData: CharacterCreateInput;
 	sheet: OrdemParanormalSheetCreateInput;
 	inventory: OrdemParanormalInventory;
 }
 
-interface ResponseCreateSheetOrdemParanormal {
+interface ResponseData {
 	character: Character<OrdemParanormalSheet, OrdemParanormalInventory>;
 }
 
@@ -82,11 +82,7 @@ export class CreateSheetOrdemParanormalService extends CreateCharacterService<
 		return sheetOp;
 	}
 
-	async execute({
-		characterData,
-		inventory,
-		sheet,
-	}: RequestCreateSheetOrdemParanormal): Promise<ResponseCreateSheetOrdemParanormal> {
+	async execute({ characterData, inventory, sheet }: RequestData): Promise<ResponseData> {
 		const character = await super.execute({
 			characterData,
 			inventory,

@@ -6,14 +6,14 @@ import type {
 	UserCreateInput,
 } from "@/repository/user-repository";
 
-interface ResponseRegisterUser {
+interface ResponseData {
 	user: User;
 }
 
 export class RegisterUserService {
 	constructor(private userRepository: IUserRepository) {}
 
-	async execute(data: UserCreateInput): Promise<ResponseRegisterUser> {
+	async execute(data: UserCreateInput): Promise<ResponseData> {
 		const userAlreadyExists = await this.userRepository.getByEmail(data.email);
 
 		if (userAlreadyExists) {

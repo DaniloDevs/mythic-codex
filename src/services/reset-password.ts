@@ -4,12 +4,12 @@ import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import type { ITokensRepository } from "@/repository/tokens-repository";
 import type { IUserRepository } from "@/repository/user-repository";
 
-interface RequestResetPassword {
+interface RequestData {
 	code: string;
 	newPassword: string;
 }
 
-interface ResponseResetPassword {
+interface ResponseData {
 	userId: string;
 }
 
@@ -19,10 +19,7 @@ export class ResetPasswordService {
 		private userRepository: IUserRepository,
 	) {}
 
-	async execute({
-		code,
-		newPassword,
-	}: RequestResetPassword): Promise<ResponseResetPassword> {
+	async execute({ code, newPassword }: RequestData): Promise<ResponseData> {
 		const existToken = await this.tokensRepository.getTokenByCode(code);
 
 		if (!existToken) {

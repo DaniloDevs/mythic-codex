@@ -6,7 +6,7 @@ import type {
 } from "@/repository/character-repository";
 import type { IUserRepository } from "@/repository/user-repository";
 
-interface RequestCreateCharacter<
+interface RequestData<
 	TSheet extends Record<string, any>,
 	TInventory extends Record<string, any>,
 > {
@@ -15,7 +15,7 @@ interface RequestCreateCharacter<
 	inventory: TInventory;
 }
 
-interface ResponseCreateCharacter<
+interface ResponseData<
 	TSheet extends Record<string, any>,
 	TInventory extends Record<string, any>,
 > {
@@ -40,9 +40,7 @@ export class CreateCharacterService<
 		characterData,
 		sheet,
 		inventory,
-	}: RequestCreateCharacter<TSheetInput, TInventory>): Promise<
-		ResponseCreateCharacter<TSheet, TInventory>
-	> {
+	}: RequestData<TSheetInput, TInventory>): Promise<ResponseData<TSheet, TInventory>> {
 		const alredyExistUser = await this.userRepository.getById(characterData.userId);
 
 		if (!alredyExistUser) {

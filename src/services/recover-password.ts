@@ -3,12 +3,12 @@ import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import type { ITokensRepository, Tokens } from "@/repository/tokens-repository";
 import type { IUserRepository } from "@/repository/user-repository";
 
-interface RequestRecoverPassword {
+interface RequestData {
 	type: "RECOVER_PASSWORD";
 	userId: string;
 }
 
-interface ResponseRecoverPassword {
+interface ResponseData {
 	token: Tokens;
 }
 
@@ -18,10 +18,7 @@ export class RecoverPasswordService {
 		private userRepository: IUserRepository,
 	) {}
 
-	async execute({
-		type,
-		userId,
-	}: RequestRecoverPassword): Promise<ResponseRecoverPassword> {
+	async execute({ type, userId }: RequestData): Promise<ResponseData> {
 		const existUser = await this.userRepository.getById(userId);
 
 		if (!existUser) {
