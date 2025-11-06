@@ -2,12 +2,12 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { CreateSheetOrdemParanormalService } from "@/services/create-sheet-orderm-paranormal";
-import { GetSheetOrdemParanormalByIdService } from "@/services/get-sheet-ordem-paranormal-by-id";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
-} from "@/services/types/ordem-paranormal-sheet";
+} from "@/services/@types/ordem-paranormal-sheet";
+import { CreateSheetOrdemParanormalService } from "@/services/create-sheet-orderm-paranormal";
+import { GetSheetOrdemParanormalByIdService } from "@/services/get-sheet-ordem-paranormal-by-id";
 import { createSheetOrdemParanormalMock } from "./mocks/create-ordem-paranormal-sheet";
 
 describe("Create Ordem Paranormal Sheet Service", () => {

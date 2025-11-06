@@ -1,4 +1,4 @@
-import { calculateConditionsPoints } from "./calculate-conditions-points-oap";
+import { calculateConditionsPoints } from "./calc-conditions-points-ordem-paranormal";
 
 export function CalculateConditionsClass({
 	characterClass,

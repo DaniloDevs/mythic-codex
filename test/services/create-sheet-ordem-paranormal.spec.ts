@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { CreateSheetOrdemParanormalService } from "@/services/create-sheet-orderm-paranormal";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
-} from "@/services/types/ordem-paranormal-sheet";
+} from "@/services/@types/ordem-paranormal-sheet";
+import { CreateSheetOrdemParanormalService } from "@/services/create-sheet-orderm-paranormal";
 import { createSheetOrdemParanormalMock } from "./mocks/create-ordem-paranormal-sheet";
 
 describe("Create Sheet Ordem Paranormal Service", () => {

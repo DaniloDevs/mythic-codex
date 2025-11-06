@@ -1,10 +1,10 @@
 import type { Character } from "@/repository/character-repository";
-import { GetCharacterService } from "./get-character-by-id";
-import type { OrdemParanormalSheetCreateInput } from "./types/ordem-paranomal-create-input";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
-} from "./types/ordem-paranormal-sheet";
+	OrdemParanormalSheetCreateInput,
+} from "./@types/ordem-paranormal-sheet";
+import { GetCharacterService } from "./get-character-by-id";
 
 interface RequestData {
 	id: string;

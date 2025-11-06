@@ -1,16 +1,16 @@
 import type { Character, CharacterCreateInput } from "@/repository/character-repository";
-import { CalculateConditionsClass } from "@/utils/calculate-conditions-class-oap";
-import { CalculateExpertisesBonusOap } from "@/utils/calculate-expertises-bonus-oap";
-import { CreateCharacterService } from "./create-character";
-import type { OrdemParanormalSheetCreateInput } from "./types/ordem-paranomal-create-input";
+import { CalculateConditionsClass } from "@/utils/calc-conditions-class-ordem-paranormal";
+import { CalculateExpertisesBonusOap } from "@/utils/calc-expertises-bonus-ordem-paranormal";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
-} from "./types/ordem-paranormal-sheet";
+	OrdemParanormalSheetCreateInput,
+} from "./@types/ordem-paranormal-sheet";
+import { CreateCharacterService } from "./create-character";
 
 interface RequestData {
 	characterData: CharacterCreateInput;
-	sheet: OrdemParanormalSheetCreateInput;
+	sheet: OrdemParanormalSheetCreateInput; //
 	inventory: OrdemParanormalInventory;
 }
 
@@ -63,10 +63,10 @@ export class CreateSheetOrdemParanormalService extends CreateCharacterService<
 				origin: sheet.identity.origin,
 				patent: sheet.identity.patent,
 			},
-			caracteristicas: {
-				proefficiencies: sheet.caracteristicas.proefficiencies,
-				protections: sheet.caracteristicas.protections,
-				resistances: sheet.caracteristicas.resistances,
+			characteristics: {
+				proficiencies: sheet.characteristics.proficiencies,
+				protections: sheet.characteristics.protections,
+				resistances: sheet.characteristics.resistances,
 			},
 			expertises: skills,
 			skills: sheet.skills.map((skill) => {

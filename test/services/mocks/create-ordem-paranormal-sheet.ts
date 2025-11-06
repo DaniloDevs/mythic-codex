@@ -1,6 +1,8 @@
 import type { CharacterCreateInput } from "@/repository/character-repository";
-import type { OrdemParanormalSheetCreateInput } from "@/services/types/ordem-paranomal-create-input";
-import type { OrdemParanormalInventory } from "@/services/types/ordem-paranormal-sheet";
+import type {
+	OrdemParanormalInventory,
+	OrdemParanormalSheetCreateInput,
+} from "@/services/@types/ordem-paranormal-sheet";
 
 export function createSheetOrdemParanormalMock({
 	characterClass,
@@ -25,10 +27,10 @@ export function createSheetOrdemParanormalMock({
 			origin: "Cidade Antiga",
 			patent: "Recruta",
 		},
-		caracteristicas: {
+		characteristics: {
 			protections: "Armadura Leve",
 			resistances: "Fogo",
-			proefficiencies: ["Espadas", "Arcos"],
+			proficiencies: ["Espadas", "Arcos"],
 		},
 		expertises: {
 			acrobatics: {
