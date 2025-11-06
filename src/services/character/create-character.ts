@@ -1,9 +1,6 @@
+import type { Character, CharacterCreateInput } from "@/@types/character";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
-import type {
-	Character,
-	CharacterCreateInput,
-	ICharacterRepository,
-} from "@/repository/character-repository";
+import type { ICharacterRepository } from "@/repository/character-repository";
 import type { IUserRepository } from "@/repository/user-repository";
 
 interface RequestData<

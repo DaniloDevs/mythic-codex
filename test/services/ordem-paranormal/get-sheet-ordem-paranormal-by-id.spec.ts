@@ -1,11 +1,11 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { ResourceNotFoundError } from "@/_errors/resource-not-found";
-import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
-import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
-} from "@/services/@types/ordem-paranormal-sheet";
+} from "@/@types/ordem-paranormal-sheet";
+import { ResourceNotFoundError } from "@/_errors/resource-not-found";
+import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
+import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/create-sheet-orderm-paranormal";
 import { GetSheetOrdemParanormalByIdService } from "@/services/ordem-paranormal/get-sheet-ordem-paranormal-by-id";
 import { createSheetOrdemParanormalMock } from "../_mocks/create-ordem-paranormal-sheet";

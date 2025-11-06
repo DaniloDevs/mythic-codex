@@ -1,4 +1,4 @@
-import type { OrdemParanormalSheetCreateInput } from "@/services/@types/ordem-paranormal-sheet";
+import type { OrdemParanormalSheetCreateInput } from "@/@types/ordem-paranormal-sheet";
 
 const LEVEL_BONUS = {
 	Untrained: 0,

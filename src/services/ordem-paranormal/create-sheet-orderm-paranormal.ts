@@ -1,11 +1,11 @@
-import type { Character, CharacterCreateInput } from "@/repository/character-repository";
+import type { Character, CharacterCreateInput } from "@/@types/character";
 import { CalculateConditionsClass } from "@/utils/calc-conditions-class-ordem-paranormal";
 import { CalculateExpertisesBonusOap } from "@/utils/calc-expertises-bonus-ordem-paranormal";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
 	OrdemParanormalSheetCreateInput,
-} from "../@types/ordem-paranormal-sheet";
+} from "../../@types/ordem-paranormal-sheet";
 import { CreateCharacterService } from "../character/create-character";
 
 interface RequestData {

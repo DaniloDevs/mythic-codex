@@ -1,8 +1,8 @@
-import type { CharacterCreateInput } from "@/repository/character-repository";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheetCreateInput,
-} from "@/services/@types/ordem-paranormal-sheet";
+} from "@/@types/ordem-paranormal-sheet";
+import type { CharacterCreateInput } from "@/repository/character-repository";
 
 export function createSheetOrdemParanormalMock({
 	characterClass,
