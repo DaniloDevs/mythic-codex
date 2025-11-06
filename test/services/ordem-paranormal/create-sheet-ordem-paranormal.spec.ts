@@ -5,8 +5,8 @@ import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
 } from "@/services/@types/ordem-paranormal-sheet";
-import { CreateSheetOrdemParanormalService } from "@/services/create-sheet-orderm-paranormal";
-import { createSheetOrdemParanormalMock } from "./mocks/create-ordem-paranormal-sheet";
+import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/create-sheet-orderm-paranormal";
+import { createSheetOrdemParanormalMock } from "../_mocks/create-ordem-paranormal-sheet";
 
 describe("Create Sheet Ordem Paranormal Service", () => {
 	let characterRepository: CharacterImMemoryRepository<

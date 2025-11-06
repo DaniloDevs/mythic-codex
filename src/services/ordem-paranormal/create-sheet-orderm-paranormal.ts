@@ -5,8 +5,8 @@ import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
 	OrdemParanormalSheetCreateInput,
-} from "./@types/ordem-paranormal-sheet";
-import { CreateCharacterService } from "./create-character";
+} from "../@types/ordem-paranormal-sheet";
+import { CreateCharacterService } from "../character/create-character";
 
 interface RequestData {
 	characterData: CharacterCreateInput;

@@ -6,9 +6,9 @@ import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
 } from "@/services/@types/ordem-paranormal-sheet";
-import { CreateSheetOrdemParanormalService } from "@/services/create-sheet-orderm-paranormal";
-import { GetSheetOrdemParanormalByIdService } from "@/services/get-sheet-ordem-paranormal-by-id";
-import { createSheetOrdemParanormalMock } from "./mocks/create-ordem-paranormal-sheet";
+import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/create-sheet-orderm-paranormal";
+import { GetSheetOrdemParanormalByIdService } from "@/services/ordem-paranormal/get-sheet-ordem-paranormal-by-id";
+import { createSheetOrdemParanormalMock } from "../_mocks/create-ordem-paranormal-sheet";
 
 describe("Create Ordem Paranormal Sheet Service", () => {
 	let characterRepository: CharacterImMemoryRepository<

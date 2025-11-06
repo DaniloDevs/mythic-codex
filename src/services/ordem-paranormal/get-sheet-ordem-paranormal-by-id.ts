@@ -3,8 +3,8 @@ import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
 	OrdemParanormalSheetCreateInput,
-} from "./@types/ordem-paranormal-sheet";
-import { GetCharacterService } from "./get-character-by-id";
+} from "../@types/ordem-paranormal-sheet";
+import { GetCharacterService } from "../character/get-character-by-id";
 
 interface RequestData {
 	id: string;
