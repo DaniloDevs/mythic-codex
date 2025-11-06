@@ -14,5 +14,5 @@ export interface ICharacterRepository<
 	updateById(
 		id: string,
 		updateData: Partial<Character<TSheet, TInventory>>,
-	): Promise<void>;
+	): Promise<Character<TSheet, TInventory> | null>;
 }
