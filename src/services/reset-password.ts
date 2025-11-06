@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { InvalidTokenError } from "@/_errors/invalid-credentials copy";
+import { InvalidTokenError } from "@/_errors/invalid-token";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import type { ITokensRepository } from "@/repository/tokens-repository";
 import type { IUserRepository } from "@/repository/user-repository";

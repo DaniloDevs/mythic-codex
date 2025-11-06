@@ -1,6 +1,6 @@
 import { compare, hash } from "bcryptjs";
 import { beforeEach, describe, expect, it } from "vitest";
-import { InvalidTokenError } from "@/_errors/invalid-credentials copy";
+import { InvalidTokenError } from "@/_errors/invalid-token";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { TokensImMemoryRepository } from "@/repository/in-memory/tokens-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
