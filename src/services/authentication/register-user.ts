@@ -10,10 +10,12 @@ interface ResponseData {
 	user: User;
 }
 
+interface RequestData extends UserCreateInput {}
+
 export class RegisterUserService {
 	constructor(private userRepository: IUserRepository) {}
 
-	async execute(data: UserCreateInput): Promise<ResponseData> {
+	async execute(data: RequestData): Promise<ResponseData> {
 		const userAlreadyExists = await this.userRepository.getByEmail(data.email);
 
 		if (userAlreadyExists) {

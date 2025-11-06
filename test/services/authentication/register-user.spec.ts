@@ -2,9 +2,9 @@ import { compare } from "bcryptjs";
 import { beforeEach, describe, expect, it } from "vitest";
 import { UserAlreadyExistsError } from "@/_errors/user-already-exists";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { RegisterUserService } from "@/services/create-user";
+import { RegisterUserService } from "@/services/authentication/register-user";
 
-describe("Create user Service", () => {
+describe("Regsiter user Service", () => {
 	let repository: UserImMemoryRepository;
 	let service: RegisterUserService;
 
@@ -13,7 +13,7 @@ describe("Create user Service", () => {
 		service = new RegisterUserService(repository);
 	});
 
-	it("should be possible to create a user with valid data.", async () => {
+	it("should be possible to register a user with valid data.", async () => {
 		const { user } = await service.execute({
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -24,7 +24,7 @@ describe("Create user Service", () => {
 		expect(user.id).toEqual(expect.any(String));
 	});
 
-	it("should not be possible to create a user with an email address that has already been used.", async () => {
+	it("should not be possible to register a user with an email address that has already been used.", async () => {
 		await service.execute({
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -42,7 +42,7 @@ describe("Create user Service", () => {
 		).rejects.toBeInstanceOf(UserAlreadyExistsError);
 	});
 
-	it("should be possible to create an encrypted password.", async () => {
+	it("should be possible to register an encrypted password.", async () => {
 		const { user } = await service.execute({
 			name: "Jhon Doe",
 			email: "ex@email.com",

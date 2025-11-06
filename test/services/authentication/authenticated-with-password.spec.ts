@@ -2,7 +2,7 @@ import { hash } from "bcryptjs";
 import { beforeEach, describe, expect, it } from "vitest";
 import { InvalidCredentialsError } from "@/_errors/invalid-credentials";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { AuthenticatedWithPasswordService } from "@/services/authenticated-with-password";
+import { AuthenticatedWithPasswordService } from "@/services/authentication/authenticated-with-password";
 
 describe("Authenticated with password Service", () => {
 	let repository: UserImMemoryRepository;

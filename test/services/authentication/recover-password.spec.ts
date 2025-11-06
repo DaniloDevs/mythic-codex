@@ -2,7 +2,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { TokensImMemoryRepository } from "@/repository/in-memory/tokens-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { RecoverPasswordService } from "@/services/recover-password";
+import { RecoverPasswordService } from "@/services/authentication/recover-password";
 
 describe("Recover Password  Service", () => {
 	let repository: TokensImMemoryRepository;

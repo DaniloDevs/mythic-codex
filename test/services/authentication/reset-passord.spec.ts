@@ -4,7 +4,7 @@ import { InvalidTokenError } from "@/_errors/invalid-token";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { TokensImMemoryRepository } from "@/repository/in-memory/tokens-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { ResetPasswordService } from "@/services/reset-password";
+import { ResetPasswordService } from "@/services/authentication/reset-password";
 
 describe("Reset Password Service", () => {
 	let repository: TokensImMemoryRepository;
