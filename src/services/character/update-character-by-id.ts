@@ -28,7 +28,7 @@ export class UpdateCharacterByIdService<
 		updateData,
 	}: RequestData<TSheet, TInventory>): Promise<ResponseData<TSheet, TInventory>> {
 		const character = await this.characterReposirtoy.updateById(characterId, updateData);
-		
+
 		if (!character) {
 			throw new ResourceNotFoundError("Character not found");
 		}
