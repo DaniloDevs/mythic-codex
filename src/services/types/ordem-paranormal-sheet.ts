@@ -26,7 +26,7 @@ const OrdemParanormalSheetSchema = z.object({
 		vigor: z.number().min(1),
 		intelligence: z.number().min(1),
 	}),
-	conditions: z.object({
+	status: z.object({
 		lifePoints: z.object({
 			total: z.number().min(0),
 			current: z.number().min(0),

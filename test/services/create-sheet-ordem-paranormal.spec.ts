@@ -65,9 +65,9 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 			inventory: inventoryMocks,
 		});
 
-		expect(character.sheet.conditions.lifePoints.total).toBe(40);
-		expect(character.sheet.conditions.endeavorPoints.total).toBe(16);
-		expect(character.sheet.conditions.sanity.total).toBe(21);
+		expect(character.sheet.status.lifePoints.total).toBe(40);
+		expect(character.sheet.status.endeavorPoints.total).toBe(16);
+		expect(character.sheet.status.sanity.total).toBe(21);
 	});
 	it("should be possible to automatically calculate PV, PE, and health based on the specialist class.", async () => {
 		await userRepository.create({
@@ -87,9 +87,9 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 			inventory: inventoryMocks,
 		});
 
-		expect(character.sheet.conditions.lifePoints.total).toBe(33);
-		expect(character.sheet.conditions.endeavorPoints.total).toBe(20);
-		expect(character.sheet.conditions.sanity.total).toBe(28);
+		expect(character.sheet.status.lifePoints.total).toBe(33);
+		expect(character.sheet.status.endeavorPoints.total).toBe(20);
+		expect(character.sheet.status.sanity.total).toBe(28);
 	});
 	it("should be possible to automatically calculate HP, PE, and sanity based on the occultist class.", async () => {
 		await userRepository.create({
@@ -109,9 +109,9 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 			inventory: inventoryMocks,
 		});
 
-		expect(character.sheet.conditions.lifePoints.total).toBe(26);
-		expect(character.sheet.conditions.endeavorPoints.total).toBe(24);
-		expect(character.sheet.conditions.sanity.total).toBe(35);
+		expect(character.sheet.status.lifePoints.total).toBe(26);
+		expect(character.sheet.status.endeavorPoints.total).toBe(24);
+		expect(character.sheet.status.sanity.total).toBe(35);
 	});
 
 	it("should be possible to automatically calculate the bonus for each skill based on its level.", async () => {

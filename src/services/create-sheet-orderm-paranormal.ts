@@ -25,7 +25,7 @@ export class CreateSheetOrdemParanormalService extends CreateCharacterService<
 > {
 	protected transformSheet(sheet: OrdemParanormalSheetCreateInput): OrdemParanormalSheet {
 		const { endeavorPoints, lifePoints, sanity } = CalculateConditionsClass({
-			next: sheet.conditions.next,
+			next: sheet.status.next,
 			characterClass: sheet.identity.class,
 			presence: sheet.attributes.presence,
 			vigor: sheet.attributes.vigor,
@@ -41,7 +41,7 @@ export class CreateSheetOrdemParanormalService extends CreateCharacterService<
 				strength: sheet.attributes.strength,
 				vigor: sheet.attributes.vigor,
 			},
-			conditions: {
+			status: {
 				endeavorPoints: {
 					current: endeavorPoints,
 					total: endeavorPoints,
@@ -54,9 +54,9 @@ export class CreateSheetOrdemParanormalService extends CreateCharacterService<
 					current: sanity,
 					total: sanity,
 				},
-				defense: sheet.conditions.defense,
-				move: sheet.conditions.move,
-				next: sheet.conditions.next,
+				defense: sheet.status.defense,
+				move: sheet.status.move,
+				next: sheet.status.next,
 			},
 			identity: {
 				class: sheet.identity.class,

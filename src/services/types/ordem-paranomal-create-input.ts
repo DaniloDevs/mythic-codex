@@ -8,7 +8,7 @@ const OrdemParanormalSheetCreateInputSchema = z.object({
 		vigor: z.number().min(1),
 		intelligence: z.number().min(1),
 	}),
-	conditions: z.object({
+	status: z.object({
 		defense: z.number(),
 		next: z.number().min(0).max(100),
 		move: z.string(),

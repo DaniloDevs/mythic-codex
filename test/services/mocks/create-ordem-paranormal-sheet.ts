@@ -15,7 +15,7 @@ export function createSheetOrdemParanormalMock({
 			vigor: 2,
 			intelligence: 2,
 		},
-		conditions: {
+		status: {
 			defense: 15,
 			next: 15,
 			move: "6m",
