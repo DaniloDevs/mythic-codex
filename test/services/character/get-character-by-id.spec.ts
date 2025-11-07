@@ -7,21 +7,15 @@ import { GetCharacterService } from "@/services/character/get-character-by-id";
 
 describe("Get Character by Id Service", () => {
 	type GenericSheet = { força: number; vida: number };
-	type GenericInventory = { item: string[] };
 
-	let characterRepository: CharacterImMemoryRepository<GenericSheet, GenericInventory>;
+	let characterRepository: CharacterImMemoryRepository<GenericSheet>;
 	let userRepository: UserImMemoryRepository;
-	let service: GetCharacterService<GenericSheet, GenericInventory>;
+	let service: GetCharacterService<GenericSheet>;
 
 	beforeEach(() => {
-		characterRepository = new CharacterImMemoryRepository<
-			GenericSheet,
-			GenericInventory
-		>();
+		characterRepository = new CharacterImMemoryRepository<GenericSheet>();
 		userRepository = new UserImMemoryRepository();
-		service = new GetCharacterService<GenericSheet, GenericInventory>(
-			characterRepository,
-		);
+		service = new GetCharacterService<GenericSheet>(characterRepository);
 	});
 
 	it("should be possible to search for a character by its ID.", async () => {
@@ -45,9 +39,6 @@ describe("Get Character by Id Service", () => {
 			{
 				força: 15,
 				vida: 100,
-			},
-			{
-				item: ["Espada Longa", "Arco e Flecha"],
 			},
 		);
 

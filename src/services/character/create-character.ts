@@ -3,29 +3,21 @@ import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import type { ICharacterRepository } from "@/repository/character-repository";
 import type { IUserRepository } from "@/repository/user-repository";
 
-interface RequestData<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
+interface RequestData<TSheet extends Record<string, any>> {
 	characterData: CharacterCreateInput;
 	sheet: TSheet;
-	inventory: TInventory;
 }
 
-interface ResponseData<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
-	character: Character<TSheet, TInventory>;
+interface ResponseData<TSheet extends Record<string, any>> {
+	character: Character<TSheet>;
 }
 
 export class CreateCharacterService<
 	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
 	TSheetInput extends Record<string, any> = TSheet,
 > {
 	constructor(
-		private characterRepository: ICharacterRepository<TSheet, TInventory>,
+		private characterRepository: ICharacterRepository<TSheet>,
 		private userRepository: IUserRepository,
 	) {}
 
@@ -36,8 +28,7 @@ export class CreateCharacterService<
 	async execute({
 		characterData,
 		sheet,
-		inventory,
-	}: RequestData<TSheetInput, TInventory>): Promise<ResponseData<TSheet, TInventory>> {
+	}: RequestData<TSheetInput>): Promise<ResponseData<TSheet>> {
 		const alredyExistUser = await this.userRepository.getById(characterData.userId);
 
 		if (!alredyExistUser) {
@@ -49,7 +40,6 @@ export class CreateCharacterService<
 		const character = await this.characterRepository.create(
 			characterData,
 			transformedSheet,
-			inventory,
 		);
 
 		return { character };

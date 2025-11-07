@@ -7,19 +7,15 @@ import { CreateCharacterService } from "@/services/character/create-character";
 
 describe("Create Character Service", () => {
 	type GenericSheet = { força: number; vida: number };
-	type GenericInventory = { item: string[] };
 
-	let characterRepository: CharacterImMemoryRepository<GenericSheet, GenericInventory>;
+	let characterRepository: CharacterImMemoryRepository<GenericSheet>;
 	let userRepository: UserImMemoryRepository;
-	let service: CreateCharacterService<GenericSheet, GenericInventory>;
+	let service: CreateCharacterService<GenericSheet>;
 
 	beforeEach(() => {
-		characterRepository = new CharacterImMemoryRepository<
-			GenericSheet,
-			GenericInventory
-		>();
+		characterRepository = new CharacterImMemoryRepository<GenericSheet>();
 		userRepository = new UserImMemoryRepository();
-		service = new CreateCharacterService<GenericSheet, GenericInventory>(
+		service = new CreateCharacterService<GenericSheet>(
 			characterRepository,
 			userRepository,
 		);
@@ -47,9 +43,6 @@ describe("Create Character Service", () => {
 				força: 15,
 				vida: 100,
 			},
-			inventory: {
-				item: ["Espada Longa", "Arco e Flecha"],
-			},
 		});
 
 		expect(character.id).toEqual(expect.any(String));
@@ -69,9 +62,6 @@ describe("Create Character Service", () => {
 				sheet: {
 					força: 15,
 					vida: 100,
-				},
-				inventory: {
-					item: ["Espada Longa", "Arco e Flecha"],
 				},
 			}),
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
