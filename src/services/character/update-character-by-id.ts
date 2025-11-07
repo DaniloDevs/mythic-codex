@@ -1,4 +1,6 @@
+import th from "zod/v4/locales/th.js";
 import type { Character } from "@/@types/character";
+import { InvalidOperationsError } from "@/_errors/invalid-operations";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import type { ICharacterRepository } from "@/repository/character-repository";
 
@@ -28,6 +30,10 @@ export class UpdateCharacterByIdService<
 		updateData,
 	}: RequestData<TSheet, TInventory>): Promise<ResponseData<TSheet, TInventory>> {
 		const character = await this.characterReposirtoy.getById(characterId);
+
+		if (Object.keys(updateData).length === 0) {
+			throw new InvalidOperationsError("No data provided for update");
+		}
 
 		if (!character) {
 			throw new ResourceNotFoundError("Character not found");
