@@ -1,4 +1,4 @@
-import { CharacterCreateInput } from "@/@types/character";
+import type { CharacterCreateInput } from "@/@types/character";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheetCreateInput,

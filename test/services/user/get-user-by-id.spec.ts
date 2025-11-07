@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { GetUserByIdService } from "@/services/get-user-by-id";
+import { GetUserByIdService } from "@/services/user/get-user-by-id";
 
 describe("Get User By Id Service", () => {
 	let repository: UserImMemoryRepository;
