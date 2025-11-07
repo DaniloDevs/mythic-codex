@@ -1,24 +1,19 @@
 import { randomUUID } from "node:crypto";
-import { createSlug } from "@/utils/create-slug";
 import type {
 	Character,
 	CharacterCreateInput,
-	ICharacterRepository,
-} from "../character-repository";
+	CharacterUpdateInput,
+} from "@/@types/character";
+import { createSlug } from "@/utils/create-slug";
+import type { ICharacterRepository } from "../character-repository";
 
-export class CharacterImMemoryRepository<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> implements ICharacterRepository<TSheet, TInventory>
+export class CharacterImMemoryRepository<TSheet extends Record<string, any>>
+	implements ICharacterRepository<TSheet>
 {
-	public items: Character<TSheet, TInventory>[] = [];
+	public items: Character<TSheet>[] = [];
 
-	async create(
-		data: CharacterCreateInput,
-		sheet: TSheet,
-		inventory: TInventory,
-	): Promise<Character<TSheet, TInventory>> {
-		const character: Character<TSheet, TInventory> = {
+	async create(data: CharacterCreateInput, sheet: TSheet): Promise<Character<TSheet>> {
+		const character: Character<TSheet> = {
 			id: randomUUID(),
 			userId: data.userId,
 			name: data.name,
@@ -28,7 +23,6 @@ export class CharacterImMemoryRepository<
 			avatar: data.avatar,
 			description: data.description,
 			sheet,
-			inventory,
 		};
 
 		this.items.push(character);
@@ -36,9 +30,30 @@ export class CharacterImMemoryRepository<
 		return character;
 	}
 
-	async getById(id: string): Promise<Character<TSheet, TInventory> | null> {
+	async getById(id: string): Promise<Character<TSheet> | null> {
 		const character = this.items.find((char) => char.id === id);
 
 		return character ?? null;
+	}
+
+	async updateById(
+		id: string,
+		updateData: CharacterUpdateInput,
+	): Promise<Character<TSheet> | null> {
+		const characterIndex = this.items.findIndex((char) => char.id === id);
+
+		if (characterIndex === -1) {
+			return null;
+		}
+
+		const existingCharacter = this.items[characterIndex];
+		const updatedCharacter = {
+			...existingCharacter,
+			...updateData,
+		};
+
+		this.items[characterIndex] = updatedCharacter;
+
+		return updatedCharacter;
 	}
 }

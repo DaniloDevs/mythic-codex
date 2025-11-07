@@ -17,19 +17,24 @@ const CharacterSchema = CharacterBaseSchema.extend({
 });
 
 const CharacterCreateInputSchema = CharacterBaseSchema;
+const CharacterUpdateInputSchema = CharacterBaseSchema.partial();
 
 export type RpgSystem = z.infer<typeof RpgSystemEnum>;
 
 export type CharacterCreateInput = z.infer<typeof CharacterCreateInputSchema>;
+export type CharacterUpdateInput = z.infer<typeof CharacterUpdateInputSchema>;
 
-export type Character<
-	TSheet extends Record<string, any> = Record<string, any>,
-	TInventory extends Record<string, any> = Record<string, any>,
-> = z.infer<typeof CharacterSchema> & {
+export type Character<TSheet extends Record<string, any> = Record<string, any>> = z.infer<
+	typeof CharacterSchema
+> & {
 	sheet: TSheet;
-	inventory: TInventory;
 };
 
 export type CharacterBase = z.infer<typeof CharacterSchema>;
 
-export { CharacterSchema, CharacterCreateInputSchema, RpgSystemEnum };
+export {
+	CharacterSchema,
+	CharacterCreateInputSchema,
+	CharacterUpdateInputSchema,
+	RpgSystemEnum,
+};

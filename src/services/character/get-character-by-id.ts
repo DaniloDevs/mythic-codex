@@ -6,20 +6,14 @@ interface RequestData {
 	id: string;
 }
 
-interface ResponseData<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
-	character: Character<TSheet, TInventory>;
+interface ResponseData<TSheet extends Record<string, any>> {
+	character: Character<TSheet>;
 }
 
-export class GetCharacterService<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
-	constructor(private characterRepository: ICharacterRepository<TSheet, TInventory>) {}
+export class GetCharacterService<TSheet extends Record<string, any>> {
+	constructor(private characterRepository: ICharacterRepository<TSheet>) {}
 
-	async execute({ id }: RequestData): Promise<ResponseData<TSheet, TInventory>> {
+	async execute({ id }: RequestData): Promise<ResponseData<TSheet>> {
 		const character = await this.characterRepository.getById(id);
 
 		if (!character) {

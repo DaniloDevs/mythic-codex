@@ -1,18 +1,15 @@
-import type { Character, CharacterCreateInput } from "@/@types/character";
+import type {
+	Character,
+	CharacterCreateInput,
+	CharacterUpdateInput,
+} from "@/@types/character";
 
-export interface ICharacterRepository<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
-	create(
-		character: CharacterCreateInput,
-		sheet: TSheet,
-		inventory: TInventory,
-	): Promise<Character<TSheet, TInventory>>;
+export interface ICharacterRepository<TSheet extends Record<string, any>> {
+	create(character: CharacterCreateInput, sheet: TSheet): Promise<Character<TSheet>>;
 
-	getById(id: string): Promise<Character<TSheet, TInventory> | null>;
+	getById(id: string): Promise<Character<TSheet> | null>;
 	updateById(
 		id: string,
-		updateData: Partial<Character<TSheet, TInventory>>,
-	): Promise<void>;
+		updateData: CharacterUpdateInput,
+	): Promise<Character<TSheet> | null>;
 }
