@@ -1,6 +1,5 @@
 import { hash } from "bcryptjs";
 import { beforeEach, describe, expect, it } from "vitest";
-import { InvalidOperationsError } from "@/_errors/invalid-operations";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";

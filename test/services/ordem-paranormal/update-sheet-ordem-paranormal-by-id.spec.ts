@@ -120,5 +120,4 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 			sut.execute({ characterId: "not-exist-character", updateData: { age: 30 } }),
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
-
 });
