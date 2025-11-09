@@ -1,4 +1,5 @@
 import type { Character, CharacterCreateInput } from "@/@types/character";
+import type { DeepPartial } from "@/utils/deep-partial";
 
 export interface ICharacterRepository<
 	TSheet extends Record<string, any>,
@@ -13,6 +14,6 @@ export interface ICharacterRepository<
 	getById(id: string): Promise<Character<TSheet, TInventory> | null>;
 	updateById(
 		id: string,
-		updateData: Partial<Character<TSheet, TInventory>>,
-	): Promise<void>;
+		updateData: DeepPartial<Character<TSheet, TInventory>>,
+	): Promise<Character<TSheet, TInventory> | null>;
 }

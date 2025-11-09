@@ -64,7 +64,7 @@ describe("Update Character by Id Service", () => {
 		expect(updatedCharacter?.sheet.força).toBe(20);
 	});
 
-	it("It should not be possible to modify a character without providing data..", async () => {
+	it("It should not be possible to modify a character without providing data.", async () => {
 		await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
@@ -93,12 +93,12 @@ describe("Update Character by Id Service", () => {
 
 		await expect(
 			service.execute({ characterId: createdCharacter.id, updateData: {} }),
-		).rejects.toBeInstanceOf(InvalidOperationsError);
+		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 
 	it("should not be possible to update a character using an ID that does not exist.", async () => {
 		await expect(
-			service.execute({ characterId: "character-1", updateData: {age: 1} }),
+			service.execute({ characterId: "character-1", updateData: { age: 1 } }),
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 });

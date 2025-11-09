@@ -2,6 +2,7 @@ import { randomUUID } from "node:crypto";
 import type { Character, CharacterCreateInput } from "@/@types/character";
 import { createSlug } from "@/utils/create-slug";
 import type { ICharacterRepository } from "../character-repository";
+
 export class CharacterImMemoryRepository<
 	TSheet extends Record<string, any>,
 	TInventory extends Record<string, any>,
@@ -41,21 +42,21 @@ export class CharacterImMemoryRepository<
 	async updateById(
 		id: string,
 		updateData: Partial<Character<TSheet, TInventory>>,
-	): Promise<void> {
+	): Promise<Character<TSheet, TInventory> | null> {
 		const characterIndex = this.items.findIndex((char) => char.id === id);
 
-		if (characterIndex === -1) {
-			return;
-		}
+		if (characterIndex < 0) return null;
 
 		const existingCharacter = this.items[characterIndex];
 
-		const updatedCharacter = {
+		this.items[characterIndex] = {
 			...existingCharacter,
-			...updateData,
 			slug: updateData.name ? createSlug(updateData.name) : existingCharacter.slug,
+			...updateData,
 		};
 
-		this.items[characterIndex] = updatedCharacter;
+		const character = this.items[characterIndex];
+
+		return character;
 	}
 }
