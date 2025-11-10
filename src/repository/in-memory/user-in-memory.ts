@@ -1,10 +1,6 @@
 import { randomUUID } from "node:crypto";
-import type {
-	IUserRepository,
-	User,
-	UserCreateInput,
-	UserUpdateInput,
-} from "../user-repository";
+import type { User, UserCreateInput } from "@/@types/user";
+import type { IUserRepository } from "../user-repository";
 
 export class UserImMemoryRepository implements IUserRepository {
 	public items: User[] = [];
@@ -34,16 +30,15 @@ export class UserImMemoryRepository implements IUserRepository {
 		return user ?? null;
 	}
 
-	async update({ userId, data }: UserUpdateInput): Promise<User | null> {
-		const index = this.items.findIndex((user) => user.id === userId);
-		if (index === -1) return null;
+	async update(id: string, updateData: Partial<User>): Promise<User> {
+		const index = this.items.findIndex((user) => user.id === id);
 
 		const oldUser = this.items[index];
 
 		const updatedUser: User = {
 			...oldUser,
-			...data,
-			passwordHash: data.password ?? oldUser.passwordHash,
+			...updateData,
+			passwordHash: updateData.passwordHash ?? oldUser.passwordHash,
 		};
 
 		this.items[index] = updatedUser;

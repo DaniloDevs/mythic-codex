@@ -34,12 +34,7 @@ export class ResetPasswordService {
 
 		const newPasswordHash = await bcrypt.hash(newPassword, 6);
 
-		await this.userRepository.update({
-			userId: user.id,
-			data: {
-				password: newPasswordHash,
-			},
-		});
+		await this.userRepository.update(user.id, { passwordHash: newPasswordHash });
 
 		return { userId: user.id };
 	}
