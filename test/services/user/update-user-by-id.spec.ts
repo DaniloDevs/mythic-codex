@@ -43,7 +43,7 @@ describe("Update User By Id Service", () => {
 			service.execute({ id: userMock.id, updateData: {} }),
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
-   
+
 	it("should throw an error when trying to update a non-existent user.", async () => {
 		await expect(
 			service.execute({ id: "non-exist-user", updateData: { name: "romulo " } }),
