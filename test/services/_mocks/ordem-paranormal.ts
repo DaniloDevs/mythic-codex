@@ -2,16 +2,14 @@ import { faker } from "@faker-js/faker";
 import type { CharacterCreateInput } from "@/@types/character";
 import {
 	type Class,
+	EXPERTISE_ATTRIBUTES,
 	type OrdemParanormalInventory,
 	type OrdemParanormalSheetCreateInput,
 	PatentEnum,
-} from "@/@types/ordem-paranormal-sheet";
-import {
-	EXPERTISE_ATTRIBUTES,
 	RitualCircleEnum,
 	RitualTypeEnum,
 	SkillLevelEnum,
-} from "./../../../src/@types/ordem-paranormal-sheet";
+} from "@/@types/ordem-paranormal-sheet";
 
 export function createSheetOrdemParanormalMock({
 	userId,
