@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { type CharacterCreateInput, RpgSystemEnum } from "@/@types/character";
+import type { CharacterCreateInput } from "@/@types/character";
 import {
 	type Class,
 	type OrdemParanormalInventory,

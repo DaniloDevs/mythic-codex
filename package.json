@@ -7,7 +7,7 @@
 		"dev": "tsx watch src/server.ts",
 		"start": "node build/server.js",
 		"build": "tsup src --out-dir build",
-		"lint": "pnpm biome check --write",
+		"lint": "pnpm biome check --write --unsafe",
 		"lint:check": "pnpm biome check",
 		"test": "vitest run",
 		"test:cover": "vitest  run --coverage",

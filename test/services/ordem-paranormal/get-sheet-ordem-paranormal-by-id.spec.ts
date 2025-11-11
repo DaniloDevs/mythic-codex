@@ -6,7 +6,7 @@ import type {
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/create-sheet-orderm-paranormal";
+import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/create-sheet-ordem-paranormal";
 import { GetSheetOrdemParanormalByIdService } from "@/services/ordem-paranormal/get-sheet-ordem-paranormal-by-id";
 import { createSheetOrdemParanormalMock } from "../_mocks/ordem-paranormal";
 
