@@ -77,6 +77,19 @@ export class CreateSheetOrdemParanormalService extends CreateCharacterService<
 					page: skill.page,
 				};
 			}),
+			rituals: sheet.rituals?.map((ritual) => {
+				return {
+					name: ritual.name,
+					type: ritual.type,
+					description: ritual.description,
+					circle: ritual.circle,
+					execution: ritual.execution,
+					range: ritual.range,
+					target: ritual.target,
+					duration: ritual.duration,
+					resistance: ritual.resistance,
+				};
+			}),
 		};
 
 		return sheetOp;

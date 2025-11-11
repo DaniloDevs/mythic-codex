@@ -8,7 +8,7 @@ import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/create-sheet-orderm-paranormal";
 import { GetSheetOrdemParanormalByIdService } from "@/services/ordem-paranormal/get-sheet-ordem-paranormal-by-id";
-import { createSheetOrdemParanormalMock } from "../_mocks/create-ordem-paranormal-sheet";
+import { createSheetOrdemParanormalMock } from "../_mocks/ordem-paranormal";
 
 describe("Create Ordem Paranormal Sheet Service", () => {
 	let characterRepository: CharacterImMemoryRepository<
@@ -31,7 +31,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 	});
 
 	it("should be possible to search for a paranormal order file.", async () => {
-		await userRepository.create({
+		const user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -40,7 +40,7 @@ describe("Create Ordem Paranormal Sheet Service", () => {
 		});
 
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
-			createSheetOrdemParanormalMock({ characterClass: "Combatente" });
+			createSheetOrdemParanormalMock({ characterClass: "Combatente", userId: user.id });
 
 		const { character: newCharacter } = await service.execute({
 			characterData: characterDataMocks,

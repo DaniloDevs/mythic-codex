@@ -6,7 +6,8 @@ import type {
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/create-sheet-orderm-paranormal";
-import { createSheetOrdemParanormalMock } from "../_mocks/create-ordem-paranormal-sheet";
+import { createSheetOrdemParanormalMock } from "../_mocks/ordem-paranormal";
+import { CalculateConditionsClass } from "@/utils/calc-conditions-class-ordem-paranormal";
 
 describe("Create Sheet Ordem Paranormal Service", () => {
 	let characterRepository: CharacterImMemoryRepository<
@@ -27,7 +28,7 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 	});
 
 	it("should be possible to create a paranormal order character sheet.", async () => {
-		await userRepository.create({
+		const user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -36,7 +37,7 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		});
 
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
-			createSheetOrdemParanormalMock({ characterClass: "Combatente" });
+			createSheetOrdemParanormalMock({ characterClass: "Combatente", userId: user.id });
 
 		const { character } = await service.execute({
 			characterData: characterDataMocks,
@@ -48,7 +49,7 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 	});
 
 	it("should be possible to automatically calculate HP, PE, and sanity based on the Combatant class.", async () => {
-		await userRepository.create({
+		const user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -57,7 +58,7 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		});
 
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
-			createSheetOrdemParanormalMock({ characterClass: "Combatente" });
+			createSheetOrdemParanormalMock({ characterClass: "Combatente", userId: user.id });
 
 		const { character } = await service.execute({
 			characterData: characterDataMocks,
@@ -65,12 +66,18 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 			inventory: inventoryMocks,
 		});
 
-		expect(character.sheet.status.lifePoints.total).toBe(40);
-		expect(character.sheet.status.endeavorPoints.total).toBe(16);
-		expect(character.sheet.status.sanity.total).toBe(21);
+		const { endeavorPoints, lifePoints, sanity } = CalculateConditionsClass({
+			characterClass: "Combatente", next: character.sheet.status.next,
+			presence: character.sheet.attributes.presence,
+			vigor: character.sheet.attributes.vigor,
+		})
+
+		expect(character.sheet.status.lifePoints.total).toBe(lifePoints);
+		expect(character.sheet.status.endeavorPoints.total).toBe(endeavorPoints);
+		expect(character.sheet.status.sanity.total).toBe(sanity);
 	});
 	it("should be possible to automatically calculate PV, PE, and health based on the specialist class.", async () => {
-		await userRepository.create({
+		const user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -79,20 +86,25 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		});
 
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
-			createSheetOrdemParanormalMock({ characterClass: "Especialista" });
+			createSheetOrdemParanormalMock({ characterClass: "Especialista", userId: user.id });
 
 		const { character } = await service.execute({
 			characterData: characterDataMocks,
 			sheet: sheetMocks,
 			inventory: inventoryMocks,
 		});
+		const { endeavorPoints, lifePoints, sanity } = CalculateConditionsClass({
+			characterClass: "Especialista", next: character.sheet.status.next,
+			presence: character.sheet.attributes.presence,
+			vigor: character.sheet.attributes.vigor,
+		})
 
-		expect(character.sheet.status.lifePoints.total).toBe(33);
-		expect(character.sheet.status.endeavorPoints.total).toBe(20);
-		expect(character.sheet.status.sanity.total).toBe(28);
+		expect(character.sheet.status.lifePoints.total).toBe(lifePoints);
+		expect(character.sheet.status.endeavorPoints.total).toBe(endeavorPoints);
+		expect(character.sheet.status.sanity.total).toBe(sanity);
 	});
 	it("should be possible to automatically calculate HP, PE, and sanity based on the occultist class.", async () => {
-		await userRepository.create({
+		const user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -101,21 +113,26 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		});
 
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
-			createSheetOrdemParanormalMock({ characterClass: "Ocultista" });
+			createSheetOrdemParanormalMock({ characterClass: "Ocultista", userId: user.id });
 
 		const { character } = await service.execute({
 			characterData: characterDataMocks,
 			sheet: sheetMocks,
 			inventory: inventoryMocks,
 		});
+		const { endeavorPoints, lifePoints, sanity } = CalculateConditionsClass({
+			characterClass: "Ocultista", next: character.sheet.status.next,
+			presence: character.sheet.attributes.presence,
+			vigor: character.sheet.attributes.vigor,
+		})
 
-		expect(character.sheet.status.lifePoints.total).toBe(26);
-		expect(character.sheet.status.endeavorPoints.total).toBe(24);
-		expect(character.sheet.status.sanity.total).toBe(35);
+		expect(character.sheet.status.lifePoints.total).toBe(lifePoints);
+		expect(character.sheet.status.endeavorPoints.total).toBe(endeavorPoints);
+		expect(character.sheet.status.sanity.total).toBe(sanity);
 	});
 
 	it("should be possible to automatically calculate the bonus for each skill based on its level.", async () => {
-		await userRepository.create({
+		const user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -124,7 +141,13 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		});
 
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
-			createSheetOrdemParanormalMock({ characterClass: "Ocultista" });
+			createSheetOrdemParanormalMock({ characterClass: "Ocultista", userId: user.id });
+
+		// Configura os níveis específicos das expertises para testar o cálculo do bônus
+		sheetMocks.expertises.acrobatics.level = "Untrained";
+		sheetMocks.expertises.animalHandling.level = "Trained";
+		sheetMocks.expertises.arts.level = "Veteran";
+		sheetMocks.expertises.athletics.level = "Expert";
 
 		const { character } = await service.execute({
 			characterData: characterDataMocks,

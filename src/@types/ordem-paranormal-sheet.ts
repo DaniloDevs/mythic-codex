@@ -5,7 +5,7 @@ const SkillLevelEnum = z.enum(["Untrained", "Trained", "Veteran", "Expert"]);
 const PatentEnum = z.enum([
 	"Recruta",
 	"Agente especial",
-	"Oficial de operações",
+	"Oficial de operacoes",
 	"Agente de elite",
 ]);
 
@@ -53,6 +53,21 @@ const CharacteristicsSchema = z.object({
 	protections: z.string(),
 	resistances: z.string(),
 	proficiencies: z.array(z.string()),
+});
+
+const RitualTypeEnum = z.enum(["Conhecimento", "Energia", "Morte", "Sangue", "Medo"]);
+const RitualCircleEnum = z.enum(["1", "2", "3", "4"]);
+
+const RitualSchema = z.object({
+	name: z.string(),
+	description: z.string(),
+	type: RitualTypeEnum,
+	circle: RitualCircleEnum,
+	execution: z.string(),
+	range: z.string(),
+	target: z.string(),
+	duration: z.string(),
+	resistance: z.string(),
 });
 
 // Para expertise completa (com attribute e bonus)
@@ -154,6 +169,7 @@ const OrdemParanormalSheetSchema = z.object({
 	characteristics: CharacteristicsSchema,
 	expertises: createExpertisesSchema(),
 	skills: z.array(SkillSchema),
+	rituals: RitualSchema.array().default([]),
 });
 
 const OrdemParanormalSheetCreateInputSchema = z.object({
@@ -167,6 +183,7 @@ const OrdemParanormalSheetCreateInputSchema = z.object({
 			cost: z.number().min(0).default(0),
 		}),
 	),
+	rituals: RitualSchema.array().default([]),
 });
 
 export type OrdemParanormalSheet = z.infer<typeof OrdemParanormalSheetSchema>;
@@ -183,6 +200,7 @@ export type Points = z.infer<typeof PointsSchema>;
 export type Item = z.infer<typeof ItemSchema>;
 export type Skill = z.infer<typeof SkillSchema>;
 export type Attributes = z.infer<typeof AttributesSchema>;
+export type Ritual = z.infer<typeof RitualSchema>;
 
 export {
 	OrdemParanormalSheetSchema,
@@ -190,6 +208,8 @@ export {
 	OrdemParanormalSheetCreateInputSchema,
 	SkillLevelEnum,
 	PatentEnum,
+	RitualTypeEnum,
+	RitualCircleEnum,
 	ClassEnum,
 	EXPERTISE_ATTRIBUTES,
 };

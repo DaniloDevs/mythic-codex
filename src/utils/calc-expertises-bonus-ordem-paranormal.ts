@@ -6,7 +6,6 @@ const LEVEL_BONUS = {
 	Veteran: 10,
 	Expert: 15,
 } as const;
-
 export function CalculateExpertisesBonusOap({
 	expertises,
 }: OrdemParanormalSheetCreateInput) {

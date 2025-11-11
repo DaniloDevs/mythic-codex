@@ -9,7 +9,7 @@ import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/create-sheet-orderm-paranormal";
 import { UpdateSheetOrdemParanormalByIdService } from "@/services/ordem-paranormal/update-sheet-ordem-paranormal-by-id";
-import { createSheetOrdemParanormalMock } from "../_mocks/create-ordem-paranormal-sheet";
+import { createSheetOrdemParanormalMock } from "../_mocks/ordem-paranormal";
 
 describe("Update Sheet Ordem Paranormal By Id Service", () => {
 	let characterRepository: CharacterImMemoryRepository<
@@ -32,7 +32,7 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 	});
 
 	it("should be possible to update a paranormal order profile.", async () => {
-		await userRepository.create({
+		const user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -41,7 +41,7 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 		});
 
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
-			createSheetOrdemParanormalMock({ characterClass: "Combatente" });
+			createSheetOrdemParanormalMock({ characterClass: "Combatente", userId: user.id });
 
 		const { character: oldCharacter } = await service.execute({
 			characterData: characterDataMocks,
@@ -51,14 +51,14 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 
 		const { character } = await sut.execute({
 			characterId: oldCharacter.id,
-			updateData: { age: 30 },
+			updateData: { age: 30 }
 		});
 
 		expect(character.age).toBe(30);
 	});
 
 	it("It shouldn't be possible to change the character's origin or class.", async () => {
-		await userRepository.create({
+		const user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -67,7 +67,7 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 		});
 
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
-			createSheetOrdemParanormalMock({ characterClass: "Combatente" });
+			createSheetOrdemParanormalMock({ characterClass: "Combatente", userId: user.id });
 
 		const { character: oldCharacter } = await service.execute({
 			characterData: characterDataMocks,
@@ -90,7 +90,7 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 		).rejects.toBeInstanceOf(InvalidOperationsError);
 	});
 	it("It shouldn't be possible to update a paranormal request form without any data to update it.", async () => {
-		await userRepository.create({
+		const user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -99,7 +99,7 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 		});
 
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
-			createSheetOrdemParanormalMock({ characterClass: "Combatente" });
+			createSheetOrdemParanormalMock({ characterClass: "Combatente", userId: user.id });
 
 		const { character: oldCharacter } = await service.execute({
 			characterData: characterDataMocks,

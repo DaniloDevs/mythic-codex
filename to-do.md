@@ -7,6 +7,8 @@
 - [x] Deve ser possivel atualizar a ficha
 - [x] Deve ser possivel atualizar a ficha
 - [] Deve ser possivel criar um personagem de whislist
+- [] Deve ser possivel listar todos os personagens de um usuario
+- [] Deve ser possivel listar os rituais de um personagem de ordem paranormal
 - [] Deve ser possivel alterar as condições do personagem
 - [] Deve ser possivel ver historico de dados
 
