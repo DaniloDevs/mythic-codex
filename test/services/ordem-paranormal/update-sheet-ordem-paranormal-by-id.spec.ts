@@ -51,7 +51,7 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 
 		const { character } = await sut.execute({
 			characterId: oldCharacter.id,
-			updateData: { age: 30 }
+			updateData: { age: 30 },
 		});
 
 		expect(character.age).toBe(30);

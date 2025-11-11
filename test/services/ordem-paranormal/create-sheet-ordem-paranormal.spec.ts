@@ -6,8 +6,8 @@ import type {
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/create-sheet-orderm-paranormal";
-import { createSheetOrdemParanormalMock } from "../_mocks/ordem-paranormal";
 import { CalculateConditionsClass } from "@/utils/calc-conditions-class-ordem-paranormal";
+import { createSheetOrdemParanormalMock } from "../_mocks/ordem-paranormal";
 
 describe("Create Sheet Ordem Paranormal Service", () => {
 	let characterRepository: CharacterImMemoryRepository<
@@ -67,10 +67,11 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		});
 
 		const { endeavorPoints, lifePoints, sanity } = CalculateConditionsClass({
-			characterClass: "Combatente", next: character.sheet.status.next,
+			characterClass: "Combatente",
+			next: character.sheet.status.next,
 			presence: character.sheet.attributes.presence,
 			vigor: character.sheet.attributes.vigor,
-		})
+		});
 
 		expect(character.sheet.status.lifePoints.total).toBe(lifePoints);
 		expect(character.sheet.status.endeavorPoints.total).toBe(endeavorPoints);
@@ -94,10 +95,11 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 			inventory: inventoryMocks,
 		});
 		const { endeavorPoints, lifePoints, sanity } = CalculateConditionsClass({
-			characterClass: "Especialista", next: character.sheet.status.next,
+			characterClass: "Especialista",
+			next: character.sheet.status.next,
 			presence: character.sheet.attributes.presence,
 			vigor: character.sheet.attributes.vigor,
-		})
+		});
 
 		expect(character.sheet.status.lifePoints.total).toBe(lifePoints);
 		expect(character.sheet.status.endeavorPoints.total).toBe(endeavorPoints);
@@ -121,10 +123,11 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 			inventory: inventoryMocks,
 		});
 		const { endeavorPoints, lifePoints, sanity } = CalculateConditionsClass({
-			characterClass: "Ocultista", next: character.sheet.status.next,
+			characterClass: "Ocultista",
+			next: character.sheet.status.next,
 			presence: character.sheet.attributes.presence,
 			vigor: character.sheet.attributes.vigor,
-		})
+		});
 
 		expect(character.sheet.status.lifePoints.total).toBe(lifePoints);
 		expect(character.sheet.status.endeavorPoints.total).toBe(endeavorPoints);
