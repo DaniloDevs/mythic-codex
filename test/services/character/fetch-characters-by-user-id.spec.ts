@@ -40,7 +40,7 @@ describe("Fetch Character by User Service", () => {
 			const { characterDataMocks, sheetMocks, inventoryMocks } = createCharacterMock({
 				userId: user.id,
 			});
-	
+
 			await characterRepository.create(characterDataMocks, sheetMocks, inventoryMocks);
 		}
 
@@ -49,14 +49,14 @@ describe("Fetch Character by User Service", () => {
 		expect(characters).toHaveLength(4);
 
 		expect(characters).toEqual(
-		  expect.arrayContaining([
-			 expect.objectContaining({
-				name: expect.any(String),
-				avatar: expect.any(String),
-			 }),
-		  ])
+			expect.arrayContaining([
+				expect.objectContaining({
+					name: expect.any(String),
+					avatar: expect.any(String),
+				}),
+			]),
 		);
-	 });
+	});
 
 	it("It should not be possible to list all user characters that do not exist.", async () => {
 		await expect(service.execute({ userId: "non-exist-user" })).rejects.toBeInstanceOf(
