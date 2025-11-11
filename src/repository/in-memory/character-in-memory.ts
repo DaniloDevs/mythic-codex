@@ -59,4 +59,10 @@ export class CharacterImMemoryRepository<
 
 		return character;
 	}
+
+	async fetchByUserId(userId: string) {
+		const characters = this.items.filter((character) => character.userId === userId);
+
+		return characters;
+	}
 }

@@ -16,4 +16,5 @@ export interface ICharacterRepository<
 		id: string,
 		updateData: DeepPartial<Character<TSheet, TInventory>>,
 	): Promise<Character<TSheet, TInventory> | null>;
+	fetchByUserId(userId: string): Promise<Character<TSheet, TInventory>[] | []>;
 }
