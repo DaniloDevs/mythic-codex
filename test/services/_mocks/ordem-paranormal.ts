@@ -23,7 +23,7 @@ export function createSheetOrdemParanormalMock({
 	const characterDataMocks: CharacterCreateInput = {
 		userId,
 		name: faker.person.firstName(),
-		rpgSystem: 'Ordem Paranormal',
+		rpgSystem: "Ordem Paranormal",
 		age: faker.number.int({ max: 60, min: 10 }),
 		description: faker.person.bio(),
 		avatar: faker.image.avatar(),

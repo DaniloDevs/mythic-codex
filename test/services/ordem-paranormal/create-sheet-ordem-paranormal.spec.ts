@@ -3,6 +3,8 @@ import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
 } from "@/@types/ordem-paranormal-sheet";
+import { InvalidOperationsError } from "@/_errors/invalid-operations";
+import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/create-sheet-orderm-paranormal";
@@ -162,5 +164,44 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		expect(character.sheet.expertises.animalHandling.bonus).toBe(5);
 		expect(character.sheet.expertises.arts.bonus).toBe(10);
 		expect(character.sheet.expertises.athletics.bonus).toBe(15);
+	});
+
+	it("should be possible to automatically calculate the bonus for each skill based on its level.", async () => {
+		const user = await userRepository.create({
+			id: "user-01",
+			name: "Jhon Doe",
+			email: "ex@email.com",
+			avatar: null,
+			password: "123456",
+		});
+
+		const { characterDataMocks, inventoryMocks, sheetMocks } =
+			createSheetOrdemParanormalMock({ characterClass: "Ocultista", userId: user.id });
+
+		characterDataMocks.rpgSystem = "Dungeon And Dragons";
+
+		await expect(() =>
+			service.execute({
+				characterData: characterDataMocks,
+				sheet: sheetMocks,
+				inventory: inventoryMocks,
+			}),
+		).rejects.toBeInstanceOf(InvalidOperationsError);
+	});
+
+	it("It should not be possible to create a paranormal order sheet for a non-existent user.", async () => {
+		const { characterDataMocks, inventoryMocks, sheetMocks } =
+			createSheetOrdemParanormalMock({
+				characterClass: "Ocultista",
+				userId: "non-exist-user",
+			});
+
+		await expect(() =>
+			service.execute({
+				characterData: characterDataMocks,
+				sheet: sheetMocks,
+				inventory: inventoryMocks,
+			}),
+		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 });

@@ -1,4 +1,5 @@
 import type { Character, CharacterCreateInput } from "@/@types/character";
+import { InvalidOperationsError } from "@/_errors/invalid-operations";
 import { CalculateConditionsClass } from "@/utils/calc-conditions-class-ordem-paranormal";
 import { CalculateExpertisesBonusOap } from "@/utils/calc-expertises-bonus-ordem-paranormal";
 import type {
@@ -7,7 +8,6 @@ import type {
 	OrdemParanormalSheetCreateInput,
 } from "../../@types/ordem-paranormal-sheet";
 import { CreateCharacterService } from "../character/create-character";
-import { InvalidOperationsError } from "@/_errors/invalid-operations";
 
 interface RequestData {
 	characterData: CharacterCreateInput;
@@ -97,8 +97,10 @@ export class CreateSheetOrdemParanormalService extends CreateCharacterService<
 	}
 
 	async execute({ characterData, inventory, sheet }: RequestData): Promise<ResponseData> {
-		if (characterData.rpgSystem !== 'Ordem Paranormal') {
-			throw new InvalidOperationsError("Creating a paranormal order character sheet in another system is not permitted.");
+		if (characterData.rpgSystem !== "Ordem Paranormal") {
+			throw new InvalidOperationsError(
+				"Creating a paranormal order character sheet in another system is not permitted.",
+			);
 		}
 
 		const character = await super.execute({
