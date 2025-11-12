@@ -11,8 +11,11 @@
 - [] Deve ser possivel listar os rituais de um personagem de ordem paranormal
 - [] Deve ser possivel alterar as condições do personagem
 - [] Deve ser possivel ver historico de dados
+- [] Deve ser possivel fazer paginação na rota de listagem de Personagens de Ordem Paranormal
+- [] Deve ser possivel fazer paginação na rota de listagem do historico de rolagens
 
 ### Requesitos Não Funcionais
 
 - [] O sistema deve ser capaz de retornar os resultados das rolagens em até 100 ms.
-- [] Todos os dados obtidos em grande quantidade devem ser armazenados em cache por um período de 10 minutos.
+- [] O sistema deve ser capaz de retornar um personagem pelo cache
+- [] O sistema deve armazenar o historico de rolagens atravês de cache

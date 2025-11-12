@@ -1,26 +1,31 @@
 import { InvalidOperationsError } from "@/_errors/invalid-operations";
+import type { IRollsRepository } from "@/repository/rolls-repository";
 
 interface RequestData {
+	userId: string;
 	expression: string;
 	context?: "advantage" | "disadvantage";
 }
 
 export class RollDiceService {
-	execute({ expression, context }: RequestData) {
+	constructor(private rollsRepository: IRollsRepository) {}
+
+	async execute({ expression, context, userId }: RequestData) {
 		const { modifier, quantity, sides } = this.parse(expression);
 
 		this.validateQuantify({ quantity });
 
 		const dice = new Dice(sides);
 
-		switch (context) {
-			case "advantage":
-				return this.advantageStrategy(dice, quantity, modifier);
-			case "disadvantage":
-				return this.disadvantageStrategy(dice, quantity, modifier);
-			default:
-				return this.standardStrategy(dice, quantity, modifier);
-		}
+		const roll = this.getRollStrategy(context ?? "standard", dice, quantity, modifier);
+
+		await this.rollsRepository.saveRolls({
+			userId,
+			...roll,
+			context: context ?? "stantard",
+		});
+
+		return roll;
 	}
 
 	private parse(expression: string) {
@@ -77,6 +82,22 @@ export class RollDiceService {
 			...chosen,
 			context: "disadvantage",
 		};
+	}
+
+	private getRollStrategy(
+		context: "advantage" | "disadvantage" | "standard",
+		dice: Dice,
+		quantity: number,
+		modifier: number,
+	) {
+		const strategies = {
+			advantage: this.advantageStrategy,
+			disadvantage: this.disadvantageStrategy,
+			standard: this.standardStrategy,
+		};
+
+		const strategy = strategies[context] || this.standardStrategy;
+		return strategy.call(this, dice, quantity, modifier);
 	}
 }
 
