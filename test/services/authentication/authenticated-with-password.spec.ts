@@ -4,24 +4,24 @@ import { InvalidCredentialsError } from "@/_errors/invalid-credentials";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { AuthenticatedWithPasswordService } from "@/services/authentication/authenticated-with-password";
 
-describe("Authenticated with password Service", () => {
-	let repository: UserImMemoryRepository;
-	let service: AuthenticatedWithPasswordService;
+describe("Authenticated With Password - Service", () => {
+	let userRepository: UserImMemoryRepository;
+	let sut: AuthenticatedWithPasswordService;
 
-	beforeEach(() => {
-		repository = new UserImMemoryRepository();
-		service = new AuthenticatedWithPasswordService(repository);
-	});
+	beforeEach(async () => {
+		userRepository = new UserImMemoryRepository();
+		sut = new AuthenticatedWithPasswordService(userRepository);
 
-	it("should be possible to log in with a valid email and password.", async () => {
-		await repository.create({
+		await userRepository.create({
 			name: "Jhon Doe",
 			email: "ex@email.com",
 			avatar: null,
 			password: await hash("123456", 6),
 		});
+	});
 
-		const { user } = await service.execute({
+	it("should be possible to log in with a valid email and password.", async () => {
+		const { user } = await sut.execute({
 			email: "ex@email.com",
 			password: "123456",
 		});
@@ -30,15 +30,8 @@ describe("Authenticated with password Service", () => {
 	});
 
 	it("should not be possible to log in with a non-existent email address.", async () => {
-		await repository.create({
-			name: "Jhon Doe",
-			email: "ex@email.com",
-			avatar: null,
-			password: await hash("123456", 6),
-		});
-
-		await expect(
-			service.execute({
+		await expect(() =>
+			sut.execute({
 				email: "wrong@email.com",
 				password: "123456879",
 			}),
@@ -46,15 +39,8 @@ describe("Authenticated with password Service", () => {
 	});
 
 	it("should not be possible to log in with the wrong password.", async () => {
-		await repository.create({
-			name: "Jhon Doe",
-			email: "ex@email.com",
-			password: "123456879",
-			avatar: null,
-		});
-
-		await expect(
-			service.execute({
+		await expect(() =>
+			sut.execute({
 				email: "ex@email.com",
 				password: "1",
 			}),

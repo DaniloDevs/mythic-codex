@@ -1,8 +1,9 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
 } from "@/@types/ordem-paranormal-sheet";
+import type { User } from "@/@types/user";
 import { InvalidOperationsError } from "@/_errors/invalid-operations";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
@@ -11,13 +12,27 @@ import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/c
 import { CalculateConditionsClass } from "@/utils/calc-conditions-class-ordem-paranormal";
 import { createSheetOrdemParanormalMock } from "../_mocks/ordem-paranormal";
 
-describe("Create Sheet Ordem Paranormal Service", () => {
+describe("Create Sheet Ordem Paranormal - Service", () => {
 	let characterRepository: CharacterImMemoryRepository<
 		OrdemParanormalSheet,
 		OrdemParanormalInventory
 	>;
 	let userRepository: UserImMemoryRepository;
-	let service: CreateSheetOrdemParanormalService;
+	let sut: CreateSheetOrdemParanormalService;
+
+	let user: User;
+
+	beforeAll(async () => {
+		userRepository = new UserImMemoryRepository();
+
+		user = await userRepository.create({
+			id: "user-01",
+			name: "Jhon Doe",
+			email: "ex@email.com",
+			avatar: null,
+			password: "123456",
+		});
+	});
 
 	beforeEach(() => {
 		characterRepository = new CharacterImMemoryRepository<
@@ -25,23 +40,14 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 			OrdemParanormalInventory
 		>();
 
-		userRepository = new UserImMemoryRepository();
-		service = new CreateSheetOrdemParanormalService(characterRepository, userRepository);
+		sut = new CreateSheetOrdemParanormalService(characterRepository, userRepository);
 	});
 
 	it("should be possible to create a paranormal order character sheet.", async () => {
-		const user = await userRepository.create({
-			id: "user-01",
-			name: "Jhon Doe",
-			email: "ex@email.com",
-			avatar: null,
-			password: "123456",
-		});
-
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
 			createSheetOrdemParanormalMock({ characterClass: "Combatente", userId: user.id });
 
-		const { character } = await service.execute({
+		const { character } = await sut.execute({
 			characterData: characterDataMocks,
 			sheet: sheetMocks,
 			inventory: inventoryMocks,
@@ -51,18 +57,10 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 	});
 
 	it("should be possible to automatically calculate HP, PE, and sanity based on the Combatant class.", async () => {
-		const user = await userRepository.create({
-			id: "user-01",
-			name: "Jhon Doe",
-			email: "ex@email.com",
-			avatar: null,
-			password: "123456",
-		});
-
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
 			createSheetOrdemParanormalMock({ characterClass: "Combatente", userId: user.id });
 
-		const { character } = await service.execute({
+		const { character } = await sut.execute({
 			characterData: characterDataMocks,
 			sheet: sheetMocks,
 			inventory: inventoryMocks,
@@ -80,18 +78,10 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		expect(character.sheet.status.sanity.total).toBe(sanity);
 	});
 	it("should be possible to automatically calculate PV, PE, and health based on the specialist class.", async () => {
-		const user = await userRepository.create({
-			id: "user-01",
-			name: "Jhon Doe",
-			email: "ex@email.com",
-			avatar: null,
-			password: "123456",
-		});
-
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
 			createSheetOrdemParanormalMock({ characterClass: "Especialista", userId: user.id });
 
-		const { character } = await service.execute({
+		const { character } = await sut.execute({
 			characterData: characterDataMocks,
 			sheet: sheetMocks,
 			inventory: inventoryMocks,
@@ -108,18 +98,10 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		expect(character.sheet.status.sanity.total).toBe(sanity);
 	});
 	it("should be possible to automatically calculate HP, PE, and sanity based on the occultist class.", async () => {
-		const user = await userRepository.create({
-			id: "user-01",
-			name: "Jhon Doe",
-			email: "ex@email.com",
-			avatar: null,
-			password: "123456",
-		});
-
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
 			createSheetOrdemParanormalMock({ characterClass: "Ocultista", userId: user.id });
 
-		const { character } = await service.execute({
+		const { character } = await sut.execute({
 			characterData: characterDataMocks,
 			sheet: sheetMocks,
 			inventory: inventoryMocks,
@@ -137,14 +119,6 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 	});
 
 	it("should be possible to automatically calculate the bonus for each skill based on its level.", async () => {
-		const user = await userRepository.create({
-			id: "user-01",
-			name: "Jhon Doe",
-			email: "ex@email.com",
-			avatar: null,
-			password: "123456",
-		});
-
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
 			createSheetOrdemParanormalMock({ characterClass: "Ocultista", userId: user.id });
 
@@ -154,7 +128,7 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 		sheetMocks.expertises.arts.level = "Veteran";
 		sheetMocks.expertises.athletics.level = "Expert";
 
-		const { character } = await service.execute({
+		const { character } = await sut.execute({
 			characterData: characterDataMocks,
 			sheet: sheetMocks,
 			inventory: inventoryMocks,
@@ -167,21 +141,13 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 	});
 
 	it("should be possible to automatically calculate the bonus for each skill based on its level.", async () => {
-		const user = await userRepository.create({
-			id: "user-01",
-			name: "Jhon Doe",
-			email: "ex@email.com",
-			avatar: null,
-			password: "123456",
-		});
-
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
 			createSheetOrdemParanormalMock({ characterClass: "Ocultista", userId: user.id });
 
 		characterDataMocks.rpgSystem = "Dungeon And Dragons";
 
 		await expect(() =>
-			service.execute({
+			sut.execute({
 				characterData: characterDataMocks,
 				sheet: sheetMocks,
 				inventory: inventoryMocks,
@@ -197,7 +163,7 @@ describe("Create Sheet Ordem Paranormal Service", () => {
 			});
 
 		await expect(() =>
-			service.execute({
+			sut.execute({
 				characterData: characterDataMocks,
 				sheet: sheetMocks,
 				inventory: inventoryMocks,

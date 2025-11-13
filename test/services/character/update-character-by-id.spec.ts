@@ -4,14 +4,16 @@ import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { UpdateCharacterByIdService } from "@/services/character/update-character-by-id";
+import {
+	createCharacterMock,
+	type GenericInventory,
+	type GenericSheet,
+} from "../_mocks/character";
 
-describe("Update Character by Id Service", () => {
-	type GenericSheet = { força: number; vida: number };
-	type GenericInventory = { item: string[] };
-
+describe("Update Character by Id - Service", () => {
 	let characterRepository: CharacterImMemoryRepository<GenericSheet, GenericInventory>;
 	let userRepository: UserImMemoryRepository;
-	let service: UpdateCharacterByIdService<GenericSheet, GenericInventory>;
+	let sut: UpdateCharacterByIdService<GenericSheet, GenericInventory>;
 
 	beforeEach(() => {
 		characterRepository = new CharacterImMemoryRepository<
@@ -19,13 +21,13 @@ describe("Update Character by Id Service", () => {
 			GenericInventory
 		>();
 		userRepository = new UserImMemoryRepository();
-		service = new UpdateCharacterByIdService<GenericSheet, GenericInventory>(
+		sut = new UpdateCharacterByIdService<GenericSheet, GenericInventory>(
 			characterRepository,
 		);
 	});
 
 	it("should be possible to update a character's sheet.", async () => {
-		await userRepository.create({
+		const user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -33,26 +35,19 @@ describe("Update Character by Id Service", () => {
 			password: await hash("123456", 6),
 		});
 
+		const { characterDataMocks, sheetMocks, inventoryMocks } = createCharacterMock({
+			userId: user.id,
+		});
+
 		const createdCharacter = await characterRepository.create(
-			{
-				userId: "user-01",
-				name: "Elara Stormwind",
-				age: 27,
-				rpgSystem: "Dungeon And Dragons",
-				description: "A half-elf ranger who roams the forests of the North.",
-				avatar: null,
-			},
-			{
-				força: 15,
-				vida: 100,
-			},
-			{
-				item: ["Espada Longa", "Arco e Flecha"],
-			},
+			characterDataMocks,
+			sheetMocks,
+			inventoryMocks,
 		);
 
 		const newSheet: GenericSheet = { força: 20, vida: 150 };
-		await service.execute({
+
+		await sut.execute({
 			characterId: createdCharacter.id,
 			updateData: { sheet: newSheet },
 		});
@@ -64,7 +59,7 @@ describe("Update Character by Id Service", () => {
 	});
 
 	it("It should not be possible to modify a character without providing data.", async () => {
-		await userRepository.create({
+		const user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -72,32 +67,24 @@ describe("Update Character by Id Service", () => {
 			password: await hash("123456", 6),
 		});
 
+		const { characterDataMocks, sheetMocks, inventoryMocks } = createCharacterMock({
+			userId: user.id,
+		});
+
 		const createdCharacter = await characterRepository.create(
-			{
-				userId: "user-01",
-				name: "Elara Stormwind",
-				age: 27,
-				rpgSystem: "Dungeon And Dragons",
-				description: "A half-elf ranger who roams the forests of the North.",
-				avatar: null,
-			},
-			{
-				força: 15,
-				vida: 100,
-			},
-			{
-				item: ["Espada Longa", "Arco e Flecha"],
-			},
+			characterDataMocks,
+			sheetMocks,
+			inventoryMocks,
 		);
 
-		await expect(
-			service.execute({ characterId: createdCharacter.id, updateData: {} }),
+		await expect(() =>
+			sut.execute({ characterId: createdCharacter.id, updateData: {} }),
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 
 	it("should not be possible to update a character using an ID that does not exist.", async () => {
-		await expect(
-			service.execute({ characterId: "character-1", updateData: { age: 1 } }),
+		await expect(() =>
+			sut.execute({ characterId: "character-1", updateData: { age: 1 } }),
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 });

@@ -10,10 +10,10 @@ import {
 	type GenericSheet,
 } from "../_mocks/character";
 
-describe("Fetch Character by User Service", () => {
+describe("Fetch Character by User - Service", () => {
 	let characterRepository: CharacterImMemoryRepository<GenericSheet, GenericInventory>;
 	let userRepository: UserImMemoryRepository;
-	let service: FetchCharacterByIdService<GenericSheet, GenericInventory>;
+	let sut: FetchCharacterByIdService<GenericSheet, GenericInventory>;
 
 	beforeEach(() => {
 		characterRepository = new CharacterImMemoryRepository<
@@ -21,7 +21,7 @@ describe("Fetch Character by User Service", () => {
 			GenericInventory
 		>();
 		userRepository = new UserImMemoryRepository();
-		service = new FetchCharacterByIdService<GenericSheet, GenericInventory>(
+		sut = new FetchCharacterByIdService<GenericSheet, GenericInventory>(
 			characterRepository,
 			userRepository,
 		);
@@ -44,7 +44,7 @@ describe("Fetch Character by User Service", () => {
 			await characterRepository.create(characterDataMocks, sheetMocks, inventoryMocks);
 		}
 
-		const { characters } = await service.execute({ userId: user.id });
+		const { characters } = await sut.execute({ userId: user.id });
 
 		expect(characters).toHaveLength(4);
 
@@ -59,7 +59,7 @@ describe("Fetch Character by User Service", () => {
 	});
 
 	it("It should not be possible to list all user characters that do not exist.", async () => {
-		await expect(service.execute({ userId: "non-exist-user" })).rejects.toBeInstanceOf(
+		await expect(() => sut.execute({ userId: "non-exist-user" })).rejects.toBeInstanceOf(
 			ResourceNotFoundError,
 		);
 	});

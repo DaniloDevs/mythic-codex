@@ -4,17 +4,17 @@ import { UserAlreadyExistsError } from "@/_errors/user-already-exists";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { RegisterUserService } from "@/services/authentication/register-user";
 
-describe("Regsiter user Service", () => {
-	let repository: UserImMemoryRepository;
-	let service: RegisterUserService;
+describe("Regsiter User - Service", () => {
+	let userRepository: UserImMemoryRepository;
+	let sut: RegisterUserService;
 
 	beforeEach(() => {
-		repository = new UserImMemoryRepository();
-		service = new RegisterUserService(repository);
+		userRepository = new UserImMemoryRepository();
+		sut = new RegisterUserService(userRepository);
 	});
 
 	it("should be possible to register a user with valid data.", async () => {
-		const { user } = await service.execute({
+		const { user } = await sut.execute({
 			name: "Jhon Doe",
 			email: "ex@email.com",
 			password: "123456879",
@@ -24,26 +24,8 @@ describe("Regsiter user Service", () => {
 		expect(user.id).toEqual(expect.any(String));
 	});
 
-	it("should not be possible to register a user with an email address that has already been used.", async () => {
-		await service.execute({
-			name: "Jhon Doe",
-			email: "ex@email.com",
-			password: "123456879",
-			avatar: null,
-		});
-
-		await expect(
-			service.execute({
-				name: "Jhon Doe",
-				email: "ex@email.com",
-				password: "123456879",
-				avatar: null,
-			}),
-		).rejects.toBeInstanceOf(UserAlreadyExistsError);
-	});
-
 	it("should be possible to register an encrypted password.", async () => {
-		const { user } = await service.execute({
+		const { user } = await sut.execute({
 			name: "Jhon Doe",
 			email: "ex@email.com",
 			password: "123456",
@@ -53,5 +35,23 @@ describe("Regsiter user Service", () => {
 		const isPassawordCorrectly = await compare("123456", user.passwordHash);
 
 		expect(isPassawordCorrectly).toBe(true);
+	});
+
+	it("should not be possible to register a user with an email address that has already been used.", async () => {
+		await sut.execute({
+			name: "Jhon Doe",
+			email: "ex@email.com",
+			password: "123456879",
+			avatar: null,
+		});
+
+		await expect(() =>
+			sut.execute({
+				name: "Jhon Doe",
+				email: "ex@email.com",
+				password: "123456879",
+				avatar: null,
+			}),
+		).rejects.toBeInstanceOf(UserAlreadyExistsError);
 	});
 });

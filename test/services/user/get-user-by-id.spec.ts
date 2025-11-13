@@ -3,17 +3,17 @@ import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { GetUserByIdService } from "@/services/user/get-user-by-id";
 
-describe("Get User By Id Service", () => {
-	let repository: UserImMemoryRepository;
-	let service: GetUserByIdService;
+describe("Get User By Id - Service", () => {
+	let userRepository: UserImMemoryRepository;
+	let sut: GetUserByIdService;
 
 	beforeEach(() => {
-		repository = new UserImMemoryRepository();
-		service = new GetUserByIdService(repository);
+		userRepository = new UserImMemoryRepository();
+		sut = new GetUserByIdService(userRepository);
 	});
 
 	it("should be possible to create a user with valid data.", async () => {
-		await repository.create({
+		await userRepository.create({
 			id: "user-id",
 			name: "Jhon Doe",
 			email: "ex@email.com",
@@ -21,13 +21,13 @@ describe("Get User By Id Service", () => {
 			avatar: null,
 		});
 
-		const { user } = await service.execute({ id: "user-id" });
+		const { user } = await sut.execute({ id: "user-id" });
 
 		expect(user.id).toEqual(expect.any(String));
 	});
 
 	it("should be possible to create a user with valid data.", async () => {
-		await expect(service.execute({ id: "user-id" })).rejects.toBeInstanceOf(
+		await expect(() => sut.execute({ id: "user-id" })).rejects.toBeInstanceOf(
 			ResourceNotFoundError,
 		);
 	});

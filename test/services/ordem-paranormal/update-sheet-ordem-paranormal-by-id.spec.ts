@@ -1,8 +1,9 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
 } from "@/@types/ordem-paranormal-sheet";
+import type { User } from "@/@types/user";
 import { InvalidOperationsError } from "@/_errors/invalid-operations";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
@@ -11,7 +12,7 @@ import { CreateSheetOrdemParanormalService } from "@/services/ordem-paranormal/c
 import { UpdateSheetOrdemParanormalByIdService } from "@/services/ordem-paranormal/update-sheet-ordem-paranormal-by-id";
 import { createSheetOrdemParanormalMock } from "../_mocks/ordem-paranormal";
 
-describe("Update Sheet Ordem Paranormal By Id Service", () => {
+describe("Update Sheet Ordem Paranormal By Id - Service", () => {
 	let characterRepository: CharacterImMemoryRepository<
 		OrdemParanormalSheet,
 		OrdemParanormalInventory
@@ -20,26 +21,31 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 	let service: CreateSheetOrdemParanormalService;
 	let sut: UpdateSheetOrdemParanormalByIdService;
 
-	beforeEach(() => {
-		characterRepository = new CharacterImMemoryRepository<
-			OrdemParanormalSheet,
-			OrdemParanormalInventory
-		>();
+	let user: User;
 
+	beforeAll(async () => {
 		userRepository = new UserImMemoryRepository();
-		service = new CreateSheetOrdemParanormalService(characterRepository, userRepository);
-		sut = new UpdateSheetOrdemParanormalByIdService(characterRepository);
-	});
 
-	it("should be possible to update a paranormal order profile.", async () => {
-		const user = await userRepository.create({
+		user = await userRepository.create({
 			id: "user-01",
 			name: "Jhon Doe",
 			email: "ex@email.com",
 			avatar: null,
 			password: "123456",
 		});
+	});
 
+	beforeEach(() => {
+		characterRepository = new CharacterImMemoryRepository<
+			OrdemParanormalSheet,
+			OrdemParanormalInventory
+		>();
+
+		service = new CreateSheetOrdemParanormalService(characterRepository, userRepository);
+		sut = new UpdateSheetOrdemParanormalByIdService(characterRepository);
+	});
+
+	it("should be possible to update a paranormal order profile.", async () => {
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
 			createSheetOrdemParanormalMock({ characterClass: "Combatente", userId: user.id });
 
@@ -58,14 +64,6 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 	});
 
 	it("It shouldn't be possible to change the character's origin or class.", async () => {
-		const user = await userRepository.create({
-			id: "user-01",
-			name: "Jhon Doe",
-			email: "ex@email.com",
-			avatar: null,
-			password: "123456",
-		});
-
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
 			createSheetOrdemParanormalMock({ characterClass: "Combatente", userId: user.id });
 
@@ -90,14 +88,6 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 		).rejects.toBeInstanceOf(InvalidOperationsError);
 	});
 	it("It shouldn't be possible to update a paranormal request form without any data to update it.", async () => {
-		const user = await userRepository.create({
-			id: "user-01",
-			name: "Jhon Doe",
-			email: "ex@email.com",
-			avatar: null,
-			password: "123456",
-		});
-
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
 			createSheetOrdemParanormalMock({ characterClass: "Combatente", userId: user.id });
 
@@ -107,7 +97,7 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 			inventory: inventoryMocks,
 		});
 
-		await expect(
+		await expect(() =>
 			sut.execute({
 				characterId: oldCharacter.id,
 				updateData: {},
@@ -116,7 +106,7 @@ describe("Update Sheet Ordem Paranormal By Id Service", () => {
 	});
 
 	it("should not be possible to update a paranormal order sheet for a character that does not exist.", async () => {
-		await expect(
+		await expect(() =>
 			sut.execute({ characterId: "not-exist-character", updateData: { age: 30 } }),
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});

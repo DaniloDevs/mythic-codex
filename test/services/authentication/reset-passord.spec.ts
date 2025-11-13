@@ -6,15 +6,15 @@ import { TokensImMemoryRepository } from "@/repository/in-memory/tokens-in-memor
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { ResetPasswordService } from "@/services/authentication/reset-password";
 
-describe("Reset Password Service", () => {
-	let repository: TokensImMemoryRepository;
+describe("Reset Password - Service", () => {
+	let tokensRepository: TokensImMemoryRepository;
 	let userRepository: UserImMemoryRepository;
 	let sut: ResetPasswordService;
 
 	beforeEach(() => {
-		repository = new TokensImMemoryRepository();
+		tokensRepository = new TokensImMemoryRepository();
 		userRepository = new UserImMemoryRepository();
-		sut = new ResetPasswordService(repository, userRepository);
+		sut = new ResetPasswordService(tokensRepository, userRepository);
 	});
 
 	it("It should be possible to reset the password using the code.", async () => {
@@ -26,7 +26,7 @@ describe("Reset Password Service", () => {
 			avatar: null,
 		});
 
-		const token = await repository.createToken({
+		const token = await tokensRepository.createToken({
 			type: "RECOVER_PASSWORD",
 			userId: user.id,
 		});
@@ -50,18 +50,18 @@ describe("Reset Password Service", () => {
 			avatar: null,
 		});
 
-		await expect(
+		await expect(() =>
 			sut.execute({ code: "123456", newPassword: "147258369" }),
 		).rejects.toBeInstanceOf(InvalidTokenError);
 	});
 
 	it("It should not be possible to reset the password for a user that does not exist.", async () => {
-		const token = await repository.createToken({
+		const token = await tokensRepository.createToken({
 			type: "RECOVER_PASSWORD",
 			userId: "non-exist-user",
 		});
 
-		await expect(
+		await expect(() =>
 			sut.execute({ code: token.code, newPassword: "147258369" }),
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});

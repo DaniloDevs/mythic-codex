@@ -4,15 +4,15 @@ import { TokensImMemoryRepository } from "@/repository/in-memory/tokens-in-memor
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { RecoverPasswordService } from "@/services/authentication/recover-password";
 
-describe("Recover Password  Service", () => {
-	let repository: TokensImMemoryRepository;
+describe("Recover Password - Service", () => {
+	let tokensRepository: TokensImMemoryRepository;
 	let userRepository: UserImMemoryRepository;
 	let sut: RecoverPasswordService;
 
 	beforeEach(() => {
-		repository = new TokensImMemoryRepository();
+		tokensRepository = new TokensImMemoryRepository();
 		userRepository = new UserImMemoryRepository();
-		sut = new RecoverPasswordService(repository, userRepository);
+		sut = new RecoverPasswordService(tokensRepository, userRepository);
 
 		vi.useFakeTimers();
 	});
@@ -35,12 +35,6 @@ describe("Recover Password  Service", () => {
 		expect(token.code).toEqual(expect.any(String));
 	});
 
-	it("should not be possible to create a recover token for a non-existent user.", async () => {
-		await expect(
-			sut.execute({ type: "RECOVER_PASSWORD", userId: "not-exist-user" }),
-		).rejects.toBeInstanceOf(ResourceNotFoundError);
-	});
-
 	it("should not be possible to create a token for 30 minutes after the last one was created.", async () => {
 		vi.setSystemTime(new Date(2023, 0, 1, 13, 0));
 
@@ -56,8 +50,14 @@ describe("Recover Password  Service", () => {
 
 		vi.setSystemTime(new Date(2023, 0, 1, 13, 5));
 
-		await expect(
+		await expect(() =>
 			sut.execute({ type: "RECOVER_PASSWORD", userId: user.id }),
 		).rejects.toBeInstanceOf(Error);
+	});
+
+	it("should not be possible to create a recover token for a non-existent user.", async () => {
+		await expect(() =>
+			sut.execute({ type: "RECOVER_PASSWORD", userId: "not-exist-user" }),
+		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});
 });
