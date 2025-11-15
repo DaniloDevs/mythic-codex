@@ -1,11 +1,11 @@
 import z from "zod";
-
-const RpgSystemEnum = z.enum(["Dungeon And Dragons", "Ordem Paranormal", "Tormenta"]);
+import { type RpgSystem, RpgSystemEnum, type RpgSystemMap } from "./rpg-system";
 
 const CharacterBaseSchema = z.object({
 	userId: z.string(),
+	sheetId: z.string(),
 	name: z.string(),
-	rpgSystem: RpgSystemEnum,
+	rpgSystem: RpgSystemEnum.options,
 	age: z.number(),
 	description: z.string(),
 	avatar: z.string().nullable(),
@@ -18,18 +18,16 @@ const CharacterSchema = CharacterBaseSchema.extend({
 
 const CharacterCreateInputSchema = CharacterBaseSchema;
 
-export type RpgSystem = z.infer<typeof RpgSystemEnum>;
-
-export type CharacterCreateInput = z.infer<typeof CharacterCreateInputSchema>;
-
-export type Character<
-	TSheet extends Record<string, any> = Record<string, any>,
-	TInventory extends Record<string, any> = Record<string, any>,
-> = z.infer<typeof CharacterSchema> & {
-	sheet: TSheet;
-	inventory: TInventory;
+export type Character<T extends RpgSystem = RpgSystem> = CharacterBase & {
+	rpgSystem: T;
+	sheet: RpgSystemMap[T]["sheet"];
+	inventory: RpgSystemMap[T]["inventory"];
 };
 
 export type CharacterBase = z.infer<typeof CharacterSchema>;
+export type CharacterCreateInput = z.infer<typeof CharacterCreateInputSchema>;
 
-export { CharacterSchema, CharacterCreateInputSchema, RpgSystemEnum };
+// Helper types para uso mais fácil
+export type OrdemCharacter = Character<"Ordem Paranormal">;
+export type DungeonsCharacter = Character<"Dungeon And Dragons">;
+export type TormentaCharacter = Character<"Tormenta">;

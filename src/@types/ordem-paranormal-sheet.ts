@@ -1,6 +1,9 @@
 import z from "zod";
+import {
+	createExpertises,
+	createInputExpertises,
+} from "@/utils/create-expertises-ordem-sheet";
 
-const SkillLevelEnum = z.enum(["Untrained", "Trained", "Veteran", "Expert"]);
 
 const PatentEnum = z.enum([
 	"Recruta",
@@ -9,85 +12,61 @@ const PatentEnum = z.enum([
 	"Agente de elite",
 ]);
 
-const ClassEnum = z.enum(["Combatente", "Especialista", "Ocultista"]);
+const TrailEnum = z.enum(["Combatente", "Especialista", "Ocultista"]);
 
-const PointsSchema = z.object({
-	total: z.number().min(0),
-	current: z.number().min(0),
-});
+const elementEnum = z.enum(["Conhecimento", "Energia", "Morte", "Sangue", "Medo"]);
 
-const ItemSchema = z.object({
-	name: z.string(),
-	category: z.number().min(0),
-	space: z.string(),
-});
+const ExpertiseRanksEnum = z.enum(["Untrained", "Trained", "Veteran", "Expert"]);
 
-const SkillSchema = z.object({
-	name: z.string(),
-	cost: z.number().min(0),
-	description: z.string(),
-	page: z.number().min(1),
-});
-
-const AttributesSchema = z.object({
-	strength: z.number().min(1),
-	agility: z.number().min(1),
-	presence: z.number().min(1),
-	vigor: z.number().min(1),
-	intelligence: z.number().min(1),
-});
-
-const StatusBaseSchema = z.object({
-	defense: z.number(),
-	next: z.number().min(0).max(100),
-	move: z.string(),
-});
 
 const IdentitySchema = z.object({
-	class: ClassEnum,
-	origin: z.string(),
+	origem: z.string(),
+	trail: TrailEnum,
+	defense: z.string(),
+	dash: z.string(),
 	patent: PatentEnum,
+	protections: z.array(z.string()),
+	resistances: z.array(z.string()),
 });
 
-const CharacteristicsSchema = z.object({
-	protections: z.string(),
-	resistances: z.string(),
-	proficiencies: z.array(z.string()),
+const ConditionsSchema = z.object({
+	vitality: z.object({
+		total: z.number(),
+		current: z.number(),
+	}),
+	sanity: z.object({
+		total: z.number(),
+		current: z.number(),
+	}),
+	endeavorPoints: z.object({
+		total: z.number(),
+		current: z.number(),
+	}),
 });
 
-const RitualTypeEnum = z.enum(["Conhecimento", "Energia", "Morte", "Sangue", "Medo"]);
-const RitualCircleEnum = z.enum(["1", "2", "3", "4"]);
 
-const RitualSchema = z.object({
-	name: z.string(),
-	description: z.string(),
-	type: RitualTypeEnum,
-	circle: RitualCircleEnum,
-	execution: z.string(),
-	range: z.string(),
-	target: z.string(),
-	duration: z.string(),
-	resistance: z.string(),
+const AttributesSchema = z.object({
+	strength: z.number().int().min(0),
+	intellect: z.number().int().min(0),
+	presence: z.number().int().min(0),
+	vigor: z.number().int().min(0),
+	agility: z.number().int().min(0),
 });
 
-// Para expertise completa (com attribute e bonus)
-const createExpertise = <T extends string>(attribute: T) =>
+
+const RitualSchemas = z.array(
 	z.object({
-		attribute: z.literal(attribute),
-		extraBonus: z.number().min(0),
-		bonus: z.number().min(0),
-		level: SkillLevelEnum,
-	});
+		name: z.string(),
+		element: elementEnum,
+		circle: z.enum(["1", "2", "3", "4"]),
+		execution: z.string(),
+		target: z.string(),
+		duration: z.string(),
+		resistance: z.string(),
+	})
+)
 
-// Para expertise de criação (sem attribute e bonus)
-const createExpertiseInput = () =>
-	z.object({
-		extraBonus: z.number().min(0),
-		level: SkillLevelEnum,
-	});
-
-// Mapeamento de expertises para seus atributos
-const EXPERTISE_ATTRIBUTES = {
+export const EXPERTISE_ATTRIBUTES = {
 	acrobatics: "agility",
 	animalHandling: "presence",
 	arts: "presence",
@@ -118,98 +97,53 @@ const EXPERTISE_ATTRIBUTES = {
 	will: "presence",
 } as const;
 
-// Gera objeto de expertises completas
-const createExpertisesSchema = () => {
-	const expertises = {} as Record<
-		keyof typeof EXPERTISE_ATTRIBUTES,
-		ReturnType<typeof createExpertise>
-	>;
 
-	for (const [key, attr] of Object.entries(EXPERTISE_ATTRIBUTES)) {
-		expertises[key as keyof typeof EXPERTISE_ATTRIBUTES] = createExpertise(attr);
-	}
-
-	return z.object(expertises);
-};
-
-// Gera objeto de expertises de input
-const createExpertisesInputSchema = () => {
-	const expertises = {} as Record<
-		keyof typeof EXPERTISE_ATTRIBUTES,
-		ReturnType<typeof createExpertiseInput>
-	>;
-
-	for (const key of Object.keys(EXPERTISE_ATTRIBUTES)) {
-		expertises[key as keyof typeof EXPERTISE_ATTRIBUTES] = createExpertiseInput();
-	}
-
-	return z.object(expertises);
-};
-
-const OrdemParanormalInventorySchema = z.object({
-	limitItems: z.object({
-		one: z.number().min(0),
-		two: z.number().min(0),
-		three: z.number().min(0),
-		four: z.number().min(0),
-	}),
-	creditLimit: z.number().min(0),
-	limitCharge: z.number().min(0),
-	item: z.array(ItemSchema),
+const OrdemParanormalSheet = z.object({
+	id: z.string(),
+	characterId: z.string(),
+	updatedAt: z.date(),
+	identity: IdentitySchema,
+	conditions: ConditionsSchema,
+	expertise: z.object(createExpertises(EXPERTISE_ATTRIBUTES)),
+	attributes: AttributesSchema,
+	ritual: RitualSchemas,
 });
 
-const OrdemParanormalSheetSchema = z.object({
-	attributes: AttributesSchema,
-	status: StatusBaseSchema.extend({
-		lifePoints: PointsSchema,
-		endeavorPoints: PointsSchema,
-		sanity: PointsSchema,
+const OrdemParanormalInventory = z.object({
+	itemLimit: z.object({
+		one: z.number().int().default(0),
+		two: z.number().int().default(0),
+		three: z.number().int().default(0),
+		four: z.number().int().default(0),
 	}),
-	identity: IdentitySchema,
-	characteristics: CharacteristicsSchema,
-	expertises: createExpertisesSchema(),
-	skills: z.array(SkillSchema),
-	rituals: RitualSchema.array().default([]),
-});
-
-const OrdemParanormalSheetCreateInputSchema = z.object({
-	attributes: AttributesSchema,
-	status: StatusBaseSchema,
-	identity: IdentitySchema,
-	characteristics: CharacteristicsSchema,
-	expertises: createExpertisesInputSchema(),
-	skills: z.array(
-		SkillSchema.extend({
-			cost: z.number().min(0).default(0),
-		}),
+	creditLimit: z.string(),
+	maximumLoad: z.string(),
+	items: z.array(
+		z.object({
+			name: z.string(),
+			category: z.string().optional(),
+			space: z.string(),
+		})
 	),
-	rituals: RitualSchema.array().default([]),
 });
 
-export type OrdemParanormalSheet = z.infer<typeof OrdemParanormalSheetSchema>;
-export type OrdemParanormalInventory = z.infer<typeof OrdemParanormalInventorySchema>;
-export type OrdemParanormalSheetCreateInput = z.infer<
-	typeof OrdemParanormalSheetCreateInputSchema
->;
+const OrdemParanormalCreateInput = z.object({
+	characterId: z.string(),
+	identity: IdentitySchema,
+	conditions: ConditionsSchema,
+	expertise: z.object(createInputExpertises(EXPERTISE_ATTRIBUTES)),
+	attributes: AttributesSchema,
+	ritual: RitualSchemas,
+});
 
-// Tipos auxiliares úteis
-export type SkillLevel = z.infer<typeof SkillLevelEnum>;
-export type Patent = z.infer<typeof PatentEnum>;
-export type Class = z.infer<typeof ClassEnum>;
-export type Points = z.infer<typeof PointsSchema>;
-export type Item = z.infer<typeof ItemSchema>;
-export type Skill = z.infer<typeof SkillSchema>;
-export type Attributes = z.infer<typeof AttributesSchema>;
-export type Ritual = z.infer<typeof RitualSchema>;
+
+export type OrdemParanormalSheet = z.infer<typeof OrdemParanormalSheet>;
+export type OrdemParanormalInventory = z.infer<typeof OrdemParanormalInventory>;
+export type OrdemParanormalCreateInput = z.infer<typeof OrdemParanormalCreateInput>;
 
 export {
-	OrdemParanormalSheetSchema,
-	OrdemParanormalInventorySchema,
-	OrdemParanormalSheetCreateInputSchema,
-	SkillLevelEnum,
 	PatentEnum,
-	RitualTypeEnum,
-	RitualCircleEnum,
-	ClassEnum,
-	EXPERTISE_ATTRIBUTES,
-};
+	TrailEnum,
+	elementEnum,
+	ExpertiseRanksEnum
+}
