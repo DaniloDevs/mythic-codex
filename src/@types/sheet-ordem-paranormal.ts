@@ -1,25 +1,25 @@
 import z from "zod";
 import {
-	createExpertises,
-	createInputExpertises,
-} from "@/utils/create-expertises-ordem-sheet";
+	createInputExpertiseMapSchema,
+	expertiseMapSchema,
+} from "@/@types/expertises-ordem-paranormal";
+import type { Character } from "./character";
 
-
+// enuns
 const PatentEnum = z.enum([
 	"Recruta",
 	"Agente especial",
 	"Oficial de operacoes",
 	"Agente de elite",
 ]);
-
 const TrailEnum = z.enum(["Combatente", "Especialista", "Ocultista"]);
-
 const elementEnum = z.enum(["Conhecimento", "Energia", "Morte", "Sangue", "Medo"]);
-
 const ExpertiseRanksEnum = z.enum(["Untrained", "Trained", "Veteran", "Expert"]);
+const AttributesEnum = z.enum(["strength", "intellect", "presence", "vigor", "agility"]);
 
-
+// schemas
 const IdentitySchema = z.object({
+	next: z.number().min(0).max(100),
 	origem: z.string(),
 	trail: TrailEnum,
 	defense: z.string(),
@@ -44,7 +44,6 @@ const ConditionsSchema = z.object({
 	}),
 });
 
-
 const AttributesSchema = z.object({
 	strength: z.number().int().min(0),
 	intellect: z.number().int().min(0),
@@ -52,7 +51,6 @@ const AttributesSchema = z.object({
 	vigor: z.number().int().min(0),
 	agility: z.number().int().min(0),
 });
-
 
 const RitualSchemas = z.array(
 	z.object({
@@ -63,50 +61,14 @@ const RitualSchemas = z.array(
 		target: z.string(),
 		duration: z.string(),
 		resistance: z.string(),
-	})
-)
+	}),
+);
 
-export const EXPERTISE_ATTRIBUTES = {
-	acrobatics: "agility",
-	animalHandling: "presence",
-	arts: "presence",
-	athletics: "strength",
-	currentAffairs: "intellect",
-	science: "intellect",
-	crime: "agility",
-	diplomacy: "presence",
-	deception: "presence",
-	fortitude: "vigor",
-	stealth: "agility",
-	initiative: "agility",
-	intimidation: "presence",
-	intuition: "presence",
-	investigation: "intellect",
-	fighting: "strength",
-	medicine: "intellect",
-	occultism: "intellect",
-	perception: "presence",
-	piloting: "agility",
-	marksmanship: "agility",
-	profession: "intellect",
-	reflexes: "agility",
-	religion: "presence",
-	survival: "intellect",
-	tactics: "intellect",
-	technology: "intellect",
-	will: "presence",
-} as const;
-
-
-const OrdemParanormalSheet = z.object({
-	id: z.string(),
-	characterId: z.string(),
-	updatedAt: z.date(),
-	identity: IdentitySchema,
-	conditions: ConditionsSchema,
-	expertise: z.object(createExpertises(EXPERTISE_ATTRIBUTES)),
-	attributes: AttributesSchema,
-	ritual: RitualSchemas,
+const skill = z.object({
+	name: z.string(),
+	sale: z.string(),
+	cost: z.string(),
+	description: z.string(),
 });
 
 const OrdemParanormalInventory = z.object({
@@ -123,27 +85,36 @@ const OrdemParanormalInventory = z.object({
 			name: z.string(),
 			category: z.string().optional(),
 			space: z.string(),
-		})
+		}),
 	),
+});
+
+const OrdemParanormalSheet = z.object({
+	id: z.string(),
+	characterId: z.string(),
+	updatedAt: z.date(),
+	identity: IdentitySchema,
+	conditions: ConditionsSchema,
+	expertise: expertiseMapSchema,
+	attributes: AttributesSchema,
+	ritual: RitualSchemas,
+	skill: z.array(skill),
 });
 
 const OrdemParanormalCreateInput = z.object({
 	characterId: z.string(),
 	identity: IdentitySchema,
 	conditions: ConditionsSchema,
-	expertise: z.object(createInputExpertises(EXPERTISE_ATTRIBUTES)),
+	expertise: createInputExpertiseMapSchema,
 	attributes: AttributesSchema,
 	ritual: RitualSchemas,
+	skill: z.array(skill),
 });
-
 
 export type OrdemParanormalSheet = z.infer<typeof OrdemParanormalSheet>;
 export type OrdemParanormalInventory = z.infer<typeof OrdemParanormalInventory>;
 export type OrdemParanormalCreateInput = z.infer<typeof OrdemParanormalCreateInput>;
 
-export {
-	PatentEnum,
-	TrailEnum,
-	elementEnum,
-	ExpertiseRanksEnum
-}
+export type OrdemCharacter = Character & OrdemParanormalSheet;
+
+export { PatentEnum, TrailEnum, elementEnum, ExpertiseRanksEnum, AttributesEnum };

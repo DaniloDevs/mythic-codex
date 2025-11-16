@@ -2,7 +2,7 @@ import z from "zod";
 import type {
 	OrdemParanormalInventory,
 	OrdemParanormalSheet,
-} from "./ordem-paranormal-sheet";
+} from "./sheet-ordem-paranormal";
 
 interface RpgSystemConfig {
 	sheet: unknown;
