@@ -1,5 +1,5 @@
+import { RpgSystemEnum } from "@/@types/rpg-system";
 import { faker } from "@faker-js/faker";
-import { RpgSystemEnum } from "@/@types/character";
 
 export type GenericSheet = { força: number; vida: number };
 export type GenericInventory = { item: string[] };

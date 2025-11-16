@@ -6,23 +6,17 @@ import type { Character } from "./../../@types/character";
 interface RequestData {
 	userId: string;
 }
-interface ResponseData<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
-	characters: Character<TSheet, TInventory>[];
+interface ResponseData {
+	characters: Character[];
 }
 
-export class FetchCharacterByIdService<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
+export class FetchCharacterByIdService {
 	constructor(
-		private characterRepository: ICharacterRepository<TSheet, TInventory>,
+		private characterRepository: ICharacterRepository,
 		private userRepository: IUserRepository,
 	) {}
 
-	async execute({ userId }: RequestData): Promise<ResponseData<TSheet, TInventory>> {
+	async execute({ userId }: RequestData): Promise<ResponseData> {
 		const user = await this.userRepository.getById(userId);
 
 		if (!user) {
