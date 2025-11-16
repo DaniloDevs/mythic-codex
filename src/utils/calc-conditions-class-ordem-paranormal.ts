@@ -1,23 +1,23 @@
 import { calculateConditionsPoints } from "./calc-conditions-points-ordem-paranormal";
 
 export function CalculateConditionsClass({
-	characterClass,
+	trail,
 	next,
 	vigor,
 	presence,
 }: {
-	characterClass: "Combatente" | "Especialista" | "Ocultista";
+	trail: "Combatente" | "Especialista" | "Ocultista";
 	next: number;
 	vigor: number;
 	presence: number;
 }) {
 	const level = next / 5;
 
-	let endeavorPoints: number, lifePoints: number, sanity: number;
+	let endeavorPoints: number, vitality: number, sanity: number;
 
-	switch (characterClass) {
+	switch (trail) {
 		case "Combatente":
-			lifePoints = calculateConditionsPoints({
+			vitality = calculateConditionsPoints({
 				base: 20,
 				level,
 				multiplier: 4,
@@ -33,7 +33,7 @@ export function CalculateConditionsClass({
 
 			break;
 		case "Especialista":
-			lifePoints = calculateConditionsPoints({
+			vitality = calculateConditionsPoints({
 				base: 16,
 				level,
 				multiplier: 3,
@@ -49,7 +49,7 @@ export function CalculateConditionsClass({
 
 			break;
 		case "Ocultista":
-			lifePoints = calculateConditionsPoints({
+			vitality = calculateConditionsPoints({
 				base: 12,
 				level,
 				multiplier: 2,
@@ -66,5 +66,5 @@ export function CalculateConditionsClass({
 			break;
 	}
 
-	return { endeavorPoints, lifePoints, sanity };
+	return { endeavorPoints, vitality, sanity };
 }
