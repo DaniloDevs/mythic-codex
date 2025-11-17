@@ -5,7 +5,7 @@ const character = z.object({
 	id: z.string(),
 	slug: z.string(),
 	userId: z.string(),
-	sheetId: z.string(),
+	sheetId: z.string().nullable(),
 	name: z.string(),
 	rpgSystem: RpgSystemEnum,
 	age: z.number(),
@@ -16,7 +16,7 @@ const character = z.object({
 
 const characterCreateInput = z.object({
 	userId: z.string(),
-	sheetId: z.string(),
+	sheetId: z.string().nullable(),
 	name: z.string(),
 	rpgSystem: RpgSystemEnum,
 	age: z.number(),

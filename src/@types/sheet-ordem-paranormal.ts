@@ -71,7 +71,7 @@ const skill = z.object({
 	description: z.string(),
 });
 
-const OrdemParanormalInventory = z.object({
+const InventoryOrdemParanormal = z.object({
 	itemLimit: z.object({
 		one: z.number().int().default(0),
 		two: z.number().int().default(0),
@@ -89,7 +89,7 @@ const OrdemParanormalInventory = z.object({
 	),
 });
 
-const OrdemParanormalSheet = z.object({
+const SheetOrdemParanormal = z.object({
 	id: z.string(),
 	characterId: z.string(),
 	updatedAt: z.date(),
@@ -101,20 +101,19 @@ const OrdemParanormalSheet = z.object({
 	skill: z.array(skill),
 });
 
-const OrdemParanormalCreateInput = z.object({
+const SheetOrdemParanormalCreateInput = z.object({
 	characterId: z.string(),
 	identity: IdentitySchema,
-	conditions: ConditionsSchema,
 	expertise: createInputExpertiseMapSchema,
 	attributes: AttributesSchema,
 	ritual: RitualSchemas,
 	skill: z.array(skill),
 });
 
-export type OrdemParanormalSheet = z.infer<typeof OrdemParanormalSheet>;
-export type OrdemParanormalInventory = z.infer<typeof OrdemParanormalInventory>;
-export type OrdemParanormalCreateInput = z.infer<typeof OrdemParanormalCreateInput>;
-
-export type OrdemCharacter = Character & OrdemParanormalSheet;
+export type SheetOrdemParanormal = z.infer<typeof SheetOrdemParanormal>;
+export type InventoryOrdemParanormal = z.infer<typeof InventoryOrdemParanormal>;
+export type SheetOrdemParanormalCreateInput = z.infer<
+	typeof SheetOrdemParanormalCreateInput
+>;
 
 export { PatentEnum, TrailEnum, elementEnum, ExpertiseRanksEnum, AttributesEnum };
