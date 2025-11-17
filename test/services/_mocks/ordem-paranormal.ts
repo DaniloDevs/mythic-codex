@@ -1,25 +1,27 @@
 import { faker } from "@faker-js/faker";
 import type { CharacterCreateInput } from "@/@types/character";
+import { expertisesAttributes } from "@/@types/expertises-ordem-paranormal";
 import {
-	type Class,
-	EXPERTISE_ATTRIBUTES,
-	type OrdemParanormalInventory,
-	type OrdemParanormalSheetCreateInput,
+	ExpertiseRanksEnum,
+	elementEnum,
+	type InventoryOrdemParanormal,
 	PatentEnum,
-	RitualCircleEnum,
-	RitualTypeEnum,
-	SkillLevelEnum,
-} from "@/@types/ordem-paranormal-sheet";
+	type SheetOrdemParanormalCreateInput,
+	TrailEnum,
+} from "@/@types/sheet-ordem-paranormal";
 
 export function createSheetOrdemParanormalMock({
 	userId,
-	characterClass,
+	trail,
+	sheetId,
 }: {
 	userId: string;
-	characterClass: Class;
+	trail: keyof typeof TrailEnum.enum;
+	sheetId: string;
 }) {
 	const characterDataMocks: CharacterCreateInput = {
 		userId,
+		sheetId,
 		name: faker.person.firstName(),
 		rpgSystem: "Ordem Paranormal",
 		age: faker.number.int({ max: 60, min: 10 }),
@@ -27,46 +29,40 @@ export function createSheetOrdemParanormalMock({
 		avatar: faker.image.avatar(),
 	};
 
-	const sheetMocks: OrdemParanormalSheetCreateInput = {
+	const sheetMocks: SheetOrdemParanormalCreateInput = {
+		characterId: "",
 		attributes: {
 			strength: faker.number.int(5),
 			agility: faker.number.int(5),
 			presence: faker.number.int(5),
 			vigor: faker.number.int(5),
-			intelligence: faker.number.int(5),
-		},
-		status: {
-			defense: faker.number.int(5),
-			next: faker.number.int(5),
-			move: faker.date.weekday(),
+			intellect: faker.number.int(5),
 		},
 		identity: {
-			class: characterClass,
-			origin: faker.location.city(),
+			trail: TrailEnum.parse(trail),
+			origem: faker.location.city(),
 			patent: faker.helpers.arrayElement(PatentEnum.options),
+			next: faker.number.int({ min: 0, max: 100 }),
+			defense: "",
+			dash: faker.date.weekday(),
+			protections: [faker.book.publisher()],
+			resistances: [faker.book.publisher()],
 		},
-		characteristics: {
-			protections: faker.book.publisher(),
-			resistances: faker.book.publisher(),
-			proficiencies: [faker.book.publisher()],
-		},
-		expertises: generateMockExpertises(),
-		skills: [
+		expertise: generateMockExpertises(),
+		skill: [
 			{
 				name: faker.commerce.productName(),
 				description: faker.commerce.productDescription(),
-				page: faker.number.int(5),
-				cost: faker.number.int(5),
+				cost: "",
+				sale: "",
 			},
 		],
-		rituals: [
+		ritual: [
 			{
 				name: faker.commerce.productName(),
-				description: faker.commerce.productDescription(),
-				type: faker.helpers.arrayElement(RitualTypeEnum.options),
-				circle: faker.helpers.arrayElement(RitualCircleEnum.options),
+				element: faker.helpers.arrayElement(elementEnum.options),
+				circle: faker.helpers.arrayElement(["1", "2", "3", "4"]),
 				execution: faker.book.publisher(),
-				range: faker.book.publisher(),
 				target: faker.book.publisher(),
 				duration: faker.book.publisher(),
 				resistance: faker.book.publisher(),
@@ -74,19 +70,19 @@ export function createSheetOrdemParanormalMock({
 		],
 	};
 
-	const inventoryMocks: OrdemParanormalInventory = {
-		limitItems: {
+	const inventoryMocks: InventoryOrdemParanormal = {
+		itemLimit: {
 			one: faker.number.int(5),
 			two: faker.number.int(5),
 			three: faker.number.int(5),
 			four: faker.number.int(5),
 		},
-		creditLimit: faker.number.int(7),
-		limitCharge: faker.number.int(10),
-		item: [
+		creditLimit: "",
+		maximumLoad: "",
+		items: [
 			{
 				name: faker.commerce.productName(),
-				category: faker.number.int(3),
+				category: "",
 				space: faker.person.lastName(),
 			},
 		],
@@ -100,10 +96,10 @@ export function createSheetOrdemParanormalMock({
 }
 
 function generateMockExpertises() {
-	return Object.keys(EXPERTISE_ATTRIBUTES).reduce((acc, key) => {
-		acc[key as keyof typeof EXPERTISE_ATTRIBUTES] = {
+	return Object.keys(expertisesAttributes).reduce((acc, key) => {
+		acc[key as keyof typeof expertisesAttributes] = {
 			extraBonus: faker.number.int({ min: 0, max: 5 }),
-			level: faker.helpers.arrayElement(SkillLevelEnum.options),
+			level: faker.helpers.arrayElement(ExpertiseRanksEnum.options),
 		};
 		return acc;
 	}, {} as any);

@@ -1,11 +1,17 @@
+import { error } from "node:console";
 import { randomUUID } from "node:crypto";
 import type { Character, CharacterCreateInput } from "@/@types/character";
 import type { Expertise, ExpertiseKey } from "@/@types/expertises-ordem-paranormal";
 import type { ICharacterRepository } from "@/repository/character-repository";
+import type { IInventoryRepository } from "@/repository/inventory-repository";
 import type { ISheetOrdemParanormalRepository } from "@/repository/sheet-ordem-paranormal-repository";
 import { CalculateConditionsClass } from "@/utils/calc-conditions-class-ordem-paranormal";
 import { createExpertises } from "@/utils/create-expertise-ordem-sheet";
-import type { InventoryOrdemParanormal, SheetOrdemParanormal, SheetOrdemParanormalCreateInput } from "../../@types/sheet-ordem-paranormal";
+import type {
+	InventoryOrdemParanormal,
+	SheetOrdemParanormal,
+	SheetOrdemParanormalCreateInput,
+} from "../../@types/sheet-ordem-paranormal";
 
 interface RequestData {
 	characterData: CharacterCreateInput;
@@ -15,7 +21,7 @@ interface RequestData {
 
 interface ResponseData {
 	character: Character;
-	sheet: SheetOrdemParanormal
+	sheet: SheetOrdemParanormal;
 	inventory: InventoryOrdemParanormal;
 }
 
@@ -23,7 +29,8 @@ export class CreateSheetOrdemParanormalService {
 	constructor(
 		private characterRepository: ICharacterRepository,
 		private ordemParanormalRepositoy: ISheetOrdemParanormalRepository,
-	) { }
+		private inventoryParanormalRepositoy: IInventoryRepository<InventoryOrdemParanormal>,
+	) {}
 
 	private transformSheet(
 		characterId: string,
@@ -99,19 +106,21 @@ export class CreateSheetOrdemParanormalService {
 		// criar o ordem sheet
 		const ordemSheet = await this.ordemParanormalRepositoy.create(ordemSheetTransformed);
 		// conecta character
-		await this.characterRepository.create({
-			...baseCharacter,
+
+		const updatedCharacter = await this.characterRepository.updateById(baseCharacter.id, {
 			sheetId: ordemSheet.id,
 		});
+
+		if (!updatedCharacter) {
+			throw error;
+		}
+
 		// criar o inventory
-
-		// retornar um {character&sheet + inventory}
-
-
+		const inventoryOrdem = await this.inventoryParanormalRepositoy.create(inventory);
 		return {
-			character: baseCharacter,
+			character: updatedCharacter,
 			sheet: ordemSheet,
-			inventory,
+			inventory: inventoryOrdem,
 		};
 	}
 }

@@ -3,7 +3,6 @@ import {
 	createInputExpertiseMapSchema,
 	expertiseMapSchema,
 } from "@/@types/expertises-ordem-paranormal";
-import type { Character } from "./character";
 
 // enuns
 const PatentEnum = z.enum([
@@ -72,6 +71,7 @@ const skill = z.object({
 });
 
 const InventoryOrdemParanormal = z.object({
+	id: z.string(),
 	itemLimit: z.object({
 		one: z.number().int().default(0),
 		two: z.number().int().default(0),

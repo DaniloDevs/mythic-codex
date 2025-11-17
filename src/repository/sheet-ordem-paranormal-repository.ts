@@ -1,5 +1,5 @@
-import type { OrdemParanormalSheet } from "@/@types/sheet-ordem-paranormal";
+import type { SheetOrdemParanormal } from "@/@types/sheet-ordem-paranormal";
 
 export interface ISheetOrdemParanormalRepository {
-	create(data: OrdemParanormalSheet): Promise<OrdemParanormalSheet>;
+	create(data: SheetOrdemParanormal): Promise<SheetOrdemParanormal>;
 }

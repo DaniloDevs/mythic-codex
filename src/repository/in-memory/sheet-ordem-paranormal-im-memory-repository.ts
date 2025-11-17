@@ -1,13 +1,13 @@
-import type { OrdemParanormalSheet } from "@/@types/sheet-ordem-paranormal";
+import type { SheetOrdemParanormal } from "@/@types/sheet-ordem-paranormal";
 import type { ISheetOrdemParanormalRepository } from "../sheet-ordem-paranormal-repository";
 
 export class SheetOrdemParanormalImMemoryRepository
 	implements ISheetOrdemParanormalRepository
 {
-	public items: OrdemParanormalSheet[] = [];
+	public items: SheetOrdemParanormal[] = [];
 
-	async create(data: OrdemParanormalSheet) {
-		const sheet: OrdemParanormalSheet = {
+	async create(data: SheetOrdemParanormal) {
+		const sheet: SheetOrdemParanormal = {
 			id: data.id,
 			characterId: data.characterId,
 			updatedAt: data.updatedAt,
