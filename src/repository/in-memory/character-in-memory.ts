@@ -11,6 +11,7 @@ export class CharacterImMemoryRepository implements ICharacterRepository {
 			id: randomUUID(),
 			userId: data.userId,
 			sheetId: data.sheetId,
+			inventoryId: data.inventoryId,
 			name: data.name,
 			rpgSystem: data.rpgSystem,
 			slug: createSlug(data.name),
