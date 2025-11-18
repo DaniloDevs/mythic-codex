@@ -38,4 +38,10 @@ export class SheetOrdemParanormalImMemoryRepository
 
 		return updatedSheetOrdem;
 	}
+
+	async getById(id: string) {
+		const sheet = this.items.find((char) => char.id === id);
+
+		return sheet ?? null;
+	}
 }

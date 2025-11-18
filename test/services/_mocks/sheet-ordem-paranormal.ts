@@ -1,36 +1,20 @@
 import { faker } from "@faker-js/faker";
-import type { CharacterCreateInput } from "@/@types/character";
 import { expertisesAttributes } from "@/@types/expertises-ordem-paranormal";
 import {
 	ExpertiseRanksEnum,
 	elementEnum,
-	type InventoryOrdemParanormal,
 	PatentEnum,
 	type SheetOrdemParanormalCreateInput,
 	TrailEnum,
 } from "@/@types/sheet-ordem-paranormal";
 
 export function createSheetOrdemParanormalMock({
-	userId,
 	trail,
-	sheetId,
 }: {
-	userId: string;
 	trail: keyof typeof TrailEnum.enum;
-	sheetId: string;
 }) {
-	const characterDataMocks: CharacterCreateInput = {
-		userId,
-		sheetId,
-		name: faker.person.firstName(),
-		rpgSystem: "Ordem Paranormal",
-		age: faker.number.int({ max: 60, min: 10 }),
-		description: faker.person.bio(),
-		avatar: faker.image.avatar(),
-	};
-
 	const sheetMocks: SheetOrdemParanormalCreateInput = {
-		characterId: "",
+		characterId: null,
 		attributes: {
 			strength: faker.number.int(5),
 			agility: faker.number.int(5),
@@ -70,27 +54,7 @@ export function createSheetOrdemParanormalMock({
 		],
 	};
 
-	const inventoryMocks: InventoryOrdemParanormal = {
-		itemLimit: {
-			one: faker.number.int(5),
-			two: faker.number.int(5),
-			three: faker.number.int(5),
-			four: faker.number.int(5),
-		},
-		creditLimit: "",
-		maximumLoad: "",
-		items: [
-			{
-				name: faker.commerce.productName(),
-				category: "",
-				space: faker.person.lastName(),
-			},
-		],
-	};
-
 	return {
-		characterDataMocks,
-		inventoryMocks,
 		sheetMocks,
 	};
 }

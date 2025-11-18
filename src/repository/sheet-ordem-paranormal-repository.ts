@@ -6,4 +6,5 @@ export interface ISheetOrdemParanormalRepository {
 		id: string,
 		data: Partial<SheetOrdemParanormal>,
 	): Promise<SheetOrdemParanormal | null>;
+	getById(id: string): Promise<SheetOrdemParanormal | null>;
 }
