@@ -12,6 +12,7 @@ import type {
 	SheetOrdemParanormal,
 	SheetOrdemParanormalCreateInput,
 } from "../../@types/sheet-ordem-paranormal";
+import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 
 interface RequestData {
 	characterData: CharacterCreateInput;
@@ -30,10 +31,9 @@ export class CreateSheetOrdemParanormalService {
 		private characterRepository: ICharacterRepository,
 		private ordemParanormalRepositoy: ISheetOrdemParanormalRepository,
 		private inventoryParanormalRepositoy: IInventoryRepository<InventoryOrdemParanormal>,
-	) {}
+	) { }
 
 	private transformSheet(
-		characterId: string,
 		sheet: SheetOrdemParanormalCreateInput,
 	): SheetOrdemParanormal {
 		const { endeavorPoints, vitality, sanity } = CalculateConditionsClass({
@@ -45,7 +45,7 @@ export class CreateSheetOrdemParanormalService {
 
 		const ordemSheet: SheetOrdemParanormal = {
 			id: randomUUID(),
-			characterId: characterId,
+			characterId: sheet.characterId,
 			updatedAt: new Date(),
 			identity: {
 				next: sheet.identity.next,
@@ -92,35 +92,38 @@ export class CreateSheetOrdemParanormalService {
 	}
 
 	async execute({ characterData, inventory, sheet }: RequestData): Promise<ResponseData> {
-		// validar se o pp e pra ordem
-		// validar se ja exist algum pp com as mesmas informações(character e identity )
-		// criar o character
-		const baseCharacter = await this.characterRepository.create({
+
+		// Valida a ficha
+		const tranformedSheet = this.transformSheet(sheet)
+
+		// Cria Ficha e Inventario 
+		const [sheetOrdemBase, inventoryOrdemBase] = await Promise.all([
+			await this.ordemParanormalRepositoy.create(tranformedSheet),
+			await this.inventoryParanormalRepositoy.create(inventory)
+		])
+
+		// Cria Personagem
+		const character = await this.characterRepository.create({
 			...characterData,
-			sheetId: null,
-		});
+			sheetId: sheetOrdemBase.id,
+			inventoryId: inventoryOrdemBase.id
+		})
 
-		// transformar dados de entrada em sheet
-		const ordemSheetTransformed = this.transformSheet(baseCharacter.id, sheet);
-
-		// criar o ordem sheet
-		const ordemSheet = await this.ordemParanormalRepositoy.create(ordemSheetTransformed);
-		// conecta character
-
-		const updatedCharacter = await this.characterRepository.updateById(baseCharacter.id, {
-			sheetId: ordemSheet.id,
-		});
-
-		if (!updatedCharacter) {
-			throw error;
+		// Associa Ficha e inventario a um personagem
+		const [sheetOrdem, inventoryOrdem] = await Promise.all([
+			await this.ordemParanormalRepositoy.updateById(sheetOrdemBase.id, { characterId: character.id }),
+			await this.inventoryParanormalRepositoy.updateById(inventoryOrdemBase.id, { characterId: character.id })
+		])
+		
+		// Validação 
+		if (!sheetOrdem?.characterId || !inventoryOrdem?.characterId) {
+			throw new ResourceNotFoundError()
 		}
 
-		// criar o inventory
-		const inventoryOrdem = await this.inventoryParanormalRepositoy.create(inventory);
 		return {
-			character: updatedCharacter,
-			sheet: ordemSheet,
+			character,
 			inventory: inventoryOrdem,
-		};
+			sheet: sheetOrdem
+		}
 	}
 }

@@ -4,6 +4,7 @@ import type { ISheetOrdemParanormalRepository } from "../sheet-ordem-paranormal-
 export class SheetOrdemParanormalImMemoryRepository
 	implements ISheetOrdemParanormalRepository
 {
+	
 	public items: SheetOrdemParanormal[] = [];
 
 	async create(data: SheetOrdemParanormal) {
@@ -22,5 +23,20 @@ export class SheetOrdemParanormalImMemoryRepository
 		this.items.push(sheet);
 
 		return sheet;
+	}
+
+	async updateById(id: string, data: Partial<SheetOrdemParanormal>) {
+		const index = this.items.findIndex((sheetordem) => sheetordem.id === id);
+
+		const oldSheetOrdem = this.items[index];
+
+		const updatedSheetOrdem = {
+			...oldSheetOrdem,
+			...data,
+		};
+
+		this.items[index] = updatedSheetOrdem;
+
+		return updatedSheetOrdem;
 	}
 }

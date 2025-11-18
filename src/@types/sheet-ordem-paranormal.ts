@@ -72,6 +72,7 @@ const skill = z.object({
 
 const InventoryOrdemParanormal = z.object({
 	id: z.string(),
+	characterId: z.string().nullable(),
 	itemLimit: z.object({
 		one: z.number().int().default(0),
 		two: z.number().int().default(0),
@@ -91,7 +92,7 @@ const InventoryOrdemParanormal = z.object({
 
 const SheetOrdemParanormal = z.object({
 	id: z.string(),
-	characterId: z.string(),
+	characterId: z.string().nullable(),
 	updatedAt: z.date(),
 	identity: IdentitySchema,
 	conditions: ConditionsSchema,
@@ -102,7 +103,7 @@ const SheetOrdemParanormal = z.object({
 });
 
 const SheetOrdemParanormalCreateInput = z.object({
-	characterId: z.string(),
+	characterId: z.string().nullable(),
 	identity: IdentitySchema,
 	expertise: createInputExpertiseMapSchema,
 	attributes: AttributesSchema,
