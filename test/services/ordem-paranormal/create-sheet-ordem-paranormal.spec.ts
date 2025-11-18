@@ -1,5 +1,6 @@
 import { beforeAll, beforeEach, describe, expect, it } from "vitest";
 import type { InventoryOrdemParanormal } from "@/@types/sheet-ordem-paranormal";
+import type { User } from "@/@types/user";
 import type { ICharacterRepository } from "@/repository/character-repository";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { InventoryImMemoryRepository } from "@/repository/in-memory/inventory-in-memory";
@@ -10,7 +11,6 @@ import type { ISheetOrdemParanormalRepository } from "@/repository/sheet-ordem-p
 import type { IUserRepository } from "@/repository/user-repository";
 import { CreateSheetOrdemParanormalService } from "@/services/sheet-ordem-paranormal/create-sheet-ordem-paranormal";
 import { createSheetOrdemParanormalMock } from "../_mocks/ordem-paranormal";
-import type { User } from "@/@types/user";
 
 describe("Create Sheet Ordem Paranormal - Service", () => {
 	let userRepository: IUserRepository;
@@ -19,7 +19,7 @@ describe("Create Sheet Ordem Paranormal - Service", () => {
 	let inventoryRespository: IInventoryRepository<InventoryOrdemParanormal>;
 
 	let sut: CreateSheetOrdemParanormalService;
-	let user: User
+	let user: User;
 
 	beforeEach(() => {
 		characterRepository = new CharacterImMemoryRepository();
@@ -46,7 +46,11 @@ describe("Create Sheet Ordem Paranormal - Service", () => {
 
 	it("Deve ser possivel criar um ficha de ordem paranormal", async () => {
 		const { characterDataMocks, inventoryMocks, sheetMocks } =
-			createSheetOrdemParanormalMock({ trail: "Combatente", sheetId: "", userId: user.id });
+			createSheetOrdemParanormalMock({
+				trail: "Combatente",
+				sheetId: "",
+				userId: user.id,
+			});
 
 		const { character, inventory, sheet } = await sut.execute({
 			characterData: characterDataMocks,

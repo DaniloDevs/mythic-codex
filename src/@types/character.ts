@@ -8,7 +8,7 @@ const character = z.object({
 	userId: z.string(),
 	sheetId: z.string(),
 	inventoryId: z.string(),
-	
+
 	name: z.string(),
 	rpgSystem: RpgSystemEnum,
 	age: z.number(),

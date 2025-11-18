@@ -2,7 +2,8 @@ import { randomUUID } from "node:crypto";
 import type { IInventoryRepository } from "../inventory-repository";
 
 export class InventoryImMemoryRepository<TInventory extends Record<string, any>>
-	implements IInventoryRepository<TInventory> {
+	implements IInventoryRepository<TInventory>
+{
 	public items: TInventory[] = [];
 
 	async create(data: TInventory): Promise<TInventory> {

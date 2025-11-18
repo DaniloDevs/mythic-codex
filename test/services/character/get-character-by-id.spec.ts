@@ -2,9 +2,8 @@ import { beforeEach, describe, expect, it } from "vitest";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import { CreateCharacterService } from "@/services/character/create-character";
-import { createCharacterMock } from "../_mocks/character";
 import { GetCharacterByIdService } from "@/services/character/get-character-by-id";
+import { createCharacterMock } from "../_mocks/character";
 
 describe("Get Character by Id - Service", () => {
 	let characterRepository: CharacterImMemoryRepository;
@@ -30,7 +29,7 @@ describe("Get Character by Id - Service", () => {
 			userId: user.id,
 		});
 
-      const newCharacter = await characterRepository.create(characterDataMocks)
+		const newCharacter = await characterRepository.create(characterDataMocks);
 
 		const { character } = await sut.execute({
 			id: newCharacter.id,

@@ -4,7 +4,6 @@ import type { ISheetOrdemParanormalRepository } from "../sheet-ordem-paranormal-
 export class SheetOrdemParanormalImMemoryRepository
 	implements ISheetOrdemParanormalRepository
 {
-	
 	public items: SheetOrdemParanormal[] = [];
 
 	async create(data: SheetOrdemParanormal) {
