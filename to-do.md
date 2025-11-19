@@ -20,11 +20,11 @@
 ### Character
 - [x] Deve ser possivel criar um personagem
 - [x] Deve ser possivel buscar um personagem pelo id
-- [] Deve ser possivel atualizar um personagem
+- [x] Deve ser possivel atualizar um personagem
 - [] Deve ser possivel buscar uma listar todos os personagens de um usuario
 - [] Deve ser possivel fazer paginação durante a busca da listagem de personagens
-- [ ] Deve ser possível filtrar personagens por sistema RPG
-- [ ] Deve ser possível buscar personagem por slug
+- [] Deve ser possível filtrar personagens por sistema RPG
+- [] Deve ser possível buscar personagem por slug
 
 ### Ficha de Ordem Paranormal
 - [x] Deve ser possivel criar uma ficha 
