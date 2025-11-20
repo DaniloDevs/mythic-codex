@@ -70,29 +70,11 @@ const skill = z.object({
 	description: z.string(),
 });
 
-const InventoryOrdemParanormal = z.object({
-	id: z.string(),
-	characterId: z.string().nullable(),
-	itemLimit: z.object({
-		one: z.number().int().default(0),
-		two: z.number().int().default(0),
-		three: z.number().int().default(0),
-		four: z.number().int().default(0),
-	}),
-	creditLimit: z.string(),
-	maximumLoad: z.string(),
-	items: z.array(
-		z.object({
-			name: z.string(),
-			category: z.string().optional(),
-			space: z.string(),
-		}),
-	),
-});
+
 
 const SheetOrdemParanormal = z.object({
 	id: z.string(),
-	characterId: z.string().nullable(),
+	characterId: z.string(),
 	updatedAt: z.date(),
 	identity: IdentitySchema,
 	conditions: ConditionsSchema,
@@ -103,16 +85,16 @@ const SheetOrdemParanormal = z.object({
 });
 
 const SheetOrdemParanormalCreateInput = z.object({
-	characterId: z.string().nullable(),
 	identity: IdentitySchema,
+	characterId: z.string(),
 	expertise: createInputExpertiseMapSchema,
 	attributes: AttributesSchema,
 	ritual: RitualSchemas,
 	skill: z.array(skill),
 });
 
+
 export type SheetOrdemParanormal = z.infer<typeof SheetOrdemParanormal>;
-export type InventoryOrdemParanormal = z.infer<typeof InventoryOrdemParanormal>;
 export type SheetOrdemParanormalCreateInput = z.infer<
 	typeof SheetOrdemParanormalCreateInput
 >;
