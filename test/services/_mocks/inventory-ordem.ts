@@ -1,4 +1,4 @@
-import type { InventoryOrdemParanormalCreateInput } from "@/@types/inventory-ordem-paranormal";
+import type { InventoryOrdemParanormalCreateInput } from "@/@types/ordem-paranormal/inventory-ordem-paranormal";
 
 export function createInventoryMock() {
 	const inventoryDataMocks: InventoryOrdemParanormalCreateInput = {

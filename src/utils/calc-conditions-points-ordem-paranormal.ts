@@ -10,5 +10,6 @@ export function calculateConditionsPoints({
 	multiplier: number;
 }) {
 	const attr = attribute || 0;
-	return base + attr + level * multiplier + level * attr;
+	const result = base + attr + level * multiplier + level * attr;
+	return Math.floor(result);
 }

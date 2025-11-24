@@ -1,12 +1,12 @@
 import { faker } from "@faker-js/faker";
-import { expertisesAttributes } from "@/@types/expertises-ordem-paranormal";
+import { expertisesAttributes } from "@/@types/ordem-paranormal/expertises-ordem-paranormal";
 import {
 	ExpertiseRanksEnum,
 	elementEnum,
 	PatentEnum,
 	type SheetOrdemParanormalCreateInput,
 	TrailEnum,
-} from "@/@types/sheet-ordem-paranormal";
+} from "@/@types/ordem-paranormal/sheet-ordem-paranormal";
 
 export function createSheetOrdemParanormalMock({
 	trail,
@@ -16,17 +16,17 @@ export function createSheetOrdemParanormalMock({
 	const sheetMocks: SheetOrdemParanormalCreateInput = {
 		characterId: "",
 		attributes: {
-			strength: faker.number.int(5),
-			agility: faker.number.int(5),
-			presence: faker.number.int(5),
-			vigor: faker.number.int(5),
-			intellect: faker.number.int(5),
+			strength: 2,
+			agility: 2,
+			presence: 2,
+			vigor: 2,
+			intellect: 2,
 		},
 		identity: {
 			trail: TrailEnum.parse(trail),
 			origem: faker.location.city(),
 			patent: faker.helpers.arrayElement(PatentEnum.options),
-			next: faker.number.int({ min: 0, max: 100 }),
+			next: 50,
 			defense: "",
 			dash: faker.date.weekday(),
 			protections: [faker.book.publisher()],

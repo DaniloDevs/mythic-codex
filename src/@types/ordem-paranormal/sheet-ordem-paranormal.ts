@@ -1,9 +1,4 @@
 import z from "zod";
-import {
-	createInputExpertiseMapSchema,
-	expertiseMapSchema,
-} from "./expertises-ordem-paranormal";
-
 // enuns
 const PatentEnum = z.enum([
 	"Recruta",
@@ -76,7 +71,6 @@ const SheetOrdemParanormal = z.object({
 	updatedAt: z.date(),
 	identity: IdentitySchema,
 	conditions: ConditionsSchema,
-	expertise: expertiseMapSchema,
 	attributes: AttributesSchema,
 	ritual: RitualSchemas,
 	skill: z.array(skill),
@@ -85,7 +79,6 @@ const SheetOrdemParanormal = z.object({
 const SheetOrdemParanormalCreateInput = z.object({
 	identity: IdentitySchema,
 	characterId: z.string(),
-	expertise: createInputExpertiseMapSchema,
 	attributes: AttributesSchema,
 	ritual: RitualSchemas,
 	skill: z.array(skill),

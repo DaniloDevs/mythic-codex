@@ -1,8 +1,8 @@
 import { randomUUID } from "node:crypto";
 import type { Character, CharacterCreateInput } from "@/@types/character";
 import type {
-	Expertise,
-	ExpertiseKey,
+	ExpertiseInput,
+	ExpertiseValue,
 } from "@/@types/ordem-paranormal/expertises-ordem-paranormal";
 import type {
 	InventoryOrdemParanormal,
@@ -18,7 +18,7 @@ import type { IInventoryOrdemRepository } from "@/repository/inventory-ordem-rep
 import type { ISheetOrdemParanormalRepository } from "@/repository/sheet-ordem-repository";
 import type { IUserRepository } from "@/repository/user-repository";
 import { CalculateConditionsClass } from "@/utils/calc-conditions-class-ordem-paranormal";
-import { createExpertises } from "@/utils/create-expertise-ordem-sheet";
+import { createExpertiseValue } from "@/utils/create-expertise-ordem-sheet";
 
 interface RequestData {
 	userId: string;
@@ -68,6 +68,7 @@ export class CreateCharacterOrdemService {
 		// cria inventario
 		const inventory = await this.inventoryRepository.create({
 			...inventoryData,
+			characterId: character.id,
 		});
 
 		// retorna dados
@@ -120,12 +121,6 @@ export class CreateCharacterOrdemService {
 					current: endeavorPoints,
 				},
 			},
-			expertise: Object.entries(sheet.expertise).reduce((acc, [key, value]) => {
-				// biome-ignore lint/performance/noAccumulatingSpread: <Erro de complexidade>
-				Object.assign(acc, createExpertises(key as ExpertiseKey, value));
-
-				return acc;
-			}, {} as Expertise),
 			skill: sheet.skill,
 			attributes: {
 				strength: sheet.attributes.strength,

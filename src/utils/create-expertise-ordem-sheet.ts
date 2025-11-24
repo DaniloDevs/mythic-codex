@@ -1,21 +1,22 @@
 import {
-	type CreateInputExpertise,
-	type ExpertiseKey,
+	type ExpertiseInput,
 	type ExpertiseValue,
+	expertiseRanks,
 	expertisesAttributes,
-	levelExpertiseBonus,
-} from "@/@types/expertises-ordem-paranormal";
+} from "@/@types/ordem-paranormal/expertises-ordem-paranormal";
 
-export function createExpertises(exp: ExpertiseKey, expValue: CreateInputExpertise) {
-	const expertise = {
-		[exp]: {
-			rank: expValue.rank,
-			attributes: expertisesAttributes[exp],
-			rankBonus: levelExpertiseBonus[expValue.rank],
-			trained: expValue.trained,
-			secondBonus: expValue.secondBonus,
-		} as ExpertiseValue,
+export function createExpertiseValue(
+	exp: keyof typeof expertisesAttributes,
+	input: ExpertiseInput,
+): ExpertiseValue {
+	const attribute = expertisesAttributes[exp];
+	const rankBonus = expertiseRanks[input.rank];
+
+	return {
+		rank: input.rank,
+		trained: input.trained,
+		secondBonus: input.secondBonus,
+		attribute,
+		rankBonus,
 	};
-
-	return expertise;
 }

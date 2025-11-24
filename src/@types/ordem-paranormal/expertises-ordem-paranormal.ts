@@ -32,51 +32,42 @@ export const expertisesAttributes = {
 	will: "presence",
 } as const;
 
-const ExpertiseEnum = z.enum(
-	Object.keys(expertisesAttributes) as [keyof typeof expertisesAttributes],
-);
-
-const levelExpertiseBonus = {
+export const expertiseRanks = {
 	Untrained: 0,
 	Trained: 5,
 	Veteran: 10,
 	Expert: 15,
 } as const;
 
-type ExpertiseKey = keyof typeof expertisesAttributes;
+export const ExpertiseRankEnum = z.enum(
+	Object.keys(expertiseRanks) as Array<keyof typeof expertiseRanks>,
+);
 
-const ExpertiseRanksEnum = z.enum(["Untrained", "Trained", "Veteran", "Expert"]);
+export const expertiseKeys = [...Object.keys(expertisesAttributes)] as unknown as [
+	keyof typeof expertisesAttributes,
+	...(typeof expertisesAttributes)[],
+];
 
-const createInputExpertiseSchema = z.object({
-	rank: ExpertiseRanksEnum,
+const CreateInputExpertiseSchema = z.object({
+	rank: ExpertiseRankEnum,
 	trained: z.boolean(),
 	secondBonus: z.number().min(0),
 });
 
-const expertiseSchema = z.object({
-	rank: ExpertiseRanksEnum,
-	attributes: AttributesEnum,
+const ExpertiseSchema = z.object({
+	rank: ExpertiseRankEnum,
+	trained: z.boolean(),
+	secondBonus: z.number().min(0),
+	attribute: AttributesEnum,
 	rankBonus: z.number().min(0),
-	trained: z.boolean(),
-	secondBonus: z.number().min(0),
 });
 
-const expertiseMapSchema = z.record(ExpertiseEnum, expertiseSchema);
-const createInputExpertiseMapSchema = z.record(ExpertiseEnum, createInputExpertiseSchema);
+export type ExpertiseInput = z.infer<typeof CreateInputExpertiseSchema>;
+export type ExpertiseValue = z.infer<typeof ExpertiseSchema>;
+export type ExpertiseKeys = z.infer<typeof expertiseKeys>;
 
-type CreateInputExpertise = z.infer<typeof createInputExpertiseSchema>;
-type CreateInputMapExpertise = z.infer<typeof createInputExpertiseMapSchema>;
-type ExpertiseValue = z.infer<typeof expertiseSchema>;
-type Expertise = z.infer<typeof expertiseMapSchema>;
-
-export {
-	ExpertiseEnum,
-	expertiseMapSchema,
-	type CreateInputMapExpertise,
-	createInputExpertiseMapSchema,
-	levelExpertiseBonus,
-	type ExpertiseKey,
-	type CreateInputExpertise,
-	type ExpertiseValue,
-	type Expertise,
-};
+export const ExpertiseMapSchema = z.object(
+	Object.fromEntries(
+		Object.keys(expertisesAttributes).map((k) => [k, ExpertiseSchema]),
+	) as Record<keyof typeof expertisesAttributes, typeof ExpertiseSchema>,
+);
