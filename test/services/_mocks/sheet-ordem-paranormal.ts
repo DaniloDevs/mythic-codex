@@ -14,7 +14,7 @@ export function createSheetOrdemParanormalMock({
 	trail: keyof typeof TrailEnum.enum;
 }) {
 	const sheetMocks: SheetOrdemParanormalCreateInput = {
-		characterId: null,
+		characterId: "",
 		attributes: {
 			strength: faker.number.int(5),
 			agility: faker.number.int(5),

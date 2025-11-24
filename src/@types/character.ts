@@ -4,11 +4,7 @@ import { RpgSystemEnum } from "./rpg-system";
 const character = z.object({
 	id: z.string(),
 	slug: z.string(),
-
 	userId: z.string(),
-	sheetId: z.string(),
-	inventoryId: z.string(),
-
 	name: z.string(),
 	rpgSystem: RpgSystemEnum,
 	age: z.number(),
@@ -17,16 +13,9 @@ const character = z.object({
 	createdAt: z.date(),
 });
 
-const characterCreateInput = z.object({
-	userId: z.string(),
-	sheetId: z.string(),
-	inventoryId: z.string(),
-
-	name: z.string(),
-	rpgSystem: RpgSystemEnum,
-	age: z.number(),
-	description: z.string(),
-	avatar: z.string().nullable(),
+const characterCreateInput = character.omit({
+	id: true,
+	slug: true,
 });
 
 export type Character = z.infer<typeof character>;
