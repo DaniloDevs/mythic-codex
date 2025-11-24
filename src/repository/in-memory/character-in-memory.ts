@@ -3,29 +3,22 @@ import type { Character, CharacterCreateInput } from "@/@types/character";
 import { createSlug } from "@/utils/create-slug";
 import type { ICharacterRepository } from "../character-repository";
 
-export class CharacterImMemoryRepository<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> implements ICharacterRepository<TSheet, TInventory>
-{
-	public items: Character<TSheet, TInventory>[] = [];
+export class CharacterImMemoryRepository implements ICharacterRepository {
+	public items: Character[] = [];
 
-	async create(
-		data: CharacterCreateInput,
-		sheet: TSheet,
-		inventory: TInventory,
-	): Promise<Character<TSheet, TInventory>> {
-		const character: Character<TSheet, TInventory> = {
+	async create(data: CharacterCreateInput): Promise<Character> {
+		const character: Character = {
 			id: randomUUID(),
 			userId: data.userId,
+			sheetId: data.sheetId,
+			inventoryId: data.inventoryId,
 			name: data.name,
 			rpgSystem: data.rpgSystem,
 			slug: createSlug(data.name),
 			age: data.age,
 			avatar: data.avatar,
 			description: data.description,
-			sheet,
-			inventory,
+			createdAt: new Date(),
 		};
 
 		this.items.push(character);
@@ -33,7 +26,7 @@ export class CharacterImMemoryRepository<
 		return character;
 	}
 
-	async getById(id: string): Promise<Character<TSheet, TInventory> | null> {
+	async getById(id: string): Promise<Character | null> {
 		const character = this.items.find((char) => char.id === id);
 
 		return character ?? null;
@@ -41,8 +34,8 @@ export class CharacterImMemoryRepository<
 
 	async updateById(
 		id: string,
-		updateData: Partial<Character<TSheet, TInventory>>,
-	): Promise<Character<TSheet, TInventory> | null> {
+		updateData: Partial<Character>,
+	): Promise<Character | null> {
 		const characterIndex = this.items.findIndex((char) => char.id === id);
 
 		if (characterIndex < 0) return null;

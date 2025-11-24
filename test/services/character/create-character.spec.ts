@@ -3,27 +3,17 @@ import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
 import { CreateCharacterService } from "@/services/character/create-character";
-import {
-	createCharacterMock,
-	type GenericInventory,
-	type GenericSheet,
-} from "../_mocks/character";
+import { createCharacterMock } from "../_mocks/character";
 
 describe("Create Character - Service", () => {
-	let characterRepository: CharacterImMemoryRepository<GenericSheet, GenericInventory>;
+	let characterRepository: CharacterImMemoryRepository;
 	let userRepository: UserImMemoryRepository;
-	let sut: CreateCharacterService<GenericSheet, GenericInventory>;
+	let sut: CreateCharacterService;
 
 	beforeEach(() => {
-		characterRepository = new CharacterImMemoryRepository<
-			GenericSheet,
-			GenericInventory
-		>();
+		characterRepository = new CharacterImMemoryRepository();
 		userRepository = new UserImMemoryRepository();
-		sut = new CreateCharacterService<GenericSheet, GenericInventory>(
-			characterRepository,
-			userRepository,
-		);
+		sut = new CreateCharacterService(characterRepository, userRepository);
 	});
 
 	it("should be possible to create a character with valid data.", async () => {
@@ -35,29 +25,25 @@ describe("Create Character - Service", () => {
 			password: "123456",
 		});
 
-		const { characterDataMocks, sheetMocks, inventoryMocks } = createCharacterMock({
+		const { characterDataMocks } = createCharacterMock({
 			userId: user.id,
 		});
 
 		const { character } = await sut.execute({
 			characterData: characterDataMocks,
-			sheet: sheetMocks,
-			inventory: inventoryMocks,
 		});
 
 		expect(character.id).toEqual(expect.any(String));
 	});
 
 	it("should not be possible to create a character for a user that does not exist.", async () => {
-		const { characterDataMocks, sheetMocks, inventoryMocks } = createCharacterMock({
+		const { characterDataMocks } = createCharacterMock({
 			userId: "not-exist-user",
 		});
 
 		await expect(() =>
 			sut.execute({
 				characterData: characterDataMocks,
-				sheet: sheetMocks,
-				inventory: inventoryMocks,
 			}),
 		).rejects.toBeInstanceOf(ResourceNotFoundError);
 	});

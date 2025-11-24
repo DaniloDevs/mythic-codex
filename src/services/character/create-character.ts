@@ -3,54 +3,28 @@ import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import type { ICharacterRepository } from "@/repository/character-repository";
 import type { IUserRepository } from "@/repository/user-repository";
 
-interface RequestData<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
+interface RequestData {
 	characterData: CharacterCreateInput;
-	sheet: TSheet;
-	inventory: TInventory;
 }
 
-interface ResponseData<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
-	character: Character<TSheet, TInventory>;
+interface ResponseData {
+	character: Character;
 }
 
-export class CreateCharacterService<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-	TSheetInput extends Record<string, any> = TSheet,
-> {
+export class CreateCharacterService {
 	constructor(
-		private characterRepository: ICharacterRepository<TSheet, TInventory>,
+		private characterRepository: ICharacterRepository,
 		private userRepository: IUserRepository,
 	) {}
 
-	protected transformSheet(sheet: TSheetInput): TSheet {
-		return sheet as unknown as TSheet;
-	}
-
-	async execute({
-		characterData,
-		sheet,
-		inventory,
-	}: RequestData<TSheetInput, TInventory>): Promise<ResponseData<TSheet, TInventory>> {
+	async execute({ characterData }: RequestData): Promise<ResponseData> {
 		const alredyExistUser = await this.userRepository.getById(characterData.userId);
 
 		if (!alredyExistUser) {
 			throw new ResourceNotFoundError();
 		}
 
-		const transformedSheet = this.transformSheet(sheet);
-
-		const character = await this.characterRepository.create(
-			characterData,
-			transformedSheet,
-			inventory,
-		);
+		const character = await this.characterRepository.create(characterData);
 
 		return { character };
 	}

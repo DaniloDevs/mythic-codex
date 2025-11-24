@@ -1,35 +1,22 @@
 import z from "zod";
+import { RpgSystemEnum } from "./rpg-system";
 
-const RpgSystemEnum = z.enum(["Dungeon And Dragons", "Ordem Paranormal", "Tormenta"]);
-
-const CharacterBaseSchema = z.object({
+const character = z.object({
+	id: z.string(),
+	slug: z.string(),
 	userId: z.string(),
 	name: z.string(),
 	rpgSystem: RpgSystemEnum,
 	age: z.number(),
 	description: z.string(),
 	avatar: z.string().nullable(),
+	createdAt: z.date(),
 });
 
-const CharacterSchema = CharacterBaseSchema.extend({
-	id: z.string(),
-	slug: z.string(),
+const characterCreateInput = character.omit({
+	id: true,
+	slug: true,
 });
 
-const CharacterCreateInputSchema = CharacterBaseSchema;
-
-export type RpgSystem = z.infer<typeof RpgSystemEnum>;
-
-export type CharacterCreateInput = z.infer<typeof CharacterCreateInputSchema>;
-
-export type Character<
-	TSheet extends Record<string, any> = Record<string, any>,
-	TInventory extends Record<string, any> = Record<string, any>,
-> = z.infer<typeof CharacterSchema> & {
-	sheet: TSheet;
-	inventory: TInventory;
-};
-
-export type CharacterBase = z.infer<typeof CharacterSchema>;
-
-export { CharacterSchema, CharacterCreateInputSchema, RpgSystemEnum };
+export type Character = z.infer<typeof character>;
+export type CharacterCreateInput = z.infer<typeof characterCreateInput>;

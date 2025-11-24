@@ -1,43 +1,34 @@
 import type { Character } from "@/@types/character";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import type { ICharacterRepository } from "@/repository/character-repository";
-import type { DeepPartial } from "@/utils/deep-partial";
 
-export interface RequestData<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
-	characterId: string;
-	updateData: DeepPartial<Character<TSheet, TInventory>>;
+interface RequestData {
+	id: string;
+	updateData: Partial<Character>;
 }
 
-export interface ResponseData<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
-	character: Character<TSheet, TInventory>;
+interface ResponseData {
+	character: Character;
 }
 
-export class UpdateCharacterByIdService<
-	TSheet extends Record<string, any>,
-	TInventory extends Record<string, any>,
-> {
-	constructor(private characterReposirtoy: ICharacterRepository<TSheet, TInventory>) {}
+export class UpdateCharacterByIdService {
+	constructor(private characterRepository: ICharacterRepository) {}
 
-	async execute({
-		characterId,
-		updateData,
-	}: RequestData<TSheet, TInventory>): Promise<ResponseData<TSheet, TInventory>> {
-		if (Object.keys(updateData).length === 0) {
-			throw new ResourceNotFoundError("No data provided to update the character");
+	async execute({ id, updateData }: RequestData): Promise<ResponseData> {
+		if (Object.entries(updateData).length === 0) {
+			throw new ResourceNotFoundError();
 		}
 
-		const character = await this.characterReposirtoy.updateById(characterId, updateData);
+		const existCharacter = await this.characterRepository.getById(id);
 
-		if (!character) {
-			throw new ResourceNotFoundError("Character not found");
-		}
+		if (!existCharacter) throw new ResourceNotFoundError();
 
-		return { character };
+		const updatedCharacter = await this.characterRepository.updateById(
+			existCharacter.id,
+			updateData,
+		);
+
+		// biome-ignore lint/style/noNonNullAssertion: <Ele semprem vai retornar alugma coisa>
+		return { character: updatedCharacter! };
 	}
 }
