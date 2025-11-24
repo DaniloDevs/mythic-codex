@@ -3,11 +3,11 @@ import type { InventoryOrdemParanormal } from "@/@types/inventory-ordem-paranorm
 import type { User } from "@/@types/user";
 import type { ICharacterRepository } from "@/repository/character-repository";
 import { CharacterImMemoryRepository } from "@/repository/in-memory/character-in-memory";
-import { InventoryImMemoryRepository } from "@/repository/in-memory/inventory-in-memory";
-import { SheetOrdemParanormalImMemoryRepository } from "@/repository/in-memory/sheet-ordem-paranormal-im-memory-repository";
+import { InventoryImMemoryRepository } from "@/repository/in-memory/inventory-ordem";
+import { SheetOrdemParanormalImMemoryRepository } from "@/repository/in-memory/sheet-ordem";
 import { UserImMemoryRepository } from "@/repository/in-memory/user-in-memory";
-import type { IInventoryRepository } from "@/repository/inventory-repository";
-import type { ISheetOrdemParanormalRepository } from "@/repository/sheet-ordem-paranormal-repository";
+import type { IInventoryRepository } from "@/repository/inventory-ordem-repository";
+import type { ISheetOrdemParanormalRepository } from "@/repository/sheet-ordem-repository";
 import type { IUserRepository } from "@/repository/user-repository";
 import { CreateCharacterOrdemService } from "@/services/character-ordem/create-character-ordem";
 import { createCharacterMock } from "../_mocks/character";

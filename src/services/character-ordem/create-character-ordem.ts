@@ -1,18 +1,21 @@
 import { randomUUID } from "node:crypto";
 import type { Character, CharacterCreateInput } from "@/@types/character";
-import type { Expertise, ExpertiseKey } from "@/@types/expertises-ordem-paranormal";
+import type {
+	Expertise,
+	ExpertiseKey,
+} from "@/@types/ordem-paranormal/expertises-ordem-paranormal";
 import type {
 	InventoryOrdemParanormal,
 	InventoryOrdemParanormalCreateInput,
-} from "@/@types/inventory-ordem-paranormal";
+} from "@/@types/ordem-paranormal/inventory-ordem-paranormal";
 import type {
 	SheetOrdemParanormal,
 	SheetOrdemParanormalCreateInput,
-} from "@/@types/sheet-ordem-paranormal";
+} from "@/@types/ordem-paranormal/sheet-ordem-paranormal";
 import { ResourceNotFoundError } from "@/_errors/resource-not-found";
 import type { ICharacterRepository } from "@/repository/character-repository";
-import type { IInventoryRepository } from "@/repository/inventory-repository";
-import type { ISheetOrdemParanormalRepository } from "@/repository/sheet-ordem-paranormal-repository";
+import type { IInventoryOrdemRepository } from "@/repository/inventory-ordem-repository";
+import type { ISheetOrdemParanormalRepository } from "@/repository/sheet-ordem-repository";
 import type { IUserRepository } from "@/repository/user-repository";
 import { CalculateConditionsClass } from "@/utils/calc-conditions-class-ordem-paranormal";
 import { createExpertises } from "@/utils/create-expertise-ordem-sheet";
@@ -34,7 +37,7 @@ export class CreateCharacterOrdemService {
 	constructor(
 		private userRepository: IUserRepository,
 		private characterRepository: ICharacterRepository,
-		private inventoryRepository: IInventoryRepository<InventoryOrdemParanormal>,
+		private inventoryRepository: IInventoryOrdemRepository,
 		private sheetRepository: ISheetOrdemParanormalRepository,
 	) {}
 
@@ -47,7 +50,9 @@ export class CreateCharacterOrdemService {
 		// Valida o userId
 		const existuUser = await this.userRepository.getById(userId);
 
-		if (!existuUser) throw new ResourceNotFoundError("User non exist!");
+		if (!existuUser) {
+			throw new ResourceNotFoundError("User non exist!");
+		}
 
 		// Cria Character
 		const character = await this.characterRepository.create(characterData);
@@ -63,7 +68,6 @@ export class CreateCharacterOrdemService {
 		// cria inventario
 		const inventory = await this.inventoryRepository.create({
 			...inventoryData,
-			id: randomUUID(),
 		});
 
 		// retorna dados

@@ -2,7 +2,7 @@ import z from "zod";
 import {
 	createInputExpertiseMapSchema,
 	expertiseMapSchema,
-} from "@/@types/expertises-ordem-paranormal";
+} from "./expertises-ordem-paranormal";
 
 // enuns
 const PatentEnum = z.enum([

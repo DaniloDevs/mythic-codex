@@ -1,5 +1,5 @@
 import type { SheetOrdemParanormal } from "@/@types/sheet-ordem-paranormal";
-import type { ISheetOrdemParanormalRepository } from "../sheet-ordem-paranormal-repository";
+import type { ISheetOrdemParanormalRepository } from "../sheet-ordem-repository";
 
 export class SheetOrdemParanormalImMemoryRepository
 	implements ISheetOrdemParanormalRepository
