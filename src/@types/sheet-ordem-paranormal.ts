@@ -70,8 +70,6 @@ const skill = z.object({
 	description: z.string(),
 });
 
-
-
 const SheetOrdemParanormal = z.object({
 	id: z.string(),
 	characterId: z.string(),
@@ -92,7 +90,6 @@ const SheetOrdemParanormalCreateInput = z.object({
 	ritual: RitualSchemas,
 	skill: z.array(skill),
 });
-
 
 export type SheetOrdemParanormal = z.infer<typeof SheetOrdemParanormal>;
 export type SheetOrdemParanormalCreateInput = z.infer<

@@ -15,8 +15,8 @@ const character = z.object({
 
 const characterCreateInput = character.omit({
 	id: true,
-	slug: true
-})
+	slug: true,
+});
 
 export type Character = z.infer<typeof character>;
 export type CharacterCreateInput = z.infer<typeof characterCreateInput>;

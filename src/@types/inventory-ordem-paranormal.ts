@@ -1,6 +1,5 @@
 import z from "zod";
 
-
 const InventoryOrdemParanormal = z.object({
 	id: z.string(),
 	characterId: z.string(),
@@ -21,7 +20,9 @@ const InventoryOrdemParanormal = z.object({
 	),
 });
 
-const InventoryOrdemParanormalCreateInput = InventoryOrdemParanormal.omit({ id: true })
+const InventoryOrdemParanormalCreateInput = InventoryOrdemParanormal.omit({ id: true });
 
 export type InventoryOrdemParanormal = z.infer<typeof InventoryOrdemParanormal>;
-export type InventoryOrdemParanormalCreateInput = z.infer<typeof InventoryOrdemParanormalCreateInput>;
+export type InventoryOrdemParanormalCreateInput = z.infer<
+	typeof InventoryOrdemParanormalCreateInput
+>;
